@@ -1,0 +1,53 @@
+project:
+  type: website
+  output-dir: docs
+  resources:
+    - slides/memory-grundbegriffe.html
+    - slides/skalenniveau-spiel.html
+    - slides/ppdac-zuordnung.html
+    - slides/folien-viewer.html
+    - slides/*.pdf
+    - slides/wordcloud/*.html
+
+website:
+  title: "Methoden der standardisierten Sozialforschung"
+  page-navigation: true
+  navbar:
+    left:
+      - href: index.qmd
+        text: Übersicht
+      - href: block1.qmd
+        text: Block 1
+      - href: block2.qmd
+        text: Block 2
+      - href: block3.qmd
+        text: Block 3
+      - href: block4.qmd
+        text: Block 4
+  page-footer:
+    left: "BA Pädagogik · KIT · Sommersemester 2026"
+  search:
+    location: navbar
+    type: overlay
+
+bibliography: references.bib
+csl: apa.csl
+
+format:
+  html:
+    theme: litera
+    css: styles.css
+    toc: true
+    grid:
+      sidebar-width: 250px
+      body-width: 900px
+      margin-width: 250px
+    code-copy: true
+    code-line-numbers: true
+    highlight-style: github
+    include-in-header:
+      text: |
+        <meta name="robots" content="noindex, nofollow">
+
+execute:
+  freeze: auto

@@ -1,0 +1,625 @@
+[
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site\n\n1 + 1\n\n[1] 2"
+  },
+  {
+    "objectID": "slides/styles.html#worum-es-heute-geht",
+    "href": "slides/styles.html#worum-es-heute-geht",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Worum es heute geht",
+    "text": "Worum es heute geht\n\nWarum Statistik? — Aus Daten lernen\nZiele quantitativer Forschung\nDer PPDAC-Zyklus: unser roter Faden\nMethodische Grundbegriffe\nSkalenniveaus\nUnser Datensatz: lernfoerderung\nR & RStudio: Setup und erste Schritte"
+  },
+  {
+    "objectID": "slides/styles.html#warum-statistik",
+    "href": "slides/styles.html#warum-statistik",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Warum Statistik?",
+    "text": "Warum Statistik?\n\n\n„Der beste Unterricht ist Frontalunterricht.”\n\n\n\n\n„Mädchen sind sprachbegabt, Jungs mathematisch.”\n\n\n\n\n„Die soziale Herkunft ist entscheidend für den Bildungserfolg von Jugendlichen.”\n\n\n\nGlauben oder prüfen?"
+  },
+  {
+    "objectID": "slides/styles.html#aus-daten-lernen",
+    "href": "slides/styles.html#aus-daten-lernen",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Aus Daten lernen",
+    "text": "Aus Daten lernen\n\n\nStatistik ist keine Formelsammlung, sondern die Kunst, aus Daten über die Welt zu lernen — und gute Schlüsse zu ziehen, wenn nichts sicher ist.\n\nJede Beobachtung ist eine Mischung aus\n\nSignal — das Muster, das uns interessiert\nRauschen — Zufall, Variabilität, Messfehler\n\nDie ganze Kunst: beides trennen.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nnach Spiegelhalter, The Art of Statistics"
+  },
+  {
+    "objectID": "slides/styles.html#ziele-quantitativer-forschung",
+    "href": "slides/styles.html#ziele-quantitativer-forschung",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Ziele quantitativer Forschung",
+    "text": "Ziele quantitativer Forschung\n\nBeschreiben „Über welche fachlichen Kompetenzen verfügen (deutsche) 9.-Klässler:innen in Deutsch?”\nErklären „Was sind Ursachen für geringe Deutschkompetenzen?”\nVerändern „Wie lassen sich fachliche Kompetenzen in Deutsch fördern?”\n\n\nStatistik liefert das Handwerkszeug für alle drei — heute starten wir beim Beschreiben."
+  },
+  {
+    "objectID": "slides/styles.html#statistik-als-problemlöseprozess",
+    "href": "slides/styles.html#statistik-als-problemlöseprozess",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Statistik als Problemlöseprozess",
+    "text": "Statistik als Problemlöseprozess\nStatistische Untersuchungen folgen einem Zyklus — nicht „Formel anwenden”, sondern:\n\n\n\nPhase\nLeitfrage\n\n\n\n\nProblem\nWas wollen wir wissen?\n\n\nPlan\nWas messen wir, an wem, wie?\n\n\nData\nDaten erheben, aufbereiten, prüfen\n\n\nAnalysis\nMuster suchen: Tabellen, Grafiken, Kennwerte\n\n\nConclusion\nWas haben wir gelernt? Was bleibt unsicher?\n\n\n\n\n\nPPDAC nach Wild & Pfannkuch; bei Spiegelhalter der rote Faden des ganzen Buchs — und unseres Seminars."
+  },
+  {
+    "objectID": "slides/styles.html#ppdac-an-einem-beispiel",
+    "href": "slides/styles.html#ppdac-an-einem-beispiel",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "PPDAC an einem Beispiel",
+    "text": "PPDAC an einem Beispiel\nEine Schule führt ein Mathe-Lernförderprogramm ein. Wirkt es?\n\nProblem: Verbessert das Programm die Mathematikleistung?\nPlan: 8.-Klässler:innen zufällig in Förder- und Kontrollgruppe einteilen; Leistung vorher/nachher testen\nData: Testdaten, Fragebögen, Schulinformationen erheben\nAnalysis: Gruppen vergleichen — Grafiken, Mittelwerte, Streuung\nConclusion: Unterschied gefunden? Signal oder Rauschen?\n\n\nGenau dieses Szenario begleitet uns als Datensatz durch alle vier Blöcke."
+  },
+  {
+    "objectID": "slides/styles.html#population-und-stichprobe",
+    "href": "slides/styles.html#population-und-stichprobe",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Population und Stichprobe",
+    "text": "Population und Stichprobe\nPopulation: Gesamtheit der statistischen Einheiten, für die die zu treffenden Aussagen Gültigkeit besitzen sollen.\nStichprobe: Teilmenge der Population.\n\nBeispiel: Wir untersuchen 200 Achtklässler:innen (Stichprobe) — Aussagen sollen aber für Achtklässler:innen allgemein gelten (Population)."
+  },
+  {
+    "objectID": "slides/styles.html#merkmalsträger-und-merkmale",
+    "href": "slides/styles.html#merkmalsträger-und-merkmale",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Merkmalsträger und Merkmale",
+    "text": "Merkmalsträger und Merkmale\nStatistische Einheit (Merkmalsträger): Personen oder Objekte, welche Eigenschaften besitzen, die im Rahmen einer Untersuchung von Interesse sind.\nMerkmal: Eigenschaften von Objekten (i.d.R. Personen), i.d.R. erfasst in Variablen.\nMerkmale müssen definiert und operationalisiert werden.\n\nBeispiel: „Mathematische Kompetenz” → operationalisiert als Punktzahl in einem standardisierten Test."
+  },
+  {
+    "objectID": "slides/styles.html#uv-av-statistik-parameter",
+    "href": "slides/styles.html#uv-av-statistik-parameter",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "UV, AV, Statistik, Parameter",
+    "text": "UV, AV, Statistik, Parameter\nUnabhängige Variable (UV): Häufig auch Prädiktor. Wird systematisch variiert bzw. kontrolliert und bzgl. ihres Einflusses auf die AV untersucht (z.B. Förderprogramm ja/nein).\nAbhängige Variable (AV): Häufig auch Kriteriumsvariable. Variable von zentralem Interesse (z.B. Mathematikleistung).\nStatistik: Kennwert zur Beschreibung eines Merkmals der Stichprobe.\nParameter: Kennwert zur Beschreibung eines Merkmals der Population."
+  },
+  {
+    "objectID": "slides/styles.html#variablenarten",
+    "href": "slides/styles.html#variablenarten",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Variablenarten",
+    "text": "Variablenarten\nQualitative vs. quantitative Variable: Qualitative Merkmale lassen nur die Aussage gleich vs. ungleich zu, während bei quantitativen Variablen auch Vergleiche in Bezug auf die Größe möglich sind.\nManifeste Variable: direkt beobachtbare oder messbare Merkmale (z.B. Lösung einer Aufgabe).\nLatente Variable: theoretisch postulierte Merkmale, die durch manifeste Variablen indirekt oder vereinfacht gemessen werden (z.B. Intelligenz, Lernmotivation)."
+  },
+  {
+    "objectID": "slides/styles.html#wiederholung-als-memory",
+    "href": "slides/styles.html#wiederholung-als-memory",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Wiederholung als Memory",
+    "text": "Wiederholung als Memory"
+  },
+  {
+    "objectID": "slides/styles.html#warum-skalenniveaus",
+    "href": "slides/styles.html#warum-skalenniveaus",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Warum Skalenniveaus?",
+    "text": "Warum Skalenniveaus?\nZahlen sind nicht gleich Zahlen:\n\nTrikotnummer 10 — ist Spielerin 10 „doppelt so gut” wie Spielerin 5?\nSchulnote 2 — ist der Abstand zur 1 genauso groß wie der von 4 zu 3?\nTestwert 80 Punkte — hier dürfen wir rechnen: Differenzen sind interpretierbar.\n\n\nDas Skalenniveau einer Variablen legt fest, welche Aussagen über die Werte bedeutsam sind — und damit, welche Statistiken wir später überhaupt berechnen dürfen."
+  },
+  {
+    "objectID": "slides/styles.html#nominalskala",
+    "href": "slides/styles.html#nominalskala",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Nominalskala",
+    "text": "Nominalskala\nZahlen kennzeichnen nur Gleichheit vs. Verschiedenheit — sie sind reine Etiketten.\n\nGeschlecht (1 = weiblich, 2 = männlich, 3 = divers)\nSchule (1 = Schule A, 2 = Schule B, …)\nGruppenzugehörigkeit (0 = Kontrolle, 1 = Förderung)\n\n\nZulässige Aussage: „Kim und Alex besuchen verschiedene Schulen.”\nNicht zulässig: jede Aussage über Reihenfolge oder Abstände — die Codierung ist beliebig austauschbar."
+  },
+  {
+    "objectID": "slides/styles.html#ordinalskala",
+    "href": "slides/styles.html#ordinalskala",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Ordinalskala",
+    "text": "Ordinalskala\nZahlen bilden zusätzlich eine Rangordnung ab — Abstände sind aber nicht interpretierbar.\n\nSchulnoten (1–6)\nLikert-Antworten („stimme gar nicht zu” … „stimme voll zu”)\nBildungsabschlüsse (Hauptschule &lt; Realschule &lt; Abitur)\n\n\nZulässige Aussage: „Kim hat eine bessere Note als Alex.”\nNicht zulässig: „Der Abstand zwischen Note 1 und 2 ist gleich groß wie zwischen 4 und 5.”"
+  },
+  {
+    "objectID": "slides/styles.html#intervallskala",
+    "href": "slides/styles.html#intervallskala",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Intervallskala",
+    "text": "Intervallskala\nZusätzlich sind Differenzen interpretierbar — gleiche Zahlabstände bedeuten gleiche Merkmalsunterschiede. Es gibt aber keinen natürlichen Nullpunkt.\n\nTemperatur in °C\nstandardisierte Testwerte (z.B. IQ, Kompetenztests)\n\n\nZulässige Aussage: „Kim hat sich um 10 Punkte mehr verbessert als Alex.”\nNicht zulässig: „Kim ist doppelt so kompetent wie Alex” — Verhältnisse sind ohne echten Nullpunkt nicht bedeutsam."
+  },
+  {
+    "objectID": "slides/styles.html#verhältnisskala",
+    "href": "slides/styles.html#verhältnisskala",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Verhältnisskala",
+    "text": "Verhältnisskala\nZusätzlich gibt es einen natürlichen Nullpunkt — auch Verhältnisse sind interpretierbar.\n\nReaktionszeit in Sekunden\nAlter, Körpergröße\nAnzahl Fehltage (genau genommen: Absolutskala — Zählvariablen mit natürlicher Einheit)\n\n\nZulässige Aussage: „Alex hat doppelt so viele Fehltage wie Kim.”"
+  },
+  {
+    "objectID": "slides/styles.html#überblick-welche-aussagen-sind-bedeutsam",
+    "href": "slides/styles.html#überblick-welche-aussagen-sind-bedeutsam",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Überblick: Welche Aussagen sind bedeutsam?",
+    "text": "Überblick: Welche Aussagen sind bedeutsam?\n\n\n\n\n\n\n\n\n\n\nSkalenniveau\ngleich/verschieden\nOrdnung\nDifferenzen\nVerhältnisse\n\n\n\n\nNominal\n✓\n—\n—\n—\n\n\nOrdinal\n✓\n✓\n—\n—\n\n\nIntervall\n✓\n✓\n✓\n—\n\n\nVerhältnis\n✓\n✓\n✓\n✓\n\n\n\n\nIntervall- und verhältnisskalierte Variablen fasst man als metrisch (kardinalskaliert) zusammen.\nMerkregel: Je höher das Niveau, desto mehr Information — und desto mehr dürfen wir rechnen."
+  },
+  {
+    "objectID": "slides/styles.html#skalenniveaus-als-spiel",
+    "href": "slides/styles.html#skalenniveaus-als-spiel",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Skalenniveaus als Spiel",
+    "text": "Skalenniveaus als Spiel"
+  },
+  {
+    "objectID": "slides/styles.html#das-szenario",
+    "href": "slides/styles.html#das-szenario",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Das Szenario",
+    "text": "Das Szenario\nEine (fiktive) Evaluation: 200 Achtklässler:innen aus 8 Schulen, zufällig zugewiesen zu einem zusätzlichen Mathe-Lernförderprogramm oder einer Kontrollgruppe.\n\nMathematikleistung wurde vor und nach dem Programm getestet\nzusätzlich: Lernmotivation, Mathenote, soziale Herkunft, Fehltage\n\n\nDieser Datensatz begleitet uns durch alle vier Blöcke — von der ersten Häufigkeitstabelle (Block 2) bis zum Gruppenvergleich (Block 4)."
+  },
+  {
+    "objectID": "slides/styles.html#die-variablen-und-ihr-skalenniveau",
+    "href": "slides/styles.html#die-variablen-und-ihr-skalenniveau",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Die Variablen — und ihr Skalenniveau?",
+    "text": "Die Variablen — und ihr Skalenniveau?\n\n\n\nVariable\nInhalt\nSkalenniveau?\n\n\n\n\nschule\nSchule A–H\n?\n\n\ngruppe\nFörderung / Kontrolle\n?\n\n\nmotivation\nLernmotivation (1–5, Likert)\n?\n\n\nnote_mathe\nletzte Zeugnisnote (1–6)\n?\n\n\nses\nsoziale Herkunft (niedrig/mittel/hoch)\n?\n\n\nmathe_pre\nTestwert vor dem Programm\n?\n\n\nmathe_post\nTestwert nach dem Programm\n?\n\n\nfehltage\nAnzahl Fehltage\n?\n\n\n\n\nEure Aufgabe: Ordnet jeder Variable ihr Skalenniveau zu — Begründung in einem Satz."
+  },
+  {
+    "objectID": "slides/styles.html#warum-r",
+    "href": "slides/styles.html#warum-r",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Warum R?",
+    "text": "Warum R?\n\nkostenlos & Open Source — läuft auf jedem Rechner, auch nach dem Studium\nStandard in der empirischen Bildungs- und Sozialforschung\nreproduzierbar: Ein Skript dokumentiert jeden Analyseschritt — kein Klick geht verloren\nUnser Anspruch: Ihr könnt vorgegebene Skripte ausführen, lesen und anpassen — ihr müsst keine Programme von Grund auf schreiben"
+  },
+  {
+    "objectID": "slides/styles.html#r-und-rstudio",
+    "href": "slides/styles.html#r-und-rstudio",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "R und RStudio",
+    "text": "R und RStudio\nR ist die Sprache — RStudio die Arbeitsumgebung drumherum.\nVier Bereiche in RStudio:\n\n\n\n\n\n\n\nBereich\nFunktion\n\n\n\n\nSkript (oben links)\nHier steht euer Code — speicherbar, wiederverwendbar\n\n\nKonsole (unten links)\nHier wird Code ausgeführt, hier erscheinen Ergebnisse\n\n\nEnvironment (oben rechts)\nWelche Objekte/Daten sind gerade geladen?\n\n\nFiles/Plots/Help (unten rechts)\nDateien, Grafiken, Hilfeseiten"
+  },
+  {
+    "objectID": "slides/styles.html#erste-schritte-r-als-taschenrechner",
+    "href": "slides/styles.html#erste-schritte-r-als-taschenrechner",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Erste Schritte: R als Taschenrechner",
+    "text": "Erste Schritte: R als Taschenrechner\n\n3 + 4\n\n[1] 7\n\n\n\n(12 - 4) / 2\n\n[1] 4\n\n\nMit &lt;- weisen wir Werte einem Objekt zu:\n\npunkte &lt;- c(12, 15, 9, 18, 11)\npunkte\n\n[1] 12 15  9 18 11"
+  },
+  {
+    "objectID": "slides/styles.html#erste-schritte-funktionen",
+    "href": "slides/styles.html#erste-schritte-funktionen",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Erste Schritte: Funktionen",
+    "text": "Erste Schritte: Funktionen\nFunktionen haben die Form name(eingabe):\n\nmean(punkte)   # Mittelwert — mehr dazu in Block 2!\n\n[1] 13\n\n\n\nlength(punkte) # Wie viele Werte?\n\n[1] 5\n\n\n\nmax(punkte)    # Größter Wert\n\n[1] 18\n\n\n\nWas mean() genau berechnet und wann es sinnvoll ist (Stichwort: Skalenniveau!) — das ist Thema von Block 2."
+  },
+  {
+    "objectID": "slides/styles.html#bis-zum-nächsten-block-setup",
+    "href": "slides/styles.html#bis-zum-nächsten-block-setup",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Bis zum nächsten Block: Setup",
+    "text": "Bis zum nächsten Block: Setup\n\nR installieren: cran.r-project.org\nRStudio installieren: posit.co/download/rstudio-desktop\nRStudio öffnen, in die Konsole tippen:\n\n\n1 + 1\n\nWenn 2 erscheint: fertig. Bei Problemen → Forum auf ILIAS, wir lösen das vor Block 2.\n\n\nEine bebilderte Schritt-für-Schritt-Anleitung findet ihr auf der Seminarseite."
+  },
+  {
+    "objectID": "slides/styles.html#übung-1-studienleistung",
+    "href": "slides/styles.html#übung-1-studienleistung",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Übung 1 (Studienleistung)",
+    "text": "Übung 1 (Studienleistung)\nAuf ILIAS bis Mittwoch vor Block 2:\n\nSkalenniveaus: Ordnet den 8 Variablen des lernfoerderung-Datensatzes ihr Skalenniveau zu — mit je einem Satz Begründung.\nReflexion: Welche der drei Behauptungen vom Seminarbeginn hat euch am meisten zum Nachdenken gebracht — und wie müsste eine Untersuchung aussehen (PPDAC!), um sie zu prüfen? (max. ½ Seite)\nSetup-Nachweis: Screenshot eurer RStudio-Oberfläche mit dem Ergebnis von 1 + 1."
+  },
+  {
+    "objectID": "slides/styles.html#ausblick-block-2",
+    "href": "slides/styles.html#ausblick-block-2",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Ausblick: Block 2",
+    "text": "Ausblick: Block 2\nMorgen wird es konkret — wir laden lernfoerderung in R und beschreiben die Daten:\n\nHäufigkeitstabellen und Balkendiagramme\nLagemaße: Modus, Median, Mittelwert\nStreuungsmaße: Spannweite, Varianz, Standardabweichung\nalles direkt in R — Skripte werden gestellt"
+  },
+  {
+    "objectID": "slides/styles.html#literatur",
+    "href": "slides/styles.html#literatur",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Literatur",
+    "text": "Literatur\n\nSpiegelhalter, D. (2019). The Art of Statistics: Learning from Data. — Kap. 1 (Einführung, PPDAC)\nEid, M., Gollwitzer, M. & Schmitt, M. (2017). Statistik und Forschungsmethoden (5. Aufl.). — Kap. 4.1 (Grundbegriffe), Kap. 5.1 (Skalenniveaus)\n\nBeide Texte als Auszüge auf ILIAS — zur Vertiefung, nicht als Pflichtlektüre vor dem Block."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Methoden der standardisierten Sozialforschung",
+    "section": "",
+    "text": "Das Seminar “Methoden der standardisierten Sozialforschung” dient der Einführung in quantitative Verfahren und Forschungsmethoden.\nAls Einführungskurs in die Statistik werden methodische Grundlagen vermittelt (z.B. methodische Grundbegriffe und messtheoretische Grundlagen) und Verfahren der deskriptiven Statistik vorgestellt.\nNeben inhaltlichen Inputs wird die kostenlose Statistiksoftware R und RStudio eingeführt. Die Studierenden lernen grundlegende Funktionen von R und wenden die gelernten Inhalte in Übungsaufgaben an.\nZiel des Seminars ist es, dass die Studierenden zum einen grundlegende Statistikenntnisse erwerben und methodische Grundlagen sowie Verfahren der deskriptiven Statisitk kennen, und zum anderen Grundlagen in der Anwendung von R in diesen Themengebieten erlernen."
+  },
+  {
+    "objectID": "index.html#zielsetzung-und-thematische-schwerpunkte",
+    "href": "index.html#zielsetzung-und-thematische-schwerpunkte",
+    "title": "Methoden der standardisierten Sozialforschung",
+    "section": "",
+    "text": "Das Seminar “Methoden der standardisierten Sozialforschung” dient der Einführung in quantitative Verfahren und Forschungsmethoden.\nAls Einführungskurs in die Statistik werden methodische Grundlagen vermittelt (z.B. methodische Grundbegriffe und messtheoretische Grundlagen) und Verfahren der deskriptiven Statistik vorgestellt.\nNeben inhaltlichen Inputs wird die kostenlose Statistiksoftware R und RStudio eingeführt. Die Studierenden lernen grundlegende Funktionen von R und wenden die gelernten Inhalte in Übungsaufgaben an.\nZiel des Seminars ist es, dass die Studierenden zum einen grundlegende Statistikenntnisse erwerben und methodische Grundlagen sowie Verfahren der deskriptiven Statisitk kennen, und zum anderen Grundlagen in der Anwendung von R in diesen Themengebieten erlernen."
+  },
+  {
+    "objectID": "index.html#termine",
+    "href": "index.html#termine",
+    "title": "Methoden der standardisierten Sozialforschung",
+    "section": "Termine",
+    "text": "Termine\nDas Seminar findet als Blockveranstaltung an zwei Wochenenden statt:\n\n\n\nTermin\nDatum\n\n\n\n\nErstes Wochenende\n03./04.07.\n\n\nZweites Wochenende\n10./11.07."
+  },
+  {
+    "objectID": "index.html#inhalte",
+    "href": "index.html#inhalte",
+    "title": "Methoden der standardisierten Sozialforschung",
+    "section": "Inhalte",
+    "text": "Inhalte\nIn dem Seminar werden im Kern 3 größere Themen behandelt:\n\nMethodische Grundlagen (u.a. Grundbegriffe, Messen, Skalenniveaus)\nDeskriptive Statistik (u.a. Mittelwerte, Standardabweichung, Korrelation)\nEinführung in R Studio (u.a. Funktionen, Einlesen von Daten, Anwendung der Inhalte)"
+  },
+  {
+    "objectID": "index.html#studienleistung",
+    "href": "index.html#studienleistung",
+    "title": "Methoden der standardisierten Sozialforschung",
+    "section": "Studienleistung",
+    "text": "Studienleistung\nDie Studienleistung bilden die Übungsaufgaben, die für jeden Block konzipiert wurden. Die Übungsaufgaben bilden eine Mischung aus Multiple-Choice und offenen Aufgaben und beziehen sich zum einen auf die Inhalte (Methodische Grundlagen und Deskriptive Statistik) als auch auf Kenntnisse in R (Anwendungsaufgaben). Die Bestehensquote liegt bei 50%.\nDie Bearbeitung und Abgabe der für die Studienleistung relevanten Übungsaufgaben erfolgt über ILIAS.\nAbgabefrist ist der 31.07.2026\n\n\n\n\n\n\nTippHinweis\n\n\n\nEmpfehlenswert ist eine zeitige Bearbeitung der Übungsaufgaben nach der Sitzung."
+  },
+  {
+    "objectID": "index.html#seminarliteratur",
+    "href": "index.html#seminarliteratur",
+    "title": "Methoden der standardisierten Sozialforschung",
+    "section": "Seminarliteratur",
+    "text": "Seminarliteratur\n\nEid, M., Gollwitzer, M. & Schmitt, M. (2017). Statistik und Forschungsmethoden (5., korrigierte Aufl.). Weinheim: Beltz.\nSpiegelhalter, D. (2019). The Art of Statistics: Learning from Data. London: Pelican Books.\nDöring, N. (2023). Forschungsmethoden und Evaluation in den Sozial- und Humanwissenschaften (6., vollständig überarbeitete, aktualisierte und erweiterte Aufl.). Berlin: Springer. https://doi.org/10.1007/978-3-662-64762-2"
+  },
+  {
+    "objectID": "block3.html",
+    "href": "block3.html",
+    "title": "Block 3",
+    "section": "",
+    "text": "Platzhalter für die inhaltliche Einführung dieses Blocks."
+  },
+  {
+    "objectID": "block3.html#überblick",
+    "href": "block3.html#überblick",
+    "title": "Block 3",
+    "section": "",
+    "text": "Platzhalter für die inhaltliche Einführung dieses Blocks."
+  },
+  {
+    "objectID": "block3.html#themen",
+    "href": "block3.html#themen",
+    "title": "Block 3",
+    "section": "Themen",
+    "text": "Themen\nPlatzhalter für die behandelten Themen."
+  },
+  {
+    "objectID": "block3.html#literatur",
+    "href": "block3.html#literatur",
+    "title": "Block 3",
+    "section": "Literatur",
+    "text": "Literatur\nPlatzhalter für blockspezifische Literaturhinweise."
+  },
+  {
+    "objectID": "block1.html",
+    "href": "block1.html",
+    "title": "Block 1",
+    "section": "",
+    "text": "Tag 1 · Fr 03.07. · 11:30–17:30\n\n\n\n\n\n\n\nZeit\nProgrammpunkt\n\n\n\n\n11:30\nBegrüßung & Vorstellung\n\n\n11:50\nSeminarkonzeption: Struktur, Erwartungen & Studienleistung\n\n\n12:20\nInhaltlicher Einstieg: Warum Statistik? · Ziele · PPDAC-Zyklus\n\n\n13:20\nMittagspause\n\n\n14:05\nMethodische Grundbegriffe\n\n\n15:05\nKurze Pause\n\n\n15:15\nMesstheoretische Grundlagen: Messen & Skalenniveaus\n\n\n16:45\nPuffer & Übungsaufgabe (Studienleistung)\n\n\n17:20\nSeminarevaluation\n\n\n17:30\nEnde"
+  },
+  {
+    "objectID": "block1.html#folien",
+    "href": "block1.html#folien",
+    "title": "Block 1",
+    "section": "Folien",
+    "text": "Folien\nFolien im Vollbild öffnen"
+  },
+  {
+    "objectID": "block1.html#warum-statistik",
+    "href": "block1.html#warum-statistik",
+    "title": "Block 1",
+    "section": "Warum Statistik?",
+    "text": "Warum Statistik?\nLoading...\n\nLoading...\n\nLoading..."
+  },
+  {
+    "objectID": "block1.html#übungsaufgaben",
+    "href": "block1.html#übungsaufgaben",
+    "title": "Block 1",
+    "section": "Übungsaufgaben",
+    "text": "Übungsaufgaben\n\nZuordnung zum PPDAC-Zyklus\nOrdne jede Aussage der passenden Phase des Forschungszyklus zu (Problem – Plan – Data – Analysis – Conclusion) und werte selbst aus."
+  },
+  {
+    "objectID": "block1.html#memory-zu-methodischen-grundbegriffen",
+    "href": "block1.html#memory-zu-methodischen-grundbegriffen",
+    "title": "Block 1",
+    "section": "Memory zu methodischen Grundbegriffen",
+    "text": "Memory zu methodischen Grundbegriffen"
+  },
+  {
+    "objectID": "block1.html#spiel-zu-skalenniveaus",
+    "href": "block1.html#spiel-zu-skalenniveaus",
+    "title": "Block 1",
+    "section": "Spiel zu Skalenniveaus",
+    "text": "Spiel zu Skalenniveaus"
+  },
+  {
+    "objectID": "block2.html",
+    "href": "block2.html",
+    "title": "Block 2",
+    "section": "",
+    "text": "Folien im Vollbild öffnen"
+  },
+  {
+    "objectID": "block2.html#folien",
+    "href": "block2.html#folien",
+    "title": "Block 2",
+    "section": "",
+    "text": "Folien im Vollbild öffnen"
+  },
+  {
+    "objectID": "block2.html#überblick",
+    "href": "block2.html#überblick",
+    "title": "Block 2",
+    "section": "Überblick",
+    "text": "Überblick\nPlatzhalter für die inhaltliche Einführung dieses Blocks."
+  },
+  {
+    "objectID": "block2.html#themen",
+    "href": "block2.html#themen",
+    "title": "Block 2",
+    "section": "Themen",
+    "text": "Themen\nPlatzhalter für die behandelten Themen."
+  },
+  {
+    "objectID": "block2.html#literatur",
+    "href": "block2.html#literatur",
+    "title": "Block 2",
+    "section": "Literatur",
+    "text": "Literatur\nPlatzhalter für blockspezifische Literaturhinweise."
+  },
+  {
+    "objectID": "block4.html",
+    "href": "block4.html",
+    "title": "Block 4",
+    "section": "",
+    "text": "Platzhalter für die inhaltliche Einführung dieses Blocks."
+  },
+  {
+    "objectID": "block4.html#überblick",
+    "href": "block4.html#überblick",
+    "title": "Block 4",
+    "section": "",
+    "text": "Platzhalter für die inhaltliche Einführung dieses Blocks."
+  },
+  {
+    "objectID": "block4.html#themen",
+    "href": "block4.html#themen",
+    "title": "Block 4",
+    "section": "Themen",
+    "text": "Themen\nPlatzhalter für die behandelten Themen."
+  },
+  {
+    "objectID": "block4.html#literatur",
+    "href": "block4.html#literatur",
+    "title": "Block 4",
+    "section": "Literatur",
+    "text": "Literatur\nPlatzhalter für blockspezifische Literaturhinweise."
+  },
+  {
+    "objectID": "slides/block1.html#worum-es-heute-geht",
+    "href": "slides/block1.html#worum-es-heute-geht",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "",
+    "text": "Warum Statistik? — Aus Daten lernen\nZiele quantitativer Forschung\nDer PPDAC-Zyklus: unser roter Faden\nMethodische Grundbegriffe\nSkalenniveaus\nUnser Datensatz: lernfoerderung\nR & RStudio: Setup und erste Schritte"
+  },
+  {
+    "objectID": "slides/block1.html#warum-statistik",
+    "href": "slides/block1.html#warum-statistik",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Warum Statistik?",
+    "text": "Warum Statistik?\n\n\n„Der beste Unterricht ist Frontalunterricht.”\n\n\n\n\n„Mädchen sind sprachbegabt, Jungs mathematisch.”\n\n\n\n\n„Die soziale Herkunft ist entscheidend für den Bildungserfolg von Jugendlichen.”\n\n\n\nGlauben oder prüfen?"
+  },
+  {
+    "objectID": "slides/block1.html#aus-daten-lernen",
+    "href": "slides/block1.html#aus-daten-lernen",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Aus Daten lernen",
+    "text": "Aus Daten lernen\n\n\nStatistik ist keine Formelsammlung, sondern die Kunst, aus Daten über die Welt zu lernen — und gute Schlüsse zu ziehen, wenn nichts sicher ist.\n\nJede Beobachtung ist eine Mischung aus\n\nSignal — das Muster, das uns interessiert\nRauschen — Zufall, Variabilität, Messfehler\n\nDie ganze Kunst: beides trennen.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nnach Spiegelhalter, The Art of Statistics"
+  },
+  {
+    "objectID": "slides/block1.html#limitationen-von-daten",
+    "href": "slides/block1.html#limitationen-von-daten",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Limitationen von Daten",
+    "text": "Limitationen von Daten\n\n\nDaten sind fast immer eine imperfekte Abbildung dessen, das\nAlles, was wir messen, unterscheidet sich von Ort zu Ort, von Person zu Person, von Zeit zu Zeit\n\nWie können wir die bedeutsame Schlussfolgerungen von zufälligen Variabilität trennen?"
+  },
+  {
+    "objectID": "slides/block1.html#ziele-quantitativer-forschung",
+    "href": "slides/block1.html#ziele-quantitativer-forschung",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Ziele quantitativer Forschung",
+    "text": "Ziele quantitativer Forschung\n\n\nBeschreiben „Über welche fachlichen Kompetenzen verfügen (deutsche) 9.-Klässler:innen in Deutsch?”\nErklären „Was sind Ursachen für geringe Deutschkompetenzen?”\nVerändern „Wie lassen sich fachliche Kompetenzen in Deutsch fördern?”\n\n\n\nStatistik liefert das Handwerkszeug für alle drei — heute starten wir beim Beschreiben."
+  },
+  {
+    "objectID": "slides/block1.html#statistik-als-problemlöseprozess",
+    "href": "slides/block1.html#statistik-als-problemlöseprozess",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Statistik als Problemlöseprozess",
+    "text": "Statistik als Problemlöseprozess\nStatistische Untersuchungen folgen einem Zyklus — nicht „Formel anwenden”, sondern:\n\n\n\nPhase\nLeitfrage\n\n\n\n\nProblem\nWas wollen wir wissen?\n\n\nPlan\nWas messen wir, an wem, wie?\n\n\nData\nDaten erheben, aufbereiten, prüfen\n\n\nAnalysis\nMuster suchen: Tabellen, Grafiken, Kennwerte\n\n\nConclusion\nWas haben wir gelernt? Was bleibt unsicher?\n\n\n\n\n\nPPDAC nach Wild & Pfannkuch; bei Spiegelhalter der rote Faden des ganzen Buchs — und unseres Seminars."
+  },
+  {
+    "objectID": "slides/block1.html#ppdac-an-einem-beispiel",
+    "href": "slides/block1.html#ppdac-an-einem-beispiel",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "PPDAC an einem Beispiel",
+    "text": "PPDAC an einem Beispiel\nEine Schule führt ein Mathe-Lernförderprogramm ein. Wirkt es?\n\n\nProblem: Verbessert das Programm die Mathematikleistung?\nPlan: 8.-Klässler:innen zufällig in Förder- und Kontrollgruppe einteilen; Leistung vorher/nachher testen\nData: Testdaten, Fragebögen, Schulinformationen erheben\nAnalysis: Gruppen vergleichen — Grafiken, Mittelwerte, Streuung\nConclusion: Unterschied gefunden? Signal oder Rauschen?\n\n\n\nGenau dieses Szenario begleitet uns als Datensatz durch alle vier Blöcke."
+  },
+  {
+    "objectID": "slides/block1.html#population-und-stichprobe",
+    "href": "slides/block1.html#population-und-stichprobe",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Population und Stichprobe",
+    "text": "Population und Stichprobe\nPopulation: Gesamtheit der statistischen Einheiten, für die die zu treffenden Aussagen Gültigkeit besitzen sollen.\nStichprobe: Teilmenge der Population.\n\nBeispiel: Wir untersuchen 200 Achtklässler:innen (Stichprobe) — Aussagen sollen aber für Achtklässler:innen allgemein gelten (Population)."
+  },
+  {
+    "objectID": "slides/block1.html#merkmalsträger-und-merkmale",
+    "href": "slides/block1.html#merkmalsträger-und-merkmale",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Merkmalsträger und Merkmale",
+    "text": "Merkmalsträger und Merkmale\nStatistische Einheit (Merkmalsträger): Personen oder Objekte, welche Eigenschaften besitzen, die im Rahmen einer Untersuchung von Interesse sind.\nMerkmal: Eigenschaften von Objekten (i.d.R. Personen), i.d.R. erfasst in Variablen.\nMerkmale müssen definiert und operationalisiert werden.\n\nBeispiel: „Mathematische Kompetenz” → operationalisiert als Punktzahl in einem standardisierten Test."
+  },
+  {
+    "objectID": "slides/block1.html#uv-av-statistik-parameter",
+    "href": "slides/block1.html#uv-av-statistik-parameter",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "UV, AV, Statistik, Parameter",
+    "text": "UV, AV, Statistik, Parameter\nUnabhängige Variable (UV): Häufig auch Prädiktor. Wird systematisch variiert bzw. kontrolliert und bzgl. ihres Einflusses auf die AV untersucht (z.B. Förderprogramm ja/nein).\nAbhängige Variable (AV): Häufig auch Kriteriumsvariable. Variable von zentralem Interesse (z.B. Mathematikleistung).\nStatistik: Kennwert zur Beschreibung eines Merkmals der Stichprobe.\nParameter: Kennwert zur Beschreibung eines Merkmals der Population."
+  },
+  {
+    "objectID": "slides/block1.html#variablenarten",
+    "href": "slides/block1.html#variablenarten",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Variablenarten",
+    "text": "Variablenarten\nQualitative vs. quantitative Variable: Qualitative Merkmale lassen nur die Aussage gleich vs. ungleich zu, während bei quantitativen Variablen auch Vergleiche in Bezug auf die Größe möglich sind.\nManifeste Variable: direkt beobachtbare oder messbare Merkmale (z.B. Lösung einer Aufgabe).\nLatente Variable: theoretisch postulierte Merkmale, die durch manifeste Variablen indirekt oder vereinfacht gemessen werden (z.B. Intelligenz, Lernmotivation)."
+  },
+  {
+    "objectID": "slides/block1.html#wiederholung-als-memory",
+    "href": "slides/block1.html#wiederholung-als-memory",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Wiederholung als Memory",
+    "text": "Wiederholung als Memory"
+  },
+  {
+    "objectID": "slides/block1.html#warum-skalenniveaus",
+    "href": "slides/block1.html#warum-skalenniveaus",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Warum Skalenniveaus?",
+    "text": "Warum Skalenniveaus?\nZahlen sind nicht gleich Zahlen:\n\n\nTrikotnummer 10 — ist Spielerin 10 „doppelt so gut” wie Spielerin 5?\nSchulnote 2 — ist der Abstand zur 1 genauso groß wie der von 4 zu 3?\nTestwert 80 Punkte — hier dürfen wir rechnen: Differenzen sind interpretierbar.\n\n\n\nDas Skalenniveau einer Variablen legt fest, welche Aussagen über die Werte bedeutsam sind — und damit, welche Statistiken wir später überhaupt berechnen dürfen."
+  },
+  {
+    "objectID": "slides/block1.html#nominalskala",
+    "href": "slides/block1.html#nominalskala",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Nominalskala",
+    "text": "Nominalskala\nZahlen kennzeichnen nur Gleichheit vs. Verschiedenheit — sie sind reine Etiketten.\n\nGeschlecht (1 = weiblich, 2 = männlich, 3 = divers)\nSchule (1 = Schule A, 2 = Schule B, …)\nGruppenzugehörigkeit (0 = Kontrolle, 1 = Förderung)\n\n\nZulässige Aussage: „Kim und Alex besuchen verschiedene Schulen.”\nNicht zulässig: jede Aussage über Reihenfolge oder Abstände — die Codierung ist beliebig austauschbar."
+  },
+  {
+    "objectID": "slides/block1.html#ordinalskala",
+    "href": "slides/block1.html#ordinalskala",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Ordinalskala",
+    "text": "Ordinalskala\nZahlen bilden zusätzlich eine Rangordnung ab — Abstände sind aber nicht interpretierbar.\n\nSchulnoten (1–6)\nLikert-Antworten („stimme gar nicht zu” … „stimme voll zu”)\nBildungsabschlüsse (Hauptschule &lt; Realschule &lt; Abitur)\n\n\nZulässige Aussage: „Kim hat eine bessere Note als Alex.”\nNicht zulässig: „Der Abstand zwischen Note 1 und 2 ist gleich groß wie zwischen 4 und 5.”"
+  },
+  {
+    "objectID": "slides/block1.html#intervallskala",
+    "href": "slides/block1.html#intervallskala",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Intervallskala",
+    "text": "Intervallskala\nZusätzlich sind Differenzen interpretierbar — gleiche Zahlabstände bedeuten gleiche Merkmalsunterschiede. Es gibt aber keinen natürlichen Nullpunkt.\n\nTemperatur in °C\nstandardisierte Testwerte (z.B. IQ, Kompetenztests)\n\n\nZulässige Aussage: „Kim hat sich um 10 Punkte mehr verbessert als Alex.”\nNicht zulässig: „Kim ist doppelt so kompetent wie Alex” — Verhältnisse sind ohne echten Nullpunkt nicht bedeutsam."
+  },
+  {
+    "objectID": "slides/block1.html#verhältnisskala",
+    "href": "slides/block1.html#verhältnisskala",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Verhältnisskala",
+    "text": "Verhältnisskala\nZusätzlich gibt es einen natürlichen Nullpunkt — auch Verhältnisse sind interpretierbar.\n\nReaktionszeit in Sekunden\nAlter, Körpergröße\nAnzahl Fehltage (genau genommen: Absolutskala — Zählvariablen mit natürlicher Einheit)\n\n\nZulässige Aussage: „Alex hat doppelt so viele Fehltage wie Kim.”"
+  },
+  {
+    "objectID": "slides/block1.html#überblick-welche-aussagen-sind-bedeutsam",
+    "href": "slides/block1.html#überblick-welche-aussagen-sind-bedeutsam",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Überblick: Welche Aussagen sind bedeutsam?",
+    "text": "Überblick: Welche Aussagen sind bedeutsam?\n\n\n\n\n\n\n\n\n\n\nSkalenniveau\ngleich/verschieden\nOrdnung\nDifferenzen\nVerhältnisse\n\n\n\n\nNominal\n✓\n—\n—\n—\n\n\nOrdinal\n✓\n✓\n—\n—\n\n\nIntervall\n✓\n✓\n✓\n—\n\n\nVerhältnis\n✓\n✓\n✓\n✓\n\n\n\n\nIntervall- und verhältnisskalierte Variablen fasst man als metrisch (kardinalskaliert) zusammen.\nMerkregel: Je höher das Niveau, desto mehr Information — und desto mehr dürfen wir rechnen."
+  },
+  {
+    "objectID": "slides/block1.html#skalenniveaus-als-spiel",
+    "href": "slides/block1.html#skalenniveaus-als-spiel",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Skalenniveaus als Spiel",
+    "text": "Skalenniveaus als Spiel"
+  },
+  {
+    "objectID": "slides/block1.html#das-szenario",
+    "href": "slides/block1.html#das-szenario",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Das Szenario",
+    "text": "Das Szenario\nEine (fiktive) Evaluation: 200 Achtklässler:innen aus 8 Schulen, zufällig zugewiesen zu einem zusätzlichen Mathe-Lernförderprogramm oder einer Kontrollgruppe.\n\nMathematikleistung wurde vor und nach dem Programm getestet\nzusätzlich: Lernmotivation, Mathenote, soziale Herkunft, Fehltage\n\n\nDieser Datensatz begleitet uns durch alle vier Blöcke — von der ersten Häufigkeitstabelle (Block 2) bis zum Gruppenvergleich (Block 4)."
+  },
+  {
+    "objectID": "slides/block1.html#die-variablen-und-ihr-skalenniveau",
+    "href": "slides/block1.html#die-variablen-und-ihr-skalenniveau",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Die Variablen — und ihr Skalenniveau?",
+    "text": "Die Variablen — und ihr Skalenniveau?\n\n\n\nVariable\nInhalt\nSkalenniveau?\n\n\n\n\nschule\nSchule A–H\n?\n\n\ngruppe\nFörderung / Kontrolle\n?\n\n\nmotivation\nLernmotivation (1–5, Likert)\n?\n\n\nnote_mathe\nletzte Zeugnisnote (1–6)\n?\n\n\nses\nsoziale Herkunft (niedrig/mittel/hoch)\n?\n\n\nmathe_pre\nTestwert vor dem Programm\n?\n\n\nmathe_post\nTestwert nach dem Programm\n?\n\n\nfehltage\nAnzahl Fehltage\n?\n\n\n\n\nEure Aufgabe: Ordnet jeder Variable ihr Skalenniveau zu — Begründung in einem Satz."
+  },
+  {
+    "objectID": "slides/block1.html#warum-r",
+    "href": "slides/block1.html#warum-r",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Warum R?",
+    "text": "Warum R?\n\n\nkostenlos & Open Source — läuft auf jedem Rechner, auch nach dem Studium\nStandard in der empirischen Bildungs- und Sozialforschung\nreproduzierbar: Ein Skript dokumentiert jeden Analyseschritt — kein Klick geht verloren\nUnser Anspruch: Ihr könnt vorgegebene Skripte ausführen, lesen und anpassen — ihr müsst keine Programme von Grund auf schreiben"
+  },
+  {
+    "objectID": "slides/block1.html#r-und-rstudio",
+    "href": "slides/block1.html#r-und-rstudio",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "R und RStudio",
+    "text": "R und RStudio\nR ist die Sprache — RStudio die Arbeitsumgebung drumherum.\nVier Bereiche in RStudio:\n\n\n\n\n\n\n\nBereich\nFunktion\n\n\n\n\nSkript (oben links)\nHier steht euer Code — speicherbar, wiederverwendbar\n\n\nKonsole (unten links)\nHier wird Code ausgeführt, hier erscheinen Ergebnisse\n\n\nEnvironment (oben rechts)\nWelche Objekte/Daten sind gerade geladen?\n\n\nFiles/Plots/Help (unten rechts)\nDateien, Grafiken, Hilfeseiten"
+  },
+  {
+    "objectID": "slides/block1.html#erste-schritte-r-als-taschenrechner",
+    "href": "slides/block1.html#erste-schritte-r-als-taschenrechner",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Erste Schritte: R als Taschenrechner",
+    "text": "Erste Schritte: R als Taschenrechner\n\n3 + 4\n\n[1] 7\n\n\n\n(12 - 4) / 2\n\n[1] 4\n\n\nMit &lt;- weisen wir Werte einem Objekt zu:\n\npunkte &lt;- c(12, 15, 9, 18, 11)\npunkte\n\n[1] 12 15  9 18 11"
+  },
+  {
+    "objectID": "slides/block1.html#erste-schritte-funktionen",
+    "href": "slides/block1.html#erste-schritte-funktionen",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Erste Schritte: Funktionen",
+    "text": "Erste Schritte: Funktionen\nFunktionen haben die Form name(eingabe):\n\nmean(punkte)   # Mittelwert — mehr dazu in Block 2!\n\n[1] 13\n\n\n\nlength(punkte) # Wie viele Werte?\n\n[1] 5\n\n\n\nmax(punkte)    # Größter Wert\n\n[1] 18\n\n\n\nWas mean() genau berechnet und wann es sinnvoll ist (Stichwort: Skalenniveau!) — das ist Thema von Block 2."
+  },
+  {
+    "objectID": "slides/block1.html#bis-zum-nächsten-block-setup",
+    "href": "slides/block1.html#bis-zum-nächsten-block-setup",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Bis zum nächsten Block: Setup",
+    "text": "Bis zum nächsten Block: Setup\n\nR installieren: cran.r-project.org\nRStudio installieren: posit.co/download/rstudio-desktop\nRStudio öffnen, in die Konsole tippen:\n\n\n1 + 1\n\nWenn 2 erscheint: fertig. Bei Problemen → Forum auf ILIAS, wir lösen das vor Block 2.\n\n\nEine bebilderte Schritt-für-Schritt-Anleitung findet ihr auf der Seminarseite."
+  },
+  {
+    "objectID": "slides/block1.html#übung-1-studienleistung",
+    "href": "slides/block1.html#übung-1-studienleistung",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Übung 1 (Studienleistung)",
+    "text": "Übung 1 (Studienleistung)\nAuf ILIAS bis Mittwoch vor Block 2:\n\nSkalenniveaus: Ordnet den 8 Variablen des lernfoerderung-Datensatzes ihr Skalenniveau zu — mit je einem Satz Begründung.\nReflexion: Welche der drei Behauptungen vom Seminarbeginn hat euch am meisten zum Nachdenken gebracht — und wie müsste eine Untersuchung aussehen (PPDAC!), um sie zu prüfen? (max. ½ Seite)\nSetup-Nachweis: Screenshot eurer RStudio-Oberfläche mit dem Ergebnis von 1 + 1."
+  },
+  {
+    "objectID": "slides/block1.html#ausblick-block-2",
+    "href": "slides/block1.html#ausblick-block-2",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Ausblick: Block 2",
+    "text": "Ausblick: Block 2\nMorgen wird es konkret — wir laden lernfoerderung in R und beschreiben die Daten:\n\nHäufigkeitstabellen und Balkendiagramme\nLagemaße: Modus, Median, Mittelwert\nStreuungsmaße: Spannweite, Varianz, Standardabweichung\nalles direkt in R — Skripte werden gestellt"
+  },
+  {
+    "objectID": "slides/block1.html#literatur",
+    "href": "slides/block1.html#literatur",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Literatur",
+    "text": "Literatur\n\nSpiegelhalter, D. (2019). The Art of Statistics: Learning from Data. — Kap. 1 (Einführung, PPDAC)\nEid, M., Gollwitzer, M. & Schmitt, M. (2017). Statistik und Forschungsmethoden (5. Aufl.). — Kap. 4.1 (Grundbegriffe), Kap. 5.1 (Skalenniveaus)\n\nBeide Texte als Auszüge auf ILIAS — zur Vertiefung, nicht als Pflichtlektüre vor dem Block."
+  },
+  {
+    "objectID": "block1.html#zeitplan",
+    "href": "block1.html#zeitplan",
+    "title": "Block 1",
+    "section": "",
+    "text": "Tag 1 · Fr 03.07. · 11:30–17:30\n\n\n\n\n\n\n\nZeit\nProgrammpunkt\n\n\n\n\n11:30\nBegrüßung & Vorstellung\n\n\n11:50\nSeminarkonzeption: Struktur, Erwartungen & Studienleistung\n\n\n12:20\nInhaltlicher Einstieg: Warum Statistik? · Ziele · PPDAC-Zyklus\n\n\n13:20\nMittagspause\n\n\n14:05\nMethodische Grundbegriffe\n\n\n15:05\nKurze Pause\n\n\n15:15\nMesstheoretische Grundlagen: Messen & Skalenniveaus\n\n\n16:45\nPuffer & Übungsaufgabe (Studienleistung)\n\n\n17:20\nSeminarevaluation\n\n\n17:30\nEnde"
+  },
+  {
+    "objectID": "slides/block1.html",
+    "href": "slides/block1.html",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "",
+    "text": "Warum Statistik? — Aus Daten lernen\nZiele quantitativer Forschung\nDer PPDAC-Zyklus: unser roter Faden\nMethodische Grundbegriffe\nSkalenniveaus\nUnser Datensatz: lernfoerderung\nR & RStudio: Setup und erste Schritte"
+  },
+  {
+    "objectID": "slides/block1.html#kennenlernen-woher-kommen-sie",
+    "href": "slides/block1.html#kennenlernen-woher-kommen-sie",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Kennenlernen: Woher kommen Sie?",
+    "text": "Kennenlernen: Woher kommen Sie?\nBitte einmal kurz aufs Handy: Wort eintragen »"
+  },
+  {
+    "objectID": "slides/block1.html#kennenlernen-was-wissen-sie-bereits-zu-statistik",
+    "href": "slides/block1.html#kennenlernen-was-wissen-sie-bereits-zu-statistik",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Kennenlernen: Was wissen Sie bereits zu Statistik?",
+    "text": "Kennenlernen: Was wissen Sie bereits zu Statistik?"
+  },
+  {
+    "objectID": "slides/block1.html#kennenlernen-statistik-in-einem-wort",
+    "href": "slides/block1.html#kennenlernen-statistik-in-einem-wort",
+    "title": "Block 1 — Statistisches Denken & Werkzeuge",
+    "section": "Kennenlernen: Statistik in einem Wort",
+    "text": "Kennenlernen: Statistik in einem Wort"
+  },
+  {
+    "objectID": "block1.html#kennenlernen",
+    "href": "block1.html#kennenlernen",
+    "title": "Block 1",
+    "section": "Kennenlernen",
+    "text": "Kennenlernen\nWort eintragen »"
+  }
+]

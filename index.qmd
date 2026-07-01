@@ -1,0 +1,62 @@
+---
+title: "Methoden der standardisierten Sozialforschung"
+author:
+  - name: Ben Ulmer
+    affiliation: Universität Bonn
+lang: de
+date: today
+date-format: "D MMMM, YYYY"
+abstract: |
+  Auf dieser Website lassen sich die zentralen Materialen für das Blockseminar
+  "Methoden der standardisierten Sozialforschung" finden (BA Pädagogik, KIT,
+  Sommersemester 2026)
+---
+
+## Zielsetzung und thematische Schwerpunkte 
+
+- Das Seminar "Methoden der standardisierten Sozialforschung" dient der Einführung in quantitative Verfahren und Forschungsmethoden. 
+- Als Einführungskurs  in die Statistik werden methodische Grundlagen vermittelt (z.B. methodische Grundbegriffe und messtheoretische Grundlagen) und Verfahren der deskriptiven  Statistik vorgestellt. 
+- Neben inhaltlichen Inputs wird die kostenlose  Statistiksoftware R und RStudio eingeführt. Die Studierenden lernen grundlegende Funktionen von R und wenden die gelernten Inhalte in Übungsaufgaben an.
+- Ziel des Seminars ist es, dass die Studierenden zum einen grundlegende Statistikenntnisse erwerben und methodische Grundlagen sowie Verfahren der deskriptiven Statisitk kennen, und zum anderen Grundlagen in der Anwendung von R in diesen Themengebieten erlernen.
+
+
+## Termine
+
+Das Seminar findet als Blockveranstaltung an zwei Wochenenden statt:
+
+| Termin              | Datum            |
+|---------------------|------------------|
+| Erstes Wochenende   | 03./04.07.       |
+| Zweites Wochenende  | 10./11.07.       |
+
+## Inhalte
+
+In dem Seminar werden im Kern 3 größere Themen behandelt:
+
+1. Methodische Grundlagen (u.a. Grundbegriffe, Messen, Skalenniveaus)
+2. Deskriptive Statistik (u.a. Mittelwerte, Standardabweichung, Korrelation)
+3. Einführung in R Studio (u.a. Funktionen, Einlesen von Daten, Anwendung der 
+Inhalte)
+
+## Studienleistung
+
+Die Studienleistung bilden die Übungsaufgaben, die für jeden Block konzipiert wurden.
+Die Übungsaufgaben bilden eine Mischung aus Multiple-Choice und offenen Aufgaben und beziehen sich zum einen auf die Inhalte (Methodische Grundlagen und Deskriptive Statistik) als auch auf Kenntnisse in R (Anwendungsaufgaben).
+Die Bestehensquote liegt bei 50%.
+
+Die Bearbeitung und Abgabe der *für die Studienleistung relevanten Übungsaufgaben* erfolgt über **ILIAS**.
+
+Abgabefrist ist der **31.07.2026**
+
+::: {.callout-tip}
+## Hinweis
+Empfehlenswert ist eine zeitige Bearbeitung der Übungsaufgaben nach der Sitzung.
+:::
+
+## Seminarliteratur
+
+1. Eid, M., Gollwitzer, M. & Schmitt, M. (2017). *Statistik und Forschungsmethoden* (5., korrigierte Aufl.). Weinheim: Beltz.
+
+2. Spiegelhalter, D. (2019). *The Art of Statistics: Learning from Data*. London: Pelican Books.
+
+3. Döring, N. (2023). *Forschungsmethoden und Evaluation in den Sozial- und Humanwissenschaften* (6., vollständig überarbeitete, aktualisierte und erweiterte Aufl.). Berlin: Springer. <https://doi.org/10.1007/978-3-662-64762-2>

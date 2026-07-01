@@ -1,0 +1,15 @@
+---
+title: "Block 3"
+---
+
+## Überblick
+
+Platzhalter für die inhaltliche Einführung dieses Blocks.
+
+## Themen
+
+Platzhalter für die behandelten Themen.
+
+## Literatur
+
+Platzhalter für blockspezifische Literaturhinweise.

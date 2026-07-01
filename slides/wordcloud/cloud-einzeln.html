@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Wordcloud</title>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    overflow: hidden;
+  }
+  .panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    padding: 12px;
+  }
+  .panel h2 {
+    margin: 0 0 8px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: clamp(1rem, 3vw, 1.8rem);
+    color: #053D73;
+    text-align: center;
+  }
+  .panel canvas {
+    flex: 1;
+    width: 100%;
+    min-height: 0;
+  }
+  .missing {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #b00020;
+    text-align: center;
+    padding: 24px;
+  }
+</style>
+</head>
+<body>
+  <div class="panel" id="panel">
+    <h2 id="heading"></h2>
+    <canvas id="canvas"></canvas>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/wordcloud@1.2.2/src/wordcloud2.js"></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+    import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAcGXtZFGmVJcjj6GJBHdDTfgigws69jL8",
+      authDomain: "seminarkit-9bc27.firebaseapp.com",
+      databaseURL: "https://seminarkit-9bc27-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "seminarkit-9bc27",
+      storageBucket: "seminarkit-9bc27.firebasestorage.app",
+      messagingSenderId: "867685499468",
+      appId: "1:867685499468:web:4cb4ca46d171937ec52ae9"
+    };
+
+    const LABELS = {
+      herkunft: "Woher kommen Sie?",
+      vorwissen: "Wie schätzen Sie Ihr Vorwissen zu Statistik ein?",
+      statistikwort: "Statistik in einem Wort",
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    const frage = params.get("frage");
+
+    if (!frage || !LABELS[frage]) {
+      document.getElementById("panel").innerHTML =
+        '<div class="missing">Ungültiger oder fehlender Parameter.<br>Nutze z.B. <code>?frage=herkunft</code>, <code>?frage=vorwissen</code> oder <code>?frage=statistikwort</code>.</div>';
+    } else {
+      document.getElementById("heading").textContent = LABELS[frage];
+
+      const app = initializeApp(firebaseConfig);
+      const db = getDatabase(app);
+
+      const COLORS = ["#07529A", "#053D73", "#D8E6F4", "#EAB90C"];
+      const canvas = document.getElementById("canvas");
+      let words = [];
+
+      function resizeCanvas() {
+        const rect = canvas.getBoundingClientRect();
+        canvas.width = Math.max(Math.round(rect.width), 50);
+        canvas.height = Math.max(Math.round(rect.height), 50);
+      }
+
+      function renderWordCloud() {
+        if (!words.length) {
+          const ctx = canvas.getContext("2d");
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          return;
+        }
+
+        const counts = {};
+        for (const w of words) {
+          const k = String(w).trim().toLowerCase();
+          if (!k) continue;
+          counts[k] = (counts[k] || 0) + 1;
+        }
+
+        const list = Object.entries(counts);
+        const maxCount = Math.max(...list.map((entry) => entry[1]));
+
+        WordCloud(canvas, {
+          list: list,
+          gridSize: Math.round((16 * canvas.width) / 1024),
+          weightFactor: (size) => Math.max((size / maxCount) * (canvas.width / 10), 10),
+          fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
+          color: () => COLORS[Math.floor(Math.random() * COLORS.length)],
+          backgroundColor: "transparent",
+          rotateRatio: 0.2,
+          rotationSteps: 2,
+          drawOutOfBound: false,
+          shrinkToFit: true,
+        });
+      }
+
+      function renderBarChart() {
+        const rect = canvas.getBoundingClientRect();
+        const dpr = window.devicePixelRatio || 1;
+        const W = Math.max(Math.round(rect.width), 50);
+        const H = Math.max(Math.round(rect.height), 50);
+        canvas.width = W * dpr;
+        canvas.height = H * dpr;
+
+        const ctx = canvas.getContext("2d");
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.clearRect(0, 0, W, H);
+
+        const counts = new Array(10).fill(0);
+        for (const v of words) {
+          const n = Math.round(Number(v));
+          if (Number.isInteger(n) && n >= 1 && n <= 10) counts[n - 1]++;
+        }
+
+        const maxCount = Math.max(...counts, 1);
+        const fontSize = 11;
+        ctx.font = `${fontSize}px -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif`;
+
+        const labelGap = 6;
+        const marginLeft = Math.max(26, W * 0.05);
+        const marginBottom = Math.max(34, H * 0.13);
+        const marginTop = 10;
+        const marginRight = 10;
+        const chartW = W - marginLeft - marginRight;
+        const chartH = H - marginTop - marginBottom;
+
+        const gridStep = Math.max(1, Math.ceil(maxCount / 5));
+        ctx.strokeStyle = "#e0e0e0";
+        ctx.lineWidth = 1;
+        ctx.fillStyle = "#053D73";
+        ctx.textAlign = "right";
+        ctx.textBaseline = "middle";
+        for (let value = 0; value <= maxCount; value += gridStep) {
+          const y = marginTop + chartH - chartH * (value / maxCount);
+          ctx.beginPath();
+          ctx.moveTo(marginLeft, y);
+          ctx.lineTo(marginLeft + chartW, y);
+          ctx.stroke();
+          ctx.fillText(String(value), marginLeft - 6, y);
+        }
+
+        const slot = chartW / 10;
+        const barGap = slot * 0.25;
+        const barWidth = slot - barGap;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "top";
+        for (let i = 0; i < 10; i++) {
+          const count = counts[i];
+          const barHeight = (count / maxCount) * chartH;
+          const x = marginLeft + i * slot + barGap / 2;
+          const y = marginTop + chartH - barHeight;
+          ctx.fillStyle = "#07529A";
+          ctx.fillRect(x, y, barWidth, barHeight);
+          ctx.fillStyle = "#053D73";
+          ctx.fillText(String(i + 1), x + barWidth / 2, marginTop + chartH + labelGap);
+        }
+      }
+
+      function renderCloud() {
+        if (frage === "vorwissen") {
+          renderBarChart();
+        } else {
+          resizeCanvas();
+          renderWordCloud();
+        }
+      }
+
+      window.addEventListener("resize", renderCloud);
+
+      onValue(ref(db, `words/${frage}`), (snapshot) => {
+        const data = snapshot.val() || {};
+        words = Object.values(data);
+        renderCloud();
+      });
+    }
+  </script>
+</body>
+</html>

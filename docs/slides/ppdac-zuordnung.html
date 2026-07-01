@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PPDAC-Zuordnung</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    color: #1f1e1c; background: #ffffff; padding: 18px; line-height: 1.5;
+  }
+  h1 { font-size: 1.25rem; color: #534AB7; margin-bottom: 4px; }
+  .intro { color: #5f5e5a; font-size: 0.9rem; margin-bottom: 8px; }
+  .phases-legend { font-size: 0.82rem; color: #777; margin-bottom: 18px; }
+  .card {
+    border: 1px solid #e7e5dd; border-radius: 12px; padding: 14px 16px;
+    margin-bottom: 14px; background: #fafafa;
+  }
+  .statement { font-weight: 600; font-size: 1.0rem; margin-bottom: 10px; }
+  .phases { display: flex; gap: 7px; flex-wrap: wrap; }
+  .phase-btn {
+    padding: 8px 12px; border: 2px solid #d9d7cf; border-radius: 8px;
+    background: #fff; font-size: 0.86rem; font-weight: 600; cursor: pointer;
+    transition: all .12s; color: #444;
+  }
+  .phase-btn:hover:not(:disabled) { border-color: #534AB7; background: #f3f1ff; }
+  .phase-btn.selected { border-color: #534AB7; background: #534AB7; color: #fff; }
+  .phase-btn:disabled { cursor: default; }
+  .phase-btn.correct { border-color: #2e7d32; background: #2e7d32; color: #fff; }
+  .phase-btn.wrong { border-color: #c62828; background: #c62828; color: #fff; }
+  .feedback {
+    margin-top: 10px; font-size: 0.86rem; padding: 8px 10px; border-radius: 7px;
+    display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.ok { background: #e8f5e9; color: #1b5e20; }
+  .feedback.no { background: #fdecea; color: #8b1a12; }
+  .bar { display: flex; align-items: center; gap: 14px; margin-top: 8px; flex-wrap: wrap; }
+  .btn {
+    border: none; border-radius: 8px; padding: 10px 18px; font-weight: 700;
+    font-size: 0.9rem; cursor: pointer;
+  }
+  .btn-check { background: #534AB7; color: #fff; }
+  .btn-check:hover { background: #43399c; }
+  .btn-reset { background: #ececec; color: #444; }
+  .btn-reset:hover { background: #ddd; }
+  #score { font-size: 0.95rem; font-weight: 700; color: #534AB7; }
+</style>
+</head>
+<body>
+
+<p class="phases-legend">Phasen: <strong>P</strong>roblem · <strong>P</strong>lan · <strong>D</strong>ata · <strong>A</strong>nalysis · <strong>C</strong>onclusion</p>
+
+<div id="quiz"></div>
+
+<div class="bar">
+  <button id="checkBtn" class="btn btn-check">Auswerten</button>
+  <button id="resetBtn" class="btn btn-reset">Zurücksetzen</button>
+  <span id="score"></span>
+</div>
+
+<script>
+  const PHASES = ["Problem", "Plan", "Data", "Analysis", "Conclusion"];
+  const ITEMS = [
+    { text: "Welche Mathematikkompetenzen erreichen Schüler:innen am Ende der Sekundarstufe I?",
+      correct: "Problem",
+      why: "Die Forschungsfrage steht am Anfang – sie definiert das Problem." },
+    { text: "Für die Erfassung der Matheleistung wird ein standardisierter Kompetenztest entwickelt.",
+      correct: "Plan",
+      why: "Untersuchungsdesign: Das Erhebungsinstrument wird vorab entwickelt und festgelegt." },
+    { text: "An rund 1.500 Schulen werden Test und Fragebogen bearbeitet.",
+      correct: "Data",
+      why: "Die eigentliche Datenerhebung findet statt." },
+    { text: "Für die Testwerte werden Mittelwert, Streuung und Verteilung berechnet.",
+      correct: "Analysis",
+      why: "Die erhobenen Daten werden ausgewertet (deskriptive Kennwerte)." },
+    { text: "Im Mittel erreichen die Neuntklässler:innen mittlere Kompetenzwerte; dieser Befund wird auf die Population übertragen.",
+      correct: "Conclusion",
+      why: "Schlussfolgerung: Verallgemeinerung der Ergebnisse auf die Population." },
+  ];
+
+  function shuffle(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+  }
+  shuffle(ITEMS);
+
+  const quiz = document.getElementById("quiz");
+  const answers = new Array(ITEMS.length).fill(null);
+  let checked = false;
+
+  function render() {
+    quiz.innerHTML = "";
+    ITEMS.forEach((it, i) => {
+      const card = document.createElement("div");
+      card.className = "card";
+      const btns = PHASES.map(ph => {
+        let cls = "phase-btn";
+        if (answers[i] === ph) cls += " selected";
+        if (checked && answers[i] === ph) cls += (ph === it.correct) ? " correct" : " wrong";
+        return `<button class="${cls}" data-i="${i}" data-ph="${ph}" ${checked ? "disabled" : ""}>${ph}</button>`;
+      }).join("");
+      const fbClass = checked ? (answers[i] === it.correct ? "feedback ok show" : "feedback no show") : "feedback";
+      const fbText = checked
+        ? (answers[i] === it.correct ? "✓ Richtig. " + it.why
+                                     : "✗ Richtig wäre: " + it.correct + ". " + it.why)
+        : "";
+      card.innerHTML = `<div class="statement">${it.text}</div>
+                        <div class="phases">${btns}</div>
+                        <div class="${fbClass}">${fbText}</div>`;
+      quiz.appendChild(card);
+    });
+  }
+
+  quiz.addEventListener("click", (e) => {
+    const b = e.target.closest(".phase-btn");
+    if (!b || checked) return;
+    answers[+b.dataset.i] = b.dataset.ph;
+    render();
+  });
+
+  document.getElementById("checkBtn").addEventListener("click", () => {
+    if (answers.includes(null)) {
+      document.getElementById("score").textContent = "Bitte zuerst alle Aussagen zuordnen.";
+      return;
+    }
+    checked = true;
+    render();
+    const n = ITEMS.filter((it, i) => answers[i] === it.correct).length;
+    document.getElementById("score").textContent = `Ergebnis: ${n} / ${ITEMS.length} richtig`;
+  });
+
+  document.getElementById("resetBtn").addEventListener("click", () => {
+    shuffle(ITEMS);
+    answers.fill(null);
+    checked = false;
+    document.getElementById("score").textContent = "";
+    render();
+  });
+
+  render();
+</script>
+</body>
+</html>

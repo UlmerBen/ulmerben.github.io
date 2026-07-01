@@ -1,0 +1,100 @@
+---
+title: "Block 1"
+abstract: In dem ersten Block lernen Sie Ziele quantativer Forschungsmethoden kennen und erwerben grundlegende Kenntnisse methodischer Grundbegriffe und messtheoretischer Ideen
+---
+
+## Zeitplan
+
+Tag 1 · Fr 03.07. · 11:30–17:30
+
+| Zeit  | Programmpunkt                                                              |
+|-------|---------------------------------------------------------------------------|
+| 11:30 | Begrüßung & Vorstellung                                                    |
+| 11:50 | Seminarkonzeption: Struktur, Erwartungen & Studienleistung                |
+| 12:20 | Inhaltlicher Einstieg: Warum Statistik? · Ziele · PPDAC-Zyklus            |
+| 13:20 | *Mittagspause*                                                            |
+| 14:05 | Methodische Grundbegriffe                       |
+| 15:05 | *Kurze Pause*                                                             |
+| 15:15 | Messtheoretische Grundlagen: Messen & Skalenniveaus
+| 16:45 | Puffer & Übungsaufgabe (Studienleistung)                                  |
+| 17:20 | Seminarevaluation                                                         |
+| 17:30 | *Ende*                                                                    |
+
+## Folien
+
+[Folien im Vollbild öffnen](slides/folien-viewer.html?file=Folien_Block1.pdf){target="_blank"}
+
+```{=html}
+<iframe class="responsive-iframe"
+        src="slides/folien-viewer.html?file=Folien_Block1.pdf"
+        title="Folien Block 1"
+        style="width:100%; aspect-ratio:16/9; min-height:520px; border:1px solid #e3e3e3; border-radius:10px;">
+</iframe>
+```
+
+## Kennenlernen
+
+[Wort eintragen »](slides/wordcloud/submit.html){target="_blank"}
+
+```{=html}
+<iframe src="slides/wordcloud/cloud-einzeln.html?frage=herkunft"
+        title="Wordcloud: Woher kommen Sie?"
+        style="width:100%; height:420px; border:1px solid #e3e3e3; border-radius:10px; margin-bottom:16px;">
+</iframe>
+
+<iframe src="slides/wordcloud/cloud-einzeln.html?frage=vorwissen"
+        title="Vorwissen-Verteilung: Wie schätzen Sie Ihr Vorwissen zu Statistik ein?"
+        style="width:100%; height:420px; border:1px solid #e3e3e3; border-radius:10px; margin-bottom:16px;">
+</iframe>
+
+<iframe src="slides/wordcloud/cloud-einzeln.html?frage=statistikwort"
+        title="Wordcloud: Statistik in einem Wort"
+        style="width:100%; height:420px; border:1px solid #e3e3e3; border-radius:10px; margin-bottom:16px;">
+</iframe>
+```
+
+# Warum Statistik?
+
+```{=html}
+<div class="strawpoll-embed" id="strawpoll_XmZRQWKNmgd" style="height: 516px; max-width: 640px; width: 100%; margin: 0 auto 24px; display: flex; flex-direction: column;"><iframe title="StrawPoll Embed" id="strawpoll_iframe_XmZRQWKNmgd" src="https://strawpoll.com/embed/XmZRQWKNmgd" style="position: static; visibility: visible; display: block; width: 100%; flex-grow: 1;" frameborder="0" allowfullscreen allowtransparency>Loading...</iframe></div>
+
+<div class="strawpoll-embed" id="strawpoll_e7ZJaMKl5g3" style="height: 516px; max-width: 640px; width: 100%; margin: 0 auto 24px; display: flex; flex-direction: column;"><iframe title="StrawPoll Embed" id="strawpoll_iframe_e7ZJaMKl5g3" src="https://strawpoll.com/embed/e7ZJaMKl5g3" style="position: static; visibility: visible; display: block; width: 100%; flex-grow: 1;" frameborder="0" allowfullscreen allowtransparency>Loading...</iframe></div>
+
+<div class="strawpoll-embed" id="strawpoll_e6Z2AEqoqgN" style="height: 516px; max-width: 640px; width: 100%; margin: 0 auto 24px; display: flex; flex-direction: column;"><iframe title="StrawPoll Embed" id="strawpoll_iframe_e6Z2AEqoqgN" src="https://strawpoll.com/embed/e6Z2AEqoqgN" style="position: static; visibility: visible; display: block; width: 100%; flex-grow: 1;" frameborder="0" allowfullscreen allowtransparency>Loading...</iframe></div>
+
+<script async src="https://cdn.strawpoll.com/dist/widgets.js" charset="utf-8"></script>
+```
+
+## Übungsaufgaben
+
+### Zuordnung zum PPDAC-Zyklus
+
+Ordne jede Aussage der passenden Phase des Forschungszyklus zu (Problem – Plan – Data – Analysis – Conclusion) und werte selbst aus.
+
+```{=html}
+<iframe src="slides/ppdac-zuordnung.html"
+        title="PPDAC-Zuordnung"
+        style="width:100%; height:760px; border:1px solid #e3e3e3; border-radius:10px;"
+        loading="lazy">
+</iframe>
+```
+
+# Memory zu methodischen Grundbegriffen
+
+```{=html}
+<iframe src="slides/memory-grundbegriffe.html"
+        title="Memory: Methodische Grundbegriffe"
+        style="width:100%; height:700px; border:1px solid #e3e3e3; border-radius:10px;"
+        loading="lazy">
+</iframe>
+```
+
+# Spiel zu Skalenniveaus
+
+```{=html}
+<iframe src="slides/skalenniveau-spiel.html"
+        title="Skalenniveaus erkennen"
+        style="width:100%; height:900px; border:1px solid #e3e3e3; border-radius:10px;"
+        loading="lazy">
+</iframe>
+```

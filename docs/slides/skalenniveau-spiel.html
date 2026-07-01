@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <title>Skalenniveaus erkennen</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    * { -webkit-tap-highlight-color: transparent; }
+
+    :root {
+      --brand:      #07529A;   /* Uni-Bonn-Blau */
+      --brand-dark: #053D73;
+      --gold:       #C8941A;   /* gedämpftes Gold, sparsam */
+      --ink:        #1d2733;
+      --muted:      #5b6b7d;
+      --line:       #dbe1e9;
+      --panel:      #ffffff;
+      --bg:         #eef1f5;
+
+      /* vier Messniveaus – gedämpft, Bonn-nah */
+      --nominal:     #1F6FB2;
+      --ordinal:     #C28A1E;
+      --intervall:   #5A6B7B;
+      --verhaeltnis: #3F7D6A;
+    }
+
+    body {
+      font-family: 'Calibri', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      background: var(--bg); color: var(--ink);
+      min-height: 100vh; min-height: 100dvh;
+      display: flex; justify-content: center; align-items: flex-start;
+      padding: 30px 16px max(56px, calc(env(safe-area-inset-bottom) + 28px));
+      padding-left: max(16px, env(safe-area-inset-left));
+      padding-right: max(16px, env(safe-area-inset-right));
+      overflow-x: hidden; overscroll-behavior: none;
+    }
+    .screen { width: 100%; max-width: 860px; }
+
+    .panel {
+      background: var(--panel); border: 1px solid var(--line);
+      border-top: 4px solid var(--brand);
+      border-radius: 12px; padding: 34px;
+      box-shadow: 0 10px 30px rgba(5,40,90,0.08);
+    }
+
+    /* ── START (schlicht, Uni-Bonn) ───────────────────────── */
+    .start-header { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 6px; }
+    .start-title { font-size: 1.85rem; font-weight: 800; color: var(--brand-dark); letter-spacing: .005em; }
+    .start-tag { font-size: 0.72rem; color: var(--muted); font-weight: 700;
+                 border: 1px solid var(--line); padding: 3px 9px; border-radius: 5px; white-space: nowrap; }
+    .start-sub { font-size: 0.95rem; color: var(--muted); margin-bottom: 22px; line-height: 1.55; }
+
+    .recap { list-style: none; display: flex; flex-direction: column; gap: 10px;
+             border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+             padding: 18px 0; margin-bottom: 20px; }
+    .recap li { font-size: 0.9rem; color: var(--ink); display: flex; align-items: baseline; gap: 10px; line-height: 1.4; }
+    .recap .chip { width: 13px; height: 13px; border-radius: 3px; flex-shrink: 0; position: relative; top: 1px; }
+    .recap .chip.nominal{background:var(--nominal);} .recap .chip.ordinal{background:var(--ordinal);}
+    .recap .chip.intervall{background:var(--intervall);} .recap .chip.verhaeltnis{background:var(--verhaeltnis);}
+    .recap b { color: var(--brand-dark); }
+    .recap i { color: var(--muted); font-style: italic; }
+
+    .howto { display: flex; flex-direction: column; gap: 7px; margin-bottom: 20px; }
+    .howto-step { font-size: 0.85rem; color: #3b4a5a; line-height: 1.45; }
+    .howto-step b { color: var(--brand); }
+
+    /* Highscore-Zeile (schlicht) */
+    .highscore-line {
+      font-size: 0.82rem; color: var(--muted); margin-bottom: 22px;
+      display: flex; align-items: center; gap: 7px;
+    }
+    .highscore-line b { color: var(--brand-dark); }
+
+    .btn-primary {
+      display: block; width: 100%; padding: 14px;
+      background: var(--brand); color: #fff; border: none; border-radius: 8px;
+      font-size: 1rem; font-weight: 800; cursor: pointer; letter-spacing: 0.03em;
+      transition: background 0.15s; touch-action: manipulation;
+    }
+    .btn-primary:hover { background: var(--brand-dark); }
+    .btn-primary:active { transform: translateY(1px); }
+
+    /* ── GAME ─────────────────────────────────────────────── */
+    #screen-game { display: flex; flex-direction: column; }
+    .game-wrapper { border: 1px solid var(--brand-dark); border-radius: 12px; overflow: hidden;
+                    box-shadow: 0 10px 30px rgba(5,40,90,0.18); }
+
+    .hud { background: var(--brand-dark); padding: 10px 16px; display: flex; align-items: center; }
+    .hud-item { display: flex; flex-direction: column; align-items: center; padding: 0 14px;
+                border-right: 1px solid rgba(255,255,255,0.14); }
+    .hud-item:first-child { padding-left: 0; }
+    .hud-label { font-size: 0.58rem; font-weight: 700; color: rgba(255,255,255,0.7);
+                 text-transform: uppercase; letter-spacing: 0.09em; }
+    .hud-value { font-size: 1.4rem; font-weight: 800; color: #fff; line-height: 1.05; }
+    .hud-spacer { flex: 1; }
+    #btn-pause { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.22);
+                 border-radius: 7px; color: #fff; font-size: 1.2rem; padding: 6px 12px; cursor: pointer;
+                 line-height: 1; touch-action: manipulation; }
+    #btn-pause:active { background: rgba(255,255,255,0.25); }
+
+    .game-area { background: linear-gradient(180deg, #e4ebf3 0%, #eef3f8 60%, #e7edf4 100%);
+                 position: relative; height: 400px; overflow: hidden; }
+
+    .tile { position: absolute; left: 50%; transform: translateX(-50%);
+            background: #fff; border: 1.5px solid var(--brand); border-top: 4px solid var(--brand);
+            border-radius: 10px; box-shadow: 0 4px 14px rgba(5,40,90,0.18);
+            padding: 15px 30px; cursor: grab; user-select: none; -webkit-user-select: none;
+            text-align: center; min-width: 200px; max-width: 300px; z-index: 5; touch-action: none; }
+    .tile:active { cursor: grabbing; }
+    .tile-label { font-size: 1.18rem; font-weight: 800; color: var(--brand-dark); }
+    .tile-hint { font-size: 0.66rem; color: rgba(29,39,51,0.42); margin-top: 5px; }
+
+    .star-pop-wrapper { position: absolute; left: 50%; transform: translateX(-50%); pointer-events: none; z-index: 25; }
+    .star-pop { font-size: 3.2rem; display: block; animation: starAnim 0.85s ease-out forwards; }
+    @keyframes starAnim {
+      0%{opacity:0;transform:scale(0.2) translateY(0);}
+      25%{opacity:1;transform:scale(1.5) translateY(-10px);}
+      55%{opacity:1;transform:scale(1.1) translateY(-36px);}
+      100%{opacity:0;transform:scale(0.9) translateY(-78px);}
+    }
+
+    .fall-progress { position: absolute; top: 0; left: 0; height: 7px; width: 100%;
+                     background: var(--verhaeltnis); transition: width 0.08s linear, background-color 0.5s ease; z-index: 6; }
+
+    .containers { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; background: var(--brand-dark); }
+    .container { padding: 16px 10px 13px; text-align: center; cursor: pointer;
+                 border-top: 3px solid rgba(255,255,255,0.0); touch-action: manipulation;
+                 transition: transform 0.1s, filter 0.12s; position: relative; }
+    .container:active { transform: translateY(2px); }
+    .container.dragover { filter: brightness(1.15) saturate(1.15); transform: translateY(-3px); }
+    .container.nominal{background:var(--nominal);} .container.ordinal{background:var(--ordinal);}
+    .container.intervall{background:var(--intervall);} .container.verhaeltnis{background:var(--verhaeltnis);}
+    .container-icon { font-size: 1.7rem; display: block; margin-bottom: 5px; line-height: 1; }
+    .container-label { font-size: 0.9rem; font-weight: 800; color: #fff; line-height: 1.15;
+                       text-shadow: 0 1px 2px rgba(0,0,0,0.25); }
+    .container-sub { font-size: 0.65rem; color: rgba(255,255,255,0.82); margin-top: 4px; line-height: 1.3; }
+    .container-key { font-size: 0.6rem; font-weight: 700; color: rgba(255,255,255,0.55);
+                     letter-spacing: 0.05em; margin-top: 5px; }
+    @media (hover: hover) { .container:hover { filter: brightness(1.07); } }
+
+    /* ── FEEDBACK (automatisch, kein Klick) ───────────────── */
+    .feedback-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+                        z-index: 20; background: rgba(225,232,242,0.55); backdrop-filter: blur(2px); }
+    .feedback-toast { background: #fff; border: 1px solid var(--line); border-left: 5px solid var(--verhaeltnis);
+                      border-radius: 12px; padding: 18px 24px; box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+                      max-width: 440px; width: 92%; text-align: left; animation: toastIn 0.18s ease-out; }
+    .feedback-toast.wrong { border-left-color: #c0392b; }
+    .feedback-head { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
+    .feedback-icon { font-size: 1.3rem; line-height: 1; }
+    .feedback-title { font-size: 0.98rem; font-weight: 800; }
+    .feedback-title.ok { color: #2f7d52; } .feedback-title.fail { color: #c0392b; }
+    .feedback-text { font-size: 0.85rem; color: #45556a; line-height: 1.5; }
+    @keyframes toastIn { from{opacity:0;transform:translateY(-8px);} to{opacity:1;transform:translateY(0);} }
+
+    .pause-overlay { position: absolute; inset: 0; background: rgba(225,232,242,0.82);
+                     display: flex; align-items: center; justify-content: center; z-index: 15;
+                     backdrop-filter: blur(4px); cursor: pointer; }
+    .pause-box { text-align: center; pointer-events: none; }
+    .pause-icon { font-size: 2.8rem; margin-bottom: 6px; }
+    .pause-text { font-size: 1.5rem; font-weight: 800; color: var(--brand-dark); letter-spacing: 0.05em; }
+    .pause-sub { font-size: 0.82rem; color: var(--muted); margin-top: 6px; }
+
+    /* ── ERGEBNISSE ───────────────────────────────────────── */
+    .result-heading { font-size: 1.5rem; font-weight: 800; color: var(--brand-dark); margin-bottom: 4px; }
+    .result-score { font-size: 0.95rem; color: var(--muted); margin-bottom: 10px; }
+    .result-score strong { color: var(--brand); }
+
+    /* Sterne pro Level (schlicht) */
+    .stars-row { font-size: 1.7rem; letter-spacing: 3px; margin-bottom: 18px; line-height: 1; color: var(--gold); }
+    .stars-row .empty { color: var(--line); }
+
+    .summary-table { width: 100%; border-collapse: collapse; margin-bottom: 24px; font-size: 0.82rem; }
+    .summary-table th { text-align: left; padding: 9px 12px; background: var(--brand); color: #fff;
+                        font-size: 0.64rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; }
+    .summary-table th:first-child { border-radius: 6px 0 0 6px; }
+    .summary-table th:last-child { border-radius: 0 6px 6px 0; }
+    .summary-table td { padding: 9px 12px; border-bottom: 1px solid var(--line); vertical-align: top; color: #3b4a5a; }
+    .summary-table tr:last-child td { border-bottom: none; }
+    .row-ok { background: #f1f7f3; } .row-fail { background: #fbf0ee; }
+    .badge { display: inline-block; padding: 3px 9px; border-radius: 100px; font-size: 0.64rem;
+             font-weight: 700; text-transform: uppercase; white-space: nowrap; color: #fff; }
+    .badge.nominal{background:var(--nominal);} .badge.ordinal{background:var(--ordinal);}
+    .badge.intervall{background:var(--intervall);} .badge.verhaeltnis{background:var(--verhaeltnis);}
+    .badge.missed{background:#8696a6;}
+    .total-score-big { font-size: 4.2rem; font-weight: 800; text-align: center; margin: 14px 0 2px;
+                       line-height: 1; color: var(--brand-dark); }
+    .total-score-label { text-align: center; color: var(--muted); font-size: 0.88rem; margin-bottom: 8px; }
+
+    /* Sterne-Übersicht über alle Level (Final) */
+    .level-stars-summary { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px 22px; margin-bottom: 20px; }
+    .lvl-star-item { text-align: center; }
+    .lvl-star-item span { font-size: 0.62rem; color: var(--muted); display: block; margin-bottom: 2px;
+                          text-transform: uppercase; letter-spacing: 0.05em; }
+    .lvl-star-item .stars { font-size: 1.05rem; letter-spacing: 1px; color: var(--gold); }
+    .lvl-star-item .stars .empty { color: var(--line); }
+
+    .highscore-banner { background: #eef6ef; border: 1px solid #cfe3d4; border-left: 4px solid var(--verhaeltnis);
+                        border-radius: 10px; padding: 11px 16px; margin-bottom: 18px; text-align: center;
+                        font-size: 0.88rem; font-weight: 700; color: #2f7d52; }
+
+    .encouragement { background: #f6f9fc; border: 1px solid var(--line); border-left: 4px solid var(--gold);
+                     border-radius: 10px; padding: 15px 18px; margin-bottom: 24px;
+                     font-size: 0.9rem; color: #3b4a5a; line-height: 1.55; }
+
+    /* ── REKORDLISTE ──────────────────────────────────────── */
+    .lb-section { border-top: 1px solid var(--line); padding-top: 20px; margin-bottom: 24px; }
+    .lb-entry { display: flex; gap: 8px; margin-bottom: 8px; }
+    .lb-entry input { flex: 1; min-width: 0; padding: 11px 13px; border: 1px solid var(--line);
+                      border-radius: 8px; font-size: 0.92rem; font-family: inherit; color: var(--ink); background: #fff; }
+    .lb-entry input:focus { outline: none; border-color: var(--brand); }
+    .btn-save { padding: 11px 18px; background: var(--brand); color: #fff; border: none; border-radius: 8px;
+                font-size: 0.9rem; font-weight: 800; cursor: pointer; white-space: nowrap; touch-action: manipulation; }
+    .btn-save:hover { background: var(--brand-dark); }
+    .btn-save:disabled { background: #aeb8c4; cursor: default; }
+    .lb-status { font-size: 0.8rem; color: var(--muted); min-height: 18px; margin-bottom: 14px; }
+    .lb-title { font-size: 0.95rem; font-weight: 800; color: var(--brand-dark); margin-bottom: 10px; }
+    .lb-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    .lb-list li { display: flex; align-items: center; gap: 12px; padding: 9px 13px;
+                  background: #f6f9fc; border: 1px solid var(--line); border-radius: 8px; font-size: 0.88rem; }
+    .lb-list li.me { background: #eef6ef; border-color: #cfe3d4; }
+    .lb-rank { font-weight: 800; color: var(--brand); width: 1.6em; flex-shrink: 0; text-align: center; }
+    .lb-rank.gold{color:#C8941A;} .lb-rank.silver{color:#8a96a3;} .lb-rank.bronze{color:#b5763a;}
+    .lb-who { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ink); font-weight: 700; }
+    .lb-score { color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .lb-empty { font-size: 0.84rem; color: var(--muted); padding: 6px 2px; }
+
+    @media (max-width: 820px) { .game-area { height: 350px; } }
+    @media (max-width: 520px) {
+      body { padding: 12px 10px 36px; }
+      .panel { padding: 22px 16px; }
+      .start-title { font-size: 1.4rem; }
+      .start-sub { font-size: 0.83rem; }
+      .recap li { font-size: 0.82rem; } .recap i { display: none; }
+      .howto-step { font-size: 0.78rem; }
+      .hud { padding: 8px 9px; } .hud-item { padding: 0 8px; }
+      .hud-label { font-size: 0.5rem; } .hud-value { font-size: 1rem; }
+      .game-area { height: 280px; }
+      .tile { padding: 12px 16px; min-width: 145px; max-width: 230px; }
+      .tile-label { font-size: 0.96rem; } .tile-hint { font-size: 0.58rem; }
+      .container { padding: 11px 4px 9px; }
+      .container-icon { font-size: 1.35rem; }
+      .container-label { font-size: 0.66rem; }
+      .container-sub, .container-key { display: none; }
+      .feedback-text { font-size: 0.78rem; }
+      .result-heading { font-size: 1.15rem; }
+      .summary-table { font-size: 0.7rem; }
+      .summary-table th, .summary-table td { padding: 7px 7px; }
+      .summary-table th:nth-child(2), .summary-table td:nth-child(2) { display: none; }
+      .total-score-big { font-size: 3.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════ START ════════ -->
+<div id="screen-start" class="screen">
+  <div class="panel">
+    <div class="start-header">
+      <h1 class="start-title">Skalenniveaus erkennen</h1>
+      <span class="start-tag">Block 1 · Messtheoretische Grundlagen</span>
+    </div>
+    <p class="start-sub">Wiederhole spielerisch, was du über die vier Messniveaus gelernt hast: Ordne jede herabfallende Variable dem richtigen Niveau zu.</p>
+
+    <ul class="recap">
+      <li><span class="chip nominal"></span><span><b>Nominal</b> — Kategorien ohne Rangfolge <i>(z.&nbsp;B. Studiengang)</i></span></li>
+      <li><span class="chip ordinal"></span><span><b>Ordinal</b> — Rangfolge, aber ungleiche Abstände <i>(z.&nbsp;B. Schulnote)</i></span></li>
+      <li><span class="chip intervall"></span><span><b>Intervall</b> — gleiche Abstände, <em>kein</em> echter Nullpunkt <i>(z.&nbsp;B. IQ, Kalenderjahr)</i></span></li>
+      <li><span class="chip verhaeltnis"></span><span><b>Verhältnis</b> — zusätzlich ein echter Nullpunkt <i>(z.&nbsp;B. Alter, Lernzeit)</i></span></li>
+    </ul>
+
+    <div class="howto">
+      <span class="howto-step">▸ Zuordnen per <b>Klick/Tipp</b>, Tasten <b>1–4</b> oder Drag&nbsp;&amp;&nbsp;Drop.</span>
+      <span class="howto-step">▸ Mit jedem Level fallen die Variablen <b>schneller</b> — das Tempo macht die Schwierigkeit.</span>
+      <span class="howto-step">▸ Nach jeder Antwort erscheint kurz die <b>Begründung</b>, dann geht es automatisch weiter.</span>
+      <span class="howto-step">▸ <b>6&nbsp;Level</b> à 6 Variablen, je <b>zufällig</b> aus einem größeren Pool gezogen — jeder Durchlauf ist anders.</span>
+      <span class="howto-step">▸ Pro Level gibt es bis zu <b>★★★ Sterne</b> für fehlerfreies Spiel.</span>
+    </div>
+
+    <div class="highscore-line" id="highscore-line" style="display:none">
+      🏆 Bestleistung: <b><span id="highscore-val">0</span> / 36 Punkten</b>
+    </div>
+
+    <button class="btn-primary" onclick="startGame()">Spiel starten</button>
+  </div>
+</div>
+
+<!-- ════════ GAME ════════ -->
+<div id="screen-game" class="screen" style="display:none">
+  <div class="game-wrapper">
+    <div class="hud">
+      <div class="hud-item"><span class="hud-label">Punkte</span><span class="hud-value" id="hud-score">0</span></div>
+      <div class="hud-item"><span class="hud-label">Fehler</span><span class="hud-value" id="hud-errors">0</span></div>
+      <div class="hud-item"><span class="hud-label">Level</span><span class="hud-value" id="hud-level">1</span></div>
+      <div class="hud-item"><span class="hud-label">Übrig</span><span class="hud-value" id="hud-remaining">6</span></div>
+      <div class="hud-spacer"></div>
+      <button id="btn-pause" onclick="togglePause()" aria-label="Pause">⏸</button>
+    </div>
+    <div class="game-area" id="game-area">
+      <div class="fall-progress" id="fall-progress" style="width:100%"></div>
+      <div class="feedback-overlay" id="feedback-overlay" style="display:none">
+        <div class="feedback-toast" id="feedback-toast">
+          <div class="feedback-head">
+            <span class="feedback-icon" id="feedback-icon"></span>
+            <span class="feedback-title" id="feedback-title"></span>
+          </div>
+          <div class="feedback-text" id="feedback-text"></div>
+        </div>
+      </div>
+      <div class="pause-overlay" id="pause-overlay" style="display:none" onclick="togglePause()">
+        <div class="pause-box">
+          <div class="pause-icon">⏸</div>
+          <div class="pause-text">PAUSE</div>
+          <div class="pause-sub">Tippe hier oder ⏸ zum Fortsetzen</div>
+        </div>
+      </div>
+    </div>
+    <div class="containers">
+      <div class="container nominal" id="container-nominal" data-scale="nominal"
+           onclick="handleAssign('nominal')" ondragover="onDragOver(event,'nominal')"
+           ondragleave="onDragLeave('nominal')" ondrop="onDrop(event,'nominal')">
+        <span class="container-icon">🏷️</span>
+        <div class="container-label">Nominal</div>
+        <div class="container-sub">Kategorien</div>
+        <div class="container-key">1 · ←</div>
+      </div>
+      <div class="container ordinal" id="container-ordinal" data-scale="ordinal"
+           onclick="handleAssign('ordinal')" ondragover="onDragOver(event,'ordinal')"
+           ondragleave="onDragLeave('ordinal')" ondrop="onDrop(event,'ordinal')">
+        <span class="container-icon">🪜</span>
+        <div class="container-label">Ordinal</div>
+        <div class="container-sub">Rangfolge</div>
+        <div class="container-key">2 · ↓</div>
+      </div>
+      <div class="container intervall" id="container-intervall" data-scale="intervall"
+           onclick="handleAssign('intervall')" ondragover="onDragOver(event,'intervall')"
+           ondragleave="onDragLeave('intervall')" ondrop="onDrop(event,'intervall')">
+        <span class="container-icon">📏</span>
+        <div class="container-label">Intervall</div>
+        <div class="container-sub">kein echter 0-Punkt</div>
+        <div class="container-key">3 · ↑</div>
+      </div>
+      <div class="container verhaeltnis" id="container-verhaeltnis" data-scale="verhaeltnis"
+           onclick="handleAssign('verhaeltnis')" ondragover="onDragOver(event,'verhaeltnis')"
+           ondragleave="onDragLeave('verhaeltnis')" ondrop="onDrop(event,'verhaeltnis')">
+        <span class="container-icon">⚖️</span>
+        <div class="container-label">Verhältnis</div>
+        <div class="container-sub">echter 0-Punkt</div>
+        <div class="container-key">4 · →</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ LEVEL-ENDE ════════ -->
+<div id="screen-level-end" class="screen" style="display:none">
+  <div class="panel">
+    <h2 class="result-heading" id="level-end-heading">Level 1 abgeschlossen</h2>
+    <div class="stars-row" id="level-stars-row"></div>
+    <p class="result-score" id="level-end-score">X von 6 richtig</p>
+    <table class="summary-table">
+      <thead><tr><th>Variable</th><th>Deine Antwort</th><th>Korrekt</th><th>Begründung</th></tr></thead>
+      <tbody id="level-summary-body"></tbody>
+    </table>
+    <button class="btn-primary" id="level-end-btn" onclick="nextLevel()">Weiter zu Level 2</button>
+  </div>
+</div>
+
+<!-- ════════ FINALE ════════ -->
+<div id="screen-final" class="screen" style="display:none">
+  <div class="panel">
+    <h2 class="result-heading">Geschafft! Spiel beendet</h2>
+    <div class="total-score-big" id="final-score-big">—</div>
+    <div class="total-score-label">von 36 möglichen Punkten</div>
+    <div class="level-stars-summary" id="level-stars-summary"></div>
+    <div class="highscore-banner" id="highscore-banner" style="display:none">🎉 Neue persönliche Bestleistung!</div>
+    <div class="encouragement" id="final-encouragement"></div>
+
+    <div class="lb-section">
+      <div class="lb-entry" id="lb-entry">
+        <input id="name-input" type="text" maxlength="18" placeholder="Dein Name (für die Rekordliste)" autocomplete="off">
+        <button class="btn-save" id="btn-save" onclick="commitScore()">Eintragen</button>
+      </div>
+      <div class="lb-status" id="lb-status"></div>
+      <h3 class="lb-title">🏆 Rekordliste — Top 3</h3>
+      <ol class="lb-list" id="lb-list"></ol>
+    </div>
+
+    <button class="btn-primary" onclick="showStartScreen()">Neu starten</button>
+  </div>
+</div>
+
+<script>
+// ================================================================
+//  VARIABLEN — 6 Level mit Pool (≥6 je Level, 6 werden zufällig gezogen)
+//  Schwerpunkt Schule, Studium & Bildungsforschung.
+//  Einige Items stammen aus der Folien-Übung (Block 1, Folie 43):
+//  Migrationshintergrund, (Schul-)Abschluss, Alter, Bearbeitungszeit,
+//  Zustimmung (Skala 1–4), Anzahl der Klassenwiederholungen.
+// ================================================================
+const VARIABLES = [
+  // ── LEVEL 1 (Pool) ──
+  { label:"Geschlecht", level:1, correct:"nominal",
+    explanation:"Kategorie ohne Rangfolge – nur Gleichheit oder Verschiedenheit ist feststellbar." },
+  { label:"Lieblingsschulfach", level:1, correct:"nominal",
+    explanation:"Schulfächer sind Kategorien ohne sinnvolle Rangordnung." },
+  { label:"Migrationshintergrund (ja/nein)", level:1, correct:"nominal",
+    explanation:"Wird als Kategorie erfasst – es gilt nur gleich vs. verschieden, keine Rangfolge." },
+  { label:"Verkehrsmittel zur Schule (Bus/Rad/zu Fuß …)", level:1, correct:"nominal",
+    explanation:"Verkehrsmittel sind Kategorien ohne sinnvolle Rangordnung." },
+  { label:"Schulnote (1–6)", level:1, correct:"ordinal",
+    explanation:"Klare Rangfolge (1 besser als 2), aber die Abstände zwischen den Noten sind nicht gleich groß." },
+  { label:"Zeugnisurteil (sehr gut … ungenügend)", level:1, correct:"ordinal",
+    explanation:"Geordnete Stufen, aber der Abstand zwischen den Urteilen ist nicht messbar gleich." },
+  { label:"Raumtemperatur im Klassenzimmer (°C)", level:1, correct:"intervall",
+    explanation:"Gleiche Abstände, aber kein echter Nullpunkt: 0 °C heißt nicht „keine Temperatur“." },
+  { label:"Alter in Jahren", level:1, correct:"verhaeltnis",
+    explanation:"Gleiche Abstände UND echter Nullpunkt (0 Jahre = Geburt) – jemand kann doppelt so alt sein." },
+  { label:"Körpergröße in cm", level:1, correct:"verhaeltnis",
+    explanation:"Gleiche Abstände und echter Nullpunkt (0 cm) – 180 cm ist doppelt so groß wie 90 cm." },
+
+  // ── LEVEL 2 (Pool) ──
+  { label:"Studiengang", level:2, correct:"nominal",
+    explanation:"Studiengänge sind Kategorien ohne natürliche Reihenfolge." },
+  { label:"Muttersprache", level:2, correct:"nominal",
+    explanation:"Reine Kategorien ohne Rangordnung." },
+  { label:"Konfession", level:2, correct:"nominal",
+    explanation:"Religionszugehörigkeit ist eine Kategorie ohne Rangfolge." },
+  { label:"Höchster Schulabschluss", level:2, correct:"ordinal",
+    explanation:"Rangfolge (Hauptschule < Realschule < Abitur …), aber die Abstände sind nicht gleich groß." },
+  { label:"Zufriedenheit mit dem Seminar (Likert 1–5)", level:2, correct:"ordinal",
+    explanation:"Geordnete Stufen (1 = sehr unzufrieden … 5 = sehr zufrieden), aber gleiche Abstände sind nicht gesichert." },
+  { label:"Zustimmung zu einer Aussage (Skala 1–4)", level:2, correct:"ordinal",
+    explanation:"Die Antwortstufen sind geordnet (z. B. 1 = stimme nicht zu … 4 = stimme voll zu), aber die Abstände sind nicht empirisch gleich." },
+  { label:"IQ-Wert (M = 100, SD = 15)", level:2, correct:"intervall",
+    explanation:"Gleiche Abstände (15 Punkte = 1 SD), aber kein echter Nullpunkt: IQ 0 ≠ „keine Intelligenz“." },
+  { label:"Anzahl der Geschwister", level:2, correct:"verhaeltnis",
+    explanation:"Eine Zählung mit echtem Nullpunkt (0 Geschwister) – 4 sind doppelt so viele wie 2." },
+  { label:"Gelesene Bücher pro Jahr", level:2, correct:"verhaeltnis",
+    explanation:"Eine Zählung mit echtem Nullpunkt (0 Bücher) – Verhältnisse sind sinnvoll." },
+
+  // ── LEVEL 3 (Pool) ──
+  { label:"Matrikelnummer", level:3, correct:"nominal",
+    explanation:"Eine Zahl als reines Kennzeichen – eine höhere Nummer bedeutet nichts „Größeres“." },
+  { label:"Schulform (Gymnasium, Realschule …)", level:3, correct:"nominal",
+    explanation:"Schulformen sind Kategorien ohne sinnvolle Rangordnung." },
+  { label:"Lieblingsfarbe", level:3, correct:"nominal",
+    explanation:"Farben sind reine Kategorien ohne Rangfolge." },
+  { label:"Kompetenzstufe im Lesetest (I–V)", level:3, correct:"ordinal",
+    explanation:"Geordnete Stufen der Lesekompetenz, aber die Abstände dazwischen sind nicht gleich groß." },
+  { label:"Sprachniveau (A1–C2)", level:3, correct:"ordinal",
+    explanation:"Die GER-Stufen sind klar geordnet, aber die Abstände zwischen A1, A2, B1 … sind nicht messbar gleich." },
+  { label:"Kalenderjahr (z. B. 2026)", level:3, correct:"intervall",
+    explanation:"Gleiche Abstände, aber das Jahr 0 ist willkürlich gesetzt → kein echter Nullpunkt." },
+  { label:"Wöchentliche Lernzeit in Stunden", level:3, correct:"verhaeltnis",
+    explanation:"Gleiche Abstände und echter Nullpunkt (0 h) – 8 h sind doppelt so viel wie 4 h." },
+  { label:"Anzahl belegter Kurse", level:3, correct:"verhaeltnis",
+    explanation:"Eine Zählung mit echtem Nullpunkt (0 Kurse) – Verhältnisse sind sinnvoll." },
+  { label:"Anzahl der Klassenwiederholungen", level:3, correct:"verhaeltnis",
+    explanation:"Eine Zählung mit echtem Nullpunkt (0 = nie wiederholt) – 2 sind doppelt so viele wie 1." },
+
+  // ── LEVEL 4 (Pool) ──
+  { label:"Postleitzahl der Schule", level:4, correct:"nominal",
+    explanation:"Zwar Zahlen, aber nur ein Ortskennzeichen – keine Rangfolge, keine Abstände." },
+  { label:"Augenfarbe", level:4, correct:"nominal",
+    explanation:"Augenfarben sind Kategorien ohne inhärente Rangordnung." },
+  { label:"Rangplatz im Notenranking des Kurses", level:4, correct:"ordinal",
+    explanation:"Der Rang ist bekannt, aber der Abstand zwischen Platz 1 und 2 sagt nichts über die Punktedifferenz aus." },
+  { label:"ECTS-Notenstufe (A–F)", level:4, correct:"ordinal",
+    explanation:"Geordnete Notenstufen, aber die Abstände zwischen A, B, C … sind nicht gleich groß." },
+  { label:"Sportabzeichen (Bronze/Silber/Gold)", level:4, correct:"ordinal",
+    explanation:"Klar geordnete Stufen, aber die Abstände zwischen Bronze, Silber und Gold sind nicht messbar gleich." },
+  { label:"Punktwert im standardisierten Lesetest (M = 500)", level:4, correct:"intervall",
+    explanation:"Gleiche Abstände, aber der Nullpunkt der Skala ist willkürlich → kein „doppelt so kompetent“." },
+  { label:"Bearbeitungszeit der Klausur (Minuten)", level:4, correct:"verhaeltnis",
+    explanation:"Gleiche Abstände und echter Nullpunkt (0 min) – Verhältnisse sind sinnvoll." },
+  { label:"Anzahl der Fehltage im Schuljahr", level:4, correct:"verhaeltnis",
+    explanation:"Eine Zählung mit echtem Nullpunkt (0 Fehltage) – 10 sind doppelt so viele wie 5." },
+  { label:"Monatliches Nettoeinkommen der Eltern (€)", level:4, correct:"verhaeltnis",
+    explanation:"Gleiche Abstände und echter Nullpunkt (0 € = kein Einkommen) – Verhältnisse sind sinnvoll." },
+
+  // ── LEVEL 5 (Pool) ──
+  { label:"Seminargruppe (A / B / C)", level:5, correct:"nominal",
+    explanation:"Reine Einteilung in Gruppen – ohne Rangordnung." },
+  { label:"Klassenraumnummer", level:5, correct:"nominal",
+    explanation:"Trotz Zahl nur ein Raum-Kennzeichen – Raum 204 ist nicht „mehr“ als Raum 101." },
+  { label:"Oberstufenpunkte (0–15)", level:5, correct:"ordinal",
+    explanation:"Offiziell eine geordnete Notenskala; gleiche Punktabstände bedeuten nicht gleiche Leistungsabstände → ordinal." },
+  { label:"Zufriedenheit (Likert 1–7)", level:5, correct:"ordinal",
+    explanation:"Geordnete Antwortstufen, aber gleiche Abstände sind empirisch nicht gesichert." },
+  { label:"Häufigkeit (nie / selten / oft / immer)", level:5, correct:"ordinal",
+    explanation:"Klassische Antwortskala mit klarer Rangfolge, aber die Abstände zwischen den Stufen sind nicht messbar gleich → ordinal." },
+  { label:"Uhrzeit des Klausurbeginns", level:5, correct:"intervall",
+    explanation:"Gleiche Abstände zwischen Stunden, aber 0 Uhr ist willkürlich → „8 Uhr doppelt so spät wie 4 Uhr“ ergibt keinen Sinn." },
+  { label:"Reaktionszeit im Experiment (ms)", level:5, correct:"verhaeltnis",
+    explanation:"Gleiche Abstände und echter Nullpunkt (0 ms = keine Verzögerung) – Verhältnisse sind sinnvoll." },
+  { label:"Stimmenanteil der Fachschaftswahl (%)", level:5, correct:"verhaeltnis",
+    explanation:"Anteile haben einen echten Nullpunkt (0 % = keine Stimmen); 40 % sind doppelt so viel wie 20 %." },
+
+  // ── LEVEL 6 (Experten + Tempo, Pool) ──
+  { label:"Sitzplatznummer in der Klausur", level:6, correct:"nominal",
+    explanation:"Trotz Zahl nur ein Platz-Kennzeichen – Platz 30 ist nicht „mehr“ als Platz 7." },
+  { label:"Trikotnummer im Schulteam", level:6, correct:"nominal",
+    explanation:"Eine Zahl als reines Kennzeichen – Nummer 10 ist nicht „mehr“ als Nummer 4." },
+  { label:"Bildungsstand der Eltern (niedrig/mittel/hoch)", level:6, correct:"ordinal",
+    explanation:"Geordnete Stufen, aber die Abstände zwischen niedrig, mittel und hoch sind nicht messbar gleich." },
+  { label:"Soziale Schicht (Unter-/Mittel-/Oberschicht)", level:6, correct:"ordinal",
+    explanation:"Klar geordnete Stufen, aber die Abstände dazwischen sind nicht messbar gleich groß." },
+  { label:"Geburtsjahr", level:6, correct:"intervall",
+    explanation:"Gleiche Abstände, aber das Bezugsjahr 0 ist willkürlich → kein echter Nullpunkt, keine Verhältnisse." },
+  { label:"Abiturjahrgang (z. B. 2021)", level:6, correct:"intervall",
+    explanation:"Wie das Kalenderjahr: gleiche Abstände, aber kein sinnvoller Nullpunkt." },
+  { label:"Anzahl korrekt gelöster Aufgaben", level:6, correct:"verhaeltnis",
+    explanation:"Eine Zählung mit echtem Nullpunkt (0 gelöst) – 12 sind doppelt so viele wie 6." },
+  { label:"Lernfortschritt in % (0–100)", level:6, correct:"verhaeltnis",
+    explanation:"Prozent des Lernziels mit echtem Nullpunkt (0 % = nichts gelernt) – Verhältnisse sind sinnvoll." },
+];
+
+// ── Schwierigkeit primär über die FALLGESCHWINDIGKEIT ──
+const FALL_DURATIONS = { 1:10000, 2:8500, 3:7000, 4:5500, 5:4200, 6:3000 };
+const VARS_PER_LEVEL = 6;
+const TOTAL_LEVELS   = 6;
+const TOTAL_POINTS   = VARS_PER_LEVEL * TOTAL_LEVELS;
+const SWAY_CYCLES    = 2;
+const FB_OK_MS       = 1700;   // Begründung bei richtig
+const FB_FAIL_MS     = 3200;   // Begründung bei falsch (länger zum Lesen)
+const HS_KEY         = 'skalenniveau_highscore';
+
+const SCALE_LABELS = { nominal:'Nominal', ordinal:'Ordinal', intervall:'Intervall', verhaeltnis:'Verhältnis', missed:'Nicht zugeordnet' };
+
+let state = {
+  level:1, levelVars:[], currentIdx:0, score:0, errors:0, levelScore:0, levelResults:[], levelStars:[],
+  falling:false, paused:false, accepting:false, animId:null, totalFallTime:0, lastTimestamp:null,
+  tileEl:null, gameAreaH:0, gameAreaW:0, tileH:0, tileW:0, fbTimer:null,
+  gameStartMs:0, totalSeconds:0,
+};
+
+function fmtTime(sec){ const m=Math.floor(sec/60), s=sec%60; return m+':'+String(s).padStart(2,'0'); }
+
+// Zufällige Reihenfolge (Fisher-Yates)
+function shuffle(arr){ const a=[...arr]; for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+// Pool je Level: 6 zufällig ziehen – aber stratifiziert, d. h. nach Möglichkeit
+// mindestens ein Item je Skalenniveau, damit jedes Level alle Konzepte abdeckt.
+function getVarsForLevel(level){
+  const pool = shuffle(VARIABLES.filter(v=>v.level===level));
+  if(pool.length<=VARS_PER_LEVEL) return shuffle(pool);
+  const picked=[]; const seen=new Set();
+  // 1) je ein Item pro vorhandener Skala
+  for(const v of pool){ if(!seen.has(v.correct)){ seen.add(v.correct); picked.push(v); } }
+  // 2) mit zufälligen weiteren auffüllen
+  for(const v of pool){ if(picked.length>=VARS_PER_LEVEL) break; if(!picked.includes(v)) picked.push(v); }
+  return shuffle(picked.slice(0, VARS_PER_LEVEL));
+}
+
+// Sterne: 3 = fehlerfrei, 2 = ein Fehler, 1 = mind. Hälfte, 0 = darunter
+function calcStars(correct,total){
+  if(correct===total) return 3;
+  if(correct>=total-1) return 2;
+  if(correct>=Math.ceil(total/2)) return 1;
+  return 0;
+}
+function starsHTML(n){ return '★'.repeat(n) + `<span class="empty">${'★'.repeat(3-n)}</span>`; }
+
+// Highscore
+function getHighScore(){ return parseInt(localStorage.getItem(HS_KEY)||'0',10); }
+function saveHighScore(s){ if(s>getHighScore()){ localStorage.setItem(HS_KEY,String(s)); return true; } return false; }
+function refreshHighscoreLine(){
+  const hs=getHighScore(); const line=document.getElementById('highscore-line');
+  if(hs>0){ document.getElementById('highscore-val').textContent=hs; line.style.display='flex'; }
+  else line.style.display='none';
+}
+
+function showScreen(id){
+  ['screen-start','screen-game','screen-level-end','screen-final'].forEach(s=>{
+    document.getElementById(s).style.display=(s===id)?'':'none';
+  });
+}
+function clearDragOver(){ ['nominal','ordinal','intervall','verhaeltnis'].forEach(t=>document.getElementById('container-'+t).classList.remove('dragover')); }
+
+function startGame(){ state.score=0; state.errors=0; state.level=1; state.levelStars=[]; state.gameStartMs=Date.now(); showScreen('screen-game'); startLevel(1); }
+function startLevel(level){
+  state.level=level; state.currentIdx=0; state.levelScore=0; state.levelResults=[];
+  state.levelVars=getVarsForLevel(level);   // <- Zufallspool: 6 aus dem Level-Pool
+  showScreen('screen-game'); updateHUD(); spawnTile();
+}
+
+function spawnTile(){
+  const gameArea=document.getElementById('game-area');
+  const old=gameArea.querySelector('.tile'); if(old) old.remove();
+  if(state.currentIdx>=state.levelVars.length){ endLevel(); return; }
+
+  const v=state.levelVars[state.currentIdx];
+  const isTouch=window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+  const hint=isTouch?'Tippe auf einen Container ↓':'Klick · Taste 1/2/3/4 · Drag &amp; Drop';
+
+  const tile=document.createElement('div');
+  tile.className='tile'; tile.id='current-tile'; tile.draggable=!isTouch;
+  tile.innerHTML=`<div class="tile-label">${v.label}</div><div class="tile-hint">${hint}</div>`;
+  if(!isTouch){ tile.addEventListener('dragstart',onDragStart); tile.addEventListener('dragend',onDragEnd); }
+
+  let touchDragActive=false;
+  tile.addEventListener('touchstart',e=>{ if(!state.accepting)return; e.preventDefault(); touchDragActive=true; },{passive:false});
+  tile.addEventListener('touchmove',e=>{ if(!touchDragActive||!state.accepting)return; e.preventDefault();
+    const touch=e.touches[0]; clearDragOver(); const el=document.elementFromPoint(touch.clientX,touch.clientY);
+    const cont=el&&el.closest('[data-scale]'); if(cont) cont.classList.add('dragover'); },{passive:false});
+  tile.addEventListener('touchend',e=>{ if(!touchDragActive)return; touchDragActive=false; e.preventDefault(); clearDragOver();
+    if(!state.accepting)return; const touch=e.changedTouches[0]; const el=document.elementFromPoint(touch.clientX,touch.clientY);
+    const cont=el&&el.closest('[data-scale]'); if(cont) handleAssign(cont.dataset.scale); },{passive:false});
+  tile.addEventListener('touchcancel',()=>{ touchDragActive=false; clearDragOver(); });
+
+  tile.style.opacity='0'; tile.style.transform='translateX(-50%) scale(0.75)'; tile.style.top='8px';
+  gameArea.appendChild(tile);
+
+  state.tileEl=tile;
+  state.gameAreaH=gameArea.clientHeight; state.gameAreaW=gameArea.clientWidth;
+  state.tileH=tile.offsetHeight||84; state.tileW=tile.offsetWidth||220;
+  state.totalFallTime=0; state.lastTimestamp=null; state.falling=true; state.accepting=false;
+
+  document.getElementById('pause-overlay').style.display='none';
+  document.getElementById('feedback-overlay').style.display='none';
+  const bar=document.getElementById('fall-progress'); bar.style.width='100%'; bar.style.background='#3F7D6A';
+
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    tile.style.transition='opacity 0.18s ease, transform 0.28s cubic-bezier(0.34,1.56,0.64,1)';
+    tile.style.opacity='1'; tile.style.transform='translateX(-50%) scale(1)';
+    setTimeout(()=>{ if(!state.tileEl)return; tile.style.transition=''; state.accepting=true;
+      if(state.animId) cancelAnimationFrame(state.animId); state.animId=requestAnimationFrame(fallLoop); }, 300);
+  }));
+  updateHUD();
+}
+
+function fallLoop(timestamp){
+  if(!state.falling)return;
+  if(state.paused){ state.lastTimestamp=null; state.animId=requestAnimationFrame(fallLoop); return; }
+  if(state.lastTimestamp!==null) state.totalFallTime+=timestamp-state.lastTimestamp;
+  state.lastTimestamp=timestamp;
+
+  const duration=FALL_DURATIONS[state.level];
+  const progress=Math.min(state.totalFallTime/duration,1);
+  const maxFall=Math.max(0,state.gameAreaH-state.tileH-10);
+  const currentY=progress*maxFall;
+  const swayAmplitude=Math.max(0,state.gameAreaW/2-state.tileW/2-6);
+  const rampUp=Math.min(progress/0.2,1);
+  const swayX=Math.sin(progress*Math.PI*2*SWAY_CYCLES)*swayAmplitude*rampUp;
+  const tiltDeg=Math.cos(progress*Math.PI*2*SWAY_CYCLES)*5*rampUp;
+  if(state.tileEl){ state.tileEl.style.top=currentY+'px';
+    state.tileEl.style.transform=`translateX(calc(-50% + ${swayX}px)) rotate(${tiltDeg}deg)`; }
+
+  const bar=document.getElementById('fall-progress');
+  bar.style.width=((1-progress)*100)+'%';
+  if(progress<0.5) bar.style.background='#3F7D6A';
+  else if(progress<0.75) bar.style.background='#C8941A';
+  else bar.style.background='#c0392b';
+
+  if(progress>=1){ handleMiss(); return; }
+  state.animId=requestAnimationFrame(fallLoop);
+}
+
+function spawnStar(){
+  const gameArea=document.getElementById('game-area');
+  const tileTop=state.tileEl?(parseFloat(state.tileEl.style.top)||0):120;
+  const wrapper=document.createElement('div'); wrapper.className='star-pop-wrapper';
+  wrapper.style.top=Math.max(0,tileTop-20)+'px';
+  const star=document.createElement('span'); star.className='star-pop'; star.textContent='⭐';
+  wrapper.appendChild(star); gameArea.appendChild(wrapper); setTimeout(()=>wrapper.remove(),900);
+}
+
+function handleAssign(choice){
+  if(!state.accepting)return;
+  state.accepting=false; state.falling=false;
+  if(state.animId){ cancelAnimationFrame(state.animId); state.animId=null; }
+  const v=state.levelVars[state.currentIdx]; const isCorrect=(choice===v.correct);
+  if(isCorrect){ state.score++; state.levelScore++; spawnStar(); } else { state.errors++; }
+  state.levelResults.push({ variable:v.label, playerAnswer:choice, correct:v.correct, explanation:v.explanation, wasCorrect:isCorrect });
+  updateHUD();
+  showFeedback(isCorrect,v.correct,v.explanation,()=>{ state.currentIdx++; spawnTile(); });
+}
+function handleMiss(){
+  if(!state.accepting)return;
+  state.accepting=false; state.falling=false;
+  if(state.animId){ cancelAnimationFrame(state.animId); state.animId=null; }
+  const v=state.levelVars[state.currentIdx]; state.errors++;
+  state.levelResults.push({ variable:v.label, playerAnswer:'missed', correct:v.correct, explanation:v.explanation, wasCorrect:false });
+  updateHUD();
+  showFeedback(false,v.correct,v.explanation,()=>{ state.currentIdx++; spawnTile(); });
+}
+
+// Feedback: erscheint und verschwindet AUTOMATISCH nach kurzer Zeit
+function showFeedback(isCorrect,correctKey,explanation,callback){
+  const overlay=document.getElementById('feedback-overlay');
+  const toast=document.getElementById('feedback-toast');
+  toast.className='feedback-toast'+(isCorrect?'':' wrong');
+  document.getElementById('feedback-icon').textContent=isCorrect?'✓':'✗';
+  const title=document.getElementById('feedback-title');
+  title.className='feedback-title '+(isCorrect?'ok':'fail');
+  title.textContent=isCorrect?'Richtig!':`Falsch — korrekt: ${SCALE_LABELS[correctKey]}`;
+  document.getElementById('feedback-text').textContent=explanation;
+  overlay.style.display='flex';
+  if(state.fbTimer) clearTimeout(state.fbTimer);
+  state.fbTimer=setTimeout(()=>{ overlay.style.display='none'; callback(); }, isCorrect?FB_OK_MS:FB_FAIL_MS);
+}
+
+function updateHUD(){
+  document.getElementById('hud-score').textContent=state.score;
+  document.getElementById('hud-errors').textContent=state.errors;
+  document.getElementById('hud-level').textContent=state.level;
+  document.getElementById('hud-remaining').textContent=Math.max(0,state.levelVars.length-state.currentIdx);
+}
+
+function endLevel(){
+  state.falling=false; state.accepting=false;
+  if(state.animId){ cancelAnimationFrame(state.animId); state.animId=null; }
+  const tile=document.getElementById('game-area').querySelector('.tile'); if(tile) tile.remove();
+
+  const stars=calcStars(state.levelScore, state.levelVars.length);
+  state.levelStars.push(stars);
+
+  document.getElementById('level-end-heading').textContent=`Level ${state.level} abgeschlossen`;
+  document.getElementById('level-stars-row').innerHTML=starsHTML(stars);
+  document.getElementById('level-end-score').innerHTML=`<strong>${state.levelScore} von ${state.levelVars.length}</strong> richtig`;
+  const tbody=document.getElementById('level-summary-body'); tbody.innerHTML='';
+  state.levelResults.forEach(r=>{
+    const tr=document.createElement('tr'); tr.className=r.wasCorrect?'row-ok':'row-fail';
+    tr.innerHTML=`<td><strong>${r.variable}</strong></td>`+
+      `<td><span class="badge ${r.playerAnswer}">${SCALE_LABELS[r.playerAnswer]}</span></td>`+
+      `<td><span class="badge ${r.correct}">${SCALE_LABELS[r.correct]}</span></td>`+
+      `<td>${r.explanation}</td>`;
+    tbody.appendChild(tr);
+  });
+  document.getElementById('level-end-btn').textContent=state.level<TOTAL_LEVELS?`Weiter zu Level ${state.level+1}`:'Gesamtergebnis anzeigen';
+  showScreen('screen-level-end');
+}
+function nextLevel(){ state.level<TOTAL_LEVELS ? startLevel(state.level+1) : showFinalScreen(); }
+
+function showFinalScreen(){
+  state.totalSeconds = Math.max(0, Math.round((Date.now()-state.gameStartMs)/1000));
+  document.getElementById('final-score-big').textContent=state.score;
+
+  // Sterne-Übersicht über alle Level
+  const sum=document.getElementById('level-stars-summary');
+  sum.innerHTML=state.levelStars.map((s,i)=>
+    `<div class="lvl-star-item"><span>Level ${i+1}</span><div class="stars">${starsHTML(s)}</div></div>`
+  ).join('');
+
+  // Highscore
+  const isNew=saveHighScore(state.score);
+  document.getElementById('highscore-banner').style.display=isNew?'block':'none';
+
+  let msg;
+  if(state.score>=33) msg='🎓 Herausragend! Du erkennst die Messniveaus auch unter Zeitdruck zuverlässig – sogar die Grenzfälle (Kalenderjahr, Oberstufenpunkte, Lesetest-Punktwert). Das schaffen nur die wenigsten.';
+  else if(state.score>=24) msg='👍 Starke Leistung! Schau dir bei den falschen Items vor allem die Unterscheidung Intervall ↔ Verhältnis (echter Nullpunkt?) noch einmal an.';
+  else if(state.score>=14) msg='🙂 Solide Basis! Wiederhole besonders die Grenzfälle Ordinal ↔ Intervall und prüfe immer: Gibt es einen echten Nullpunkt?';
+  else msg='📖 Noch etwas Übung nötig! Geh die vier Definitionen auf dem Startbildschirm noch einmal durch und starte erneut – die langsamen ersten Level helfen beim Einstieg.';
+  document.getElementById('final-encouragement').textContent=msg;
+
+  // Rekordliste vorbereiten
+  const entryBox=document.getElementById('lb-entry');
+  const saveBtn=document.getElementById('btn-save');
+  const nameInput=document.getElementById('name-input');
+  entryBox.style.display='flex'; saveBtn.disabled=false; saveBtn.textContent='Eintragen';
+  nameInput.value=''; document.getElementById('lb-status').textContent='';
+  renderLeaderboard(null);
+
+  showScreen('screen-final');
+}
+function showStartScreen(){ refreshHighscoreLine(); showScreen('screen-start'); }
+
+// ================================================================
+//  REKORDLISTE  (geteilt via Google Sheet, sonst lokal pro Browser)
+//  Dieselbe Apps-Script-Web-App wie beim Memory-Spiel – über den
+//  Parameter game=skalen wird eine eigene Bestenliste geführt.
+//  Bleibt die URL leer, läuft die Liste rein lokal (localStorage).
+// ================================================================
+const LEADERBOARD_URL = "https://script.google.com/macros/s/AKfycbzxfxwbFC0e4aSJElgJzXcSp8VGLux16_51nEjI8zIBy78F3lIsXK6zQZZYq8F2od9HUA/exec";
+const LB_GAME = "skalen";
+const LB_KEY  = "skalenniveau-leaderboard";
+
+function lbLocalGet(){ try { return JSON.parse(localStorage.getItem(LB_KEY)) || []; } catch(e){ return []; } }
+function lbLocalSet(list){ try { localStorage.setItem(LB_KEY, JSON.stringify(list)); } catch(e){} }
+// Sortierung: mehr Punkte zuerst, bei Gleichstand schnellere Zeit
+function lbSort(list){ return list.slice().sort((a,b)=> (b.score-a.score) || (a.time-b.time)).slice(0,10); }
+
+async function lbFetch(){
+  if(LEADERBOARD_URL){
+    try {
+      const r=await fetch(LEADERBOARD_URL + "?game=" + LB_GAME, { method:"GET" });
+      const data=await r.json();
+      return lbSort(Array.isArray(data)?data:(data.entries||[]));
+    } catch(e){ /* Server nicht erreichbar → lokaler Fallback */ }
+  }
+  return lbSort(lbLocalGet());
+}
+
+async function lbPush(entry){
+  if(LEADERBOARD_URL){
+    try {
+      // text/plain vermeidet einen CORS-Preflight gegenüber Apps Script
+      await fetch(LEADERBOARD_URL, {
+        method:"POST",
+        headers:{ "Content-Type":"text/plain;charset=utf-8" },
+        body: JSON.stringify(Object.assign({ game:LB_GAME }, entry))
+      });
+      return;
+    } catch(e){ /* Fallback lokal */ }
+  }
+  const list=lbLocalGet(); list.push(entry); lbLocalSet(lbSort(list));
+}
+
+const RANK_CLASS=['gold','silver','bronze'];
+async function renderLeaderboard(highlight){
+  const listEl=document.getElementById('lb-list');
+  listEl.innerHTML='<li class="lb-empty">Lädt …</li>';
+  const list=(await lbFetch()).slice(0,3);   // nur Top 3 anzeigen
+  listEl.innerHTML='';
+  if(!list.length){ listEl.innerHTML='<li class="lb-empty">Noch keine Einträge – sei die/der Erste!</li>'; return; }
+  list.forEach((e,i)=>{
+    const li=document.createElement('li');
+    if(highlight && e.name===highlight.name && e.score===highlight.score && e.time===highlight.time) li.className='me';
+    const medal = i===0?'🥇':i===1?'🥈':'🥉';
+    li.innerHTML =
+      `<span class="lb-rank ${RANK_CLASS[i]}">${medal}</span>`+
+      `<span class="lb-who"></span>`+
+      `<span class="lb-score">${e.score}/36 · ${fmtTime(e.time)}</span>`;
+    li.querySelector('.lb-who').textContent=e.name;   // sicher gegen HTML-Injektion
+    listEl.appendChild(li);
+  });
+}
+
+async function commitScore(){
+  const nameInput=document.getElementById('name-input');
+  const saveBtn=document.getElementById('btn-save');
+  const status=document.getElementById('lb-status');
+  const name=(nameInput.value.trim().slice(0,18))||'Anonym';
+  const entry={ name:name, score:state.score, time:state.totalSeconds };
+  saveBtn.disabled=true; saveBtn.textContent='Gespeichert';
+  document.getElementById('lb-entry').style.display='none';
+  status.textContent='Speichere …';
+  await lbPush(entry);
+  status.textContent='Dein Ergebnis wurde eingetragen.';
+  await renderLeaderboard(entry);
+}
+
+function togglePause(){
+  if(!state.falling && !state.paused)return;
+  state.paused=!state.paused;
+  document.getElementById('pause-overlay').style.display=state.paused?'flex':'none';
+}
+
+let isDragging=false;
+function onDragStart(e){ if(!state.accepting){ e.preventDefault(); return; } isDragging=true; e.dataTransfer.effectAllowed='move'; }
+function onDragEnd(){ isDragging=false; }
+function onDragOver(e,type){ if(!state.accepting)return; e.preventDefault(); e.dataTransfer.dropEffect='move'; document.getElementById('container-'+type).classList.add('dragover'); }
+function onDragLeave(type){ document.getElementById('container-'+type).classList.remove('dragover'); }
+function onDrop(e,type){ e.preventDefault(); document.getElementById('container-'+type).classList.remove('dragover'); if(!isDragging)return; isDragging=false; handleAssign(type); }
+
+document.addEventListener('keydown',e=>{
+  // Während des Feedbacks Tasten ignorieren (es geht automatisch weiter)
+  if(document.getElementById('feedback-overlay').style.display==='flex') return;
+  if(e.code==='Space'){ e.preventDefault(); if(document.getElementById('screen-game').style.display!=='none') togglePause(); return; }
+  if(!state.accepting||state.paused)return;
+  switch(e.key){
+    case '1': case 'ArrowLeft':  e.preventDefault(); handleAssign('nominal');     break;
+    case '2': case 'ArrowDown':  e.preventDefault(); handleAssign('ordinal');     break;
+    case '3': case 'ArrowUp':    e.preventDefault(); handleAssign('intervall');   break;
+    case '4': case 'ArrowRight': e.preventDefault(); handleAssign('verhaeltnis'); break;
+  }
+});
+
+// Enter in der Namenseingabe → eintragen
+document.getElementById('name-input').addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); commitScore(); } });
+
+// Init
+refreshHighscoreLine();
+</script>
+</body>
+</html>

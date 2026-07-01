@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Fragen beantworten</title>
+<style>
+  :root {
+    --uniblau: #07529A;
+    --dunkelblau: #053D73;
+    --tint: #D8E6F4;
+    --gold: #EAB90C;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--tint);
+  }
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .card {
+    width: 100%;
+    max-width: 480px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(5, 61, 115, 0.15);
+    padding: 32px 24px;
+  }
+  .question {
+    margin-bottom: 24px;
+  }
+  .question:last-of-type {
+    margin-bottom: 0;
+  }
+  label {
+    display: block;
+    color: var(--dunkelblau);
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.35;
+    margin-bottom: 10px;
+  }
+  input[type="text"] {
+    width: 100%;
+    font-size: 1.1rem;
+    padding: 14px;
+    border: 2px solid var(--uniblau);
+    border-radius: 10px;
+    outline: none;
+  }
+  input[type="text"]:focus {
+    border-color: var(--gold);
+  }
+  .scale {
+    display: flex;
+    gap: 4px;
+  }
+  .scale-option {
+    flex: 1;
+    display: flex;
+    cursor: pointer;
+  }
+  .scale-option input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .scale-option .circle {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    border: 2px solid var(--uniblau);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--uniblau);
+    background: #fff;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .scale-option input:checked + .circle {
+    background: var(--uniblau);
+    color: #fff;
+  }
+  .scale-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 6px;
+    font-size: 0.75rem;
+    color: var(--dunkelblau);
+  }
+  button {
+    width: 100%;
+    font-size: 1.2rem;
+    font-weight: 600;
+    padding: 16px;
+    border: none;
+    border-radius: 10px;
+    background: var(--uniblau);
+    color: #fff;
+    cursor: pointer;
+    margin-top: 28px;
+    transition: background 0.15s ease;
+  }
+  button:active {
+    background: var(--dunkelblau);
+  }
+  button:disabled {
+    background: #9db8cc;
+    cursor: not-allowed;
+  }
+  .confirmation {
+    display: none;
+    text-align: center;
+    color: var(--dunkelblau);
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-top: 20px;
+  }
+  .confirmation.visible {
+    display: block;
+  }
+  .error {
+    display: none;
+    text-align: center;
+    color: #b00020;
+    font-size: 0.95rem;
+    margin-top: 12px;
+  }
+  .error.visible {
+    display: block;
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <form id="wordForm">
+      <div class="question">
+        <label for="herkunft">Woher kommen Sie?</label>
+        <input type="text" id="herkunft" maxlength="40" autocomplete="off" autocapitalize="off" autocorrect="off" />
+      </div>
+      <div class="question">
+        <label>Wie schätzen Sie Ihr Vorwissen zu Statistik ein?</label>
+        <div class="scale" id="vorwissenScale">
+          <label class="scale-option"><input type="radio" name="vorwissen" value="1" /><span class="circle">1</span></label>
+          <label class="scale-option"><input type="radio" name="vorwissen" value="2" /><span class="circle">2</span></label>
+          <label class="scale-option"><input type="radio" name="vorwissen" value="3" /><span class="circle">3</span></label>
+          <label class="scale-option"><input type="radio" name="vorwissen" value="4" /><span class="circle">4</span></label>
+          <label class="scale-option"><input type="radio" name="vorwissen" value="5" /><span class="circle">5</span></label>
+          <label class="scale-option"><input type="radio" name="vorwissen" value="6" /><span class="circle">6</span></label>
+          <label class="scale-option"><input type="radio" name="vorwissen" value="7" /><span class="circle">7</span></label>
+          <label class="scale-option"><input type="radio" name="vorwissen" value="8" /><span class="circle">8</span></label>
+          <label class="scale-option"><input type="radio" name="vorwissen" value="9" /><span class="circle">9</span></label>
+          <label class="scale-option"><input type="radio" name="vorwissen" value="10" /><span class="circle">10</span></label>
+        </div>
+        <div class="scale-labels">
+          <span>1 = gar keins</span>
+          <span>10 = sehr viel</span>
+        </div>
+      </div>
+      <div class="question">
+        <label for="statistikwort">Ein Wort, das dir spontan zu Statistik einfällt</label>
+        <input type="text" id="statistikwort" maxlength="40" autocomplete="off" autocapitalize="off" autocorrect="off" />
+      </div>
+      <button type="submit" id="submitBtn">Absenden</button>
+    </form>
+    <div class="confirmation" id="confirmation">Danke!</div>
+    <div class="error" id="error">Da ist etwas schiefgelaufen. Bitte nochmal versuchen.</div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+    import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAcGXtZFGmVJcjj6GJBHdDTfgigws69jL8",
+      authDomain: "seminarkit-9bc27.firebaseapp.com",
+      databaseURL: "https://seminarkit-9bc27-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "seminarkit-9bc27",
+      storageBucket: "seminarkit-9bc27.firebasestorage.app",
+      messagingSenderId: "867685499468",
+      appId: "1:867685499468:web:4cb4ca46d171937ec52ae9"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    const TEXT_FIELDS = [
+      { id: "herkunft", path: "words/herkunft" },
+      { id: "statistikwort", path: "words/statistikwort" },
+    ];
+
+    const form = document.getElementById("wordForm");
+    const submitBtn = document.getElementById("submitBtn");
+    const confirmation = document.getElementById("confirmation");
+    const error = document.getElementById("error");
+
+    function normalize(value) {
+      return value.trim().slice(0, 40).toLowerCase();
+    }
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const entries = TEXT_FIELDS
+        .map((field) => ({ path: field.path, value: normalize(document.getElementById(field.id).value) }))
+        .filter((field) => field.value.length > 0);
+
+      const vorwissenChecked = form.querySelector('input[name="vorwissen"]:checked');
+      if (vorwissenChecked) {
+        entries.push({ path: "words/vorwissen", value: Number(vorwissenChecked.value) });
+      }
+
+      if (!entries.length) return;
+
+      submitBtn.disabled = true;
+      error.classList.remove("visible");
+
+      try {
+        await Promise.all(entries.map((field) => push(ref(db, field.path), field.value)));
+        form.reset();
+        confirmation.classList.add("visible");
+        setTimeout(() => confirmation.classList.remove("visible"), 2000);
+      } catch (err) {
+        console.error(err);
+        error.classList.add("visible");
+      } finally {
+        submitBtn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
