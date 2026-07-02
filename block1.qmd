@@ -61,7 +61,7 @@ Bitte diskutiert in euren Breakout-Räumen (je 3 Personen) die folgenden Fragen.
 2. Welche Befürchtungen habt ihr?
 3. Welche Wünsche zur Seminargestaltung habt ihr?
 
-Haltet eure Antworten gemeinsam auf dem Etherpad fest – alle Gruppen schreiben in **dasselbe** Pad, sucht euch einfach einen freien Bereich:
+Haltet eure Antworten gemeinsam auf dem Etherpad fest:
 
 [Etherpad öffnen »](https://pad.riseup.net/p/Etherpad_Statistik){target="_blank"}
 
@@ -75,20 +75,6 @@ Haltet eure Antworten gemeinsam auf dem Etherpad fest – alle Gruppen schreiben
 <div class="strawpoll-embed" id="strawpoll_e6Z2AEqoqgN" style="height: 516px; max-width: 640px; width: 100%; margin: 0 auto 24px; display: flex; flex-direction: column;"><iframe title="StrawPoll Embed" id="strawpoll_iframe_e6Z2AEqoqgN" src="https://strawpoll.com/embed/e6Z2AEqoqgN" style="position: static; visibility: visible; display: block; width: 100%; flex-grow: 1;" frameborder="0" allowfullscreen allowtransparency>Loading...</iframe></div>
 
 <script async src="https://cdn.strawpoll.com/dist/widgets.js" charset="utf-8"></script>
-```
-
-## Übungsaufgaben
-
-### Zuordnung zum PPDAC-Zyklus
-
-Ordne jede Aussage der passenden Phase des Forschungszyklus zu (Problem – Plan – Data – Analysis – Conclusion) und werte selbst aus.
-
-```{=html}
-<iframe src="slides/ppdac-zuordnung.html"
-        title="PPDAC-Zuordnung"
-        style="width:100%; height:760px; border:1px solid #e3e3e3; border-radius:10px;"
-        loading="lazy">
-</iframe>
 ```
 
 # Memory zu methodischen Grundbegriffen
