@@ -10,14 +10,13 @@ Tag 1 · Fr 03.07. · 11:30–17:30
 | Zeit  | Programmpunkt                                                              |
 |-------|---------------------------------------------------------------------------|
 | 11:30 | Begrüßung & Vorstellung                                                    |
-| 11:50 | Seminarkonzeption: Struktur, Erwartungen & Studienleistung                |
-| 12:20 | Inhaltlicher Einstieg: Warum Statistik? · Ziele · PPDAC-Zyklus            |
-| 13:20 | *Mittagspause*                                                            |
-| 14:05 | Methodische Grundbegriffe                       |
-| 15:05 | *Kurze Pause*                                                             |
-| 15:15 | Messtheoretische Grundlagen: Messen & Skalenniveaus
-| 16:45 | Puffer & Übungsaufgabe (Studienleistung)                                  |
-| 17:20 | Seminarevaluation                                                         |
+| 12:00 | Seminarkonzeption: Struktur, Erwartungen & Studienleistung                |
+| 12:30 | Inhaltlicher Einstieg: Warum Statistik? · Ziele · PPDAC-Zyklus            |
+| 13:30 | *Mittagspause*                                                            |
+| 14:15 | Methodische Grundbegriffe                       |
+| 15:30 | *Kurze Pause*                                                             |
+| 15:45 | Messtheoretische Grundlagen: Messen & Skalenniveaus                             |
+| 17:15 | Seminarevaluation                                                         |
 | 17:30 | *Ende*                                                                    |
 
 ## Folien

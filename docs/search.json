@@ -277,7 +277,14 @@
     "href": "block1.html",
     "title": "Block 1",
     "section": "",
-    "text": "Tag 1 · Fr 03.07. · 11:30–17:30\n\n\n\n\n\n\n\nZeit\nProgrammpunkt\n\n\n\n\n11:30\nBegrüßung & Vorstellung\n\n\n11:50\nSeminarkonzeption: Struktur, Erwartungen & Studienleistung\n\n\n12:20\nInhaltlicher Einstieg: Warum Statistik? · Ziele · PPDAC-Zyklus\n\n\n13:20\nMittagspause\n\n\n14:05\nMethodische Grundbegriffe\n\n\n15:05\nKurze Pause\n\n\n15:15\nMesstheoretische Grundlagen: Messen & Skalenniveaus\n\n\n16:45\nPuffer & Übungsaufgabe (Studienleistung)\n\n\n17:20\nSeminarevaluation\n\n\n17:30\nEnde"
+    "text": "Tag 1 · Fr 03.07. · 11:30–17:30\n\n\n\n\n\n\n\nZeit\nProgrammpunkt\n\n\n\n\n11:30\nBegrüßung & Vorstellung\n\n\n12:00\nSeminarkonzeption: Struktur, Erwartungen & Studienleistung\n\n\n12:30\nInhaltlicher Einstieg: Warum Statistik? · Ziele · PPDAC-Zyklus\n\n\n13:30\nMittagspause\n\n\n14:15\nMethodische Grundbegriffe\n\n\n15:30\nKurze Pause\n\n\n15:45\nMesstheoretische Grundlagen: Messen & Skalenniveaus\n\n\n17:15\nSeminarevaluation\n\n\n17:30\nEnde"
+  },
+  {
+    "objectID": "block1.html#zeitplan",
+    "href": "block1.html#zeitplan",
+    "title": "Block 1",
+    "section": "",
+    "text": "Tag 1 · Fr 03.07. · 11:30–17:30\n\n\n\n\n\n\n\nZeit\nProgrammpunkt\n\n\n\n\n11:30\nBegrüßung & Vorstellung\n\n\n12:00\nSeminarkonzeption: Struktur, Erwartungen & Studienleistung\n\n\n12:30\nInhaltlicher Einstieg: Warum Statistik? · Ziele · PPDAC-Zyklus\n\n\n13:30\nMittagspause\n\n\n14:15\nMethodische Grundbegriffe\n\n\n15:30\nKurze Pause\n\n\n15:45\nMesstheoretische Grundlagen: Messen & Skalenniveaus\n\n\n17:15\nSeminarevaluation\n\n\n17:30\nEnde"
   },
   {
     "objectID": "block1.html#folien",
@@ -287,32 +294,18 @@
     "text": "Folien\nFolien im Vollbild öffnen"
   },
   {
-    "objectID": "block1.html#warum-statistik",
-    "href": "block1.html#warum-statistik",
+    "objectID": "block1.html#kennenlernen",
+    "href": "block1.html#kennenlernen",
     "title": "Block 1",
-    "section": "Warum Statistik?",
-    "text": "Warum Statistik?\nLoading...\n\nLoading...\n\nLoading..."
+    "section": "Kennenlernen",
+    "text": "Kennenlernen\nWort eintragen »"
   },
   {
-    "objectID": "block1.html#übungsaufgaben",
-    "href": "block1.html#übungsaufgaben",
+    "objectID": "block1.html#erwartungen-befürchtungen-wünsche",
+    "href": "block1.html#erwartungen-befürchtungen-wünsche",
     "title": "Block 1",
-    "section": "Übungsaufgaben",
-    "text": "Übungsaufgaben\n\nZuordnung zum PPDAC-Zyklus\nOrdne jede Aussage der passenden Phase des Forschungszyklus zu (Problem – Plan – Data – Analysis – Conclusion) und werte selbst aus."
-  },
-  {
-    "objectID": "block1.html#memory-zu-methodischen-grundbegriffen",
-    "href": "block1.html#memory-zu-methodischen-grundbegriffen",
-    "title": "Block 1",
-    "section": "Memory zu methodischen Grundbegriffen",
-    "text": "Memory zu methodischen Grundbegriffen"
-  },
-  {
-    "objectID": "block1.html#spiel-zu-skalenniveaus",
-    "href": "block1.html#spiel-zu-skalenniveaus",
-    "title": "Block 1",
-    "section": "Spiel zu Skalenniveaus",
-    "text": "Spiel zu Skalenniveaus"
+    "section": "Erwartungen, Befürchtungen & Wünsche",
+    "text": "Erwartungen, Befürchtungen & Wünsche\nBitte diskutiert in euren Breakout-Räumen (je 3 Personen) die folgenden Fragen. Zeitrahmen: 10 Minuten.\n\nWas erwartet ihr von diesem Seminar?\nWelche Befürchtungen habt ihr?\nWelche Wünsche zur Seminargestaltung habt ihr?\n\nHaltet eure Antworten gemeinsam auf dem Etherpad fest:\nEtherpad öffnen »"
   },
   {
     "objectID": "block2.html",
@@ -327,27 +320,6 @@
     "title": "Block 2",
     "section": "",
     "text": "Folien im Vollbild öffnen"
-  },
-  {
-    "objectID": "block2.html#überblick",
-    "href": "block2.html#überblick",
-    "title": "Block 2",
-    "section": "Überblick",
-    "text": "Überblick\nPlatzhalter für die inhaltliche Einführung dieses Blocks."
-  },
-  {
-    "objectID": "block2.html#themen",
-    "href": "block2.html#themen",
-    "title": "Block 2",
-    "section": "Themen",
-    "text": "Themen\nPlatzhalter für die behandelten Themen."
-  },
-  {
-    "objectID": "block2.html#literatur",
-    "href": "block2.html#literatur",
-    "title": "Block 2",
-    "section": "Literatur",
-    "text": "Literatur\nPlatzhalter für blockspezifische Literaturhinweise."
   },
   {
     "objectID": "block4.html",
@@ -381,8 +353,8 @@
     "objectID": "slides/block1.html#worum-es-heute-geht",
     "href": "slides/block1.html#worum-es-heute-geht",
     "title": "Block 1 — Statistisches Denken & Werkzeuge",
-    "section": "",
-    "text": "Warum Statistik? — Aus Daten lernen\nZiele quantitativer Forschung\nDer PPDAC-Zyklus: unser roter Faden\nMethodische Grundbegriffe\nSkalenniveaus\nUnser Datensatz: lernfoerderung\nR & RStudio: Setup und erste Schritte"
+    "section": "Worum es heute geht",
+    "text": "Worum es heute geht\n\nWarum Statistik? — Aus Daten lernen\nZiele quantitativer Forschung\nDer PPDAC-Zyklus: unser roter Faden\nMethodische Grundbegriffe\nSkalenniveaus\nUnser Datensatz: lernfoerderung\nR & RStudio: Setup und erste Schritte"
   },
   {
     "objectID": "slides/block1.html#warum-statistik",
@@ -396,21 +368,21 @@
     "href": "slides/block1.html#aus-daten-lernen",
     "title": "Block 1 — Statistisches Denken & Werkzeuge",
     "section": "Aus Daten lernen",
-    "text": "Aus Daten lernen\n\n\nStatistik ist keine Formelsammlung, sondern die Kunst, aus Daten über die Welt zu lernen — und gute Schlüsse zu ziehen, wenn nichts sicher ist.\n\nJede Beobachtung ist eine Mischung aus\n\nSignal — das Muster, das uns interessiert\nRauschen — Zufall, Variabilität, Messfehler\n\nDie ganze Kunst: beides trennen.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nnach Spiegelhalter, The Art of Statistics"
+    "text": "Aus Daten lernen\n\n\nStatistik ist keine Formelsammlung, sondern die Kunst, aus Daten über die Welt zu lernen — und gute Schlüsse zu ziehen, wenn nichts sicher ist.\n\nJede Beobachtung ist eine Mischung aus\n\nSignal — das Muster, das uns interessiert\nRauschen — Zufall, Variabilität, Messfehler\n\nDie ganze Kunst: beides trennen.\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nnach Spiegelhalter, The Art of Statistics"
   },
   {
     "objectID": "slides/block1.html#limitationen-von-daten",
     "href": "slides/block1.html#limitationen-von-daten",
     "title": "Block 1 — Statistisches Denken & Werkzeuge",
     "section": "Limitationen von Daten",
-    "text": "Limitationen von Daten\n\n\nDaten sind fast immer eine imperfekte Abbildung dessen, das\nAlles, was wir messen, unterscheidet sich von Ort zu Ort, von Person zu Person, von Zeit zu Zeit\n\nWie können wir die bedeutsame Schlussfolgerungen von zufälligen Variabilität trennen?"
+    "text": "Limitationen von Daten\n\nDaten sind fast immer eine imperfekte Abbildung dessen, das\nAlles, was wir messen, unterscheidet sich von Ort zu Ort, von Person zu Person, von Zeit zu Zeit\n\nWie können wir die bedeutsame Schlussfolgerungen von zufälligen Variabilität trennen?"
   },
   {
     "objectID": "slides/block1.html#ziele-quantitativer-forschung",
     "href": "slides/block1.html#ziele-quantitativer-forschung",
     "title": "Block 1 — Statistisches Denken & Werkzeuge",
     "section": "Ziele quantitativer Forschung",
-    "text": "Ziele quantitativer Forschung\n\n\nBeschreiben „Über welche fachlichen Kompetenzen verfügen (deutsche) 9.-Klässler:innen in Deutsch?”\nErklären „Was sind Ursachen für geringe Deutschkompetenzen?”\nVerändern „Wie lassen sich fachliche Kompetenzen in Deutsch fördern?”\n\n\n\nStatistik liefert das Handwerkszeug für alle drei — heute starten wir beim Beschreiben."
+    "text": "Ziele quantitativer Forschung\n\nBeschreiben „Über welche fachlichen Kompetenzen verfügen (deutsche) 9.-Klässler:innen in Deutsch?”\nErklären „Was sind Ursachen für geringe Deutschkompetenzen?”\nVerändern „Wie lassen sich fachliche Kompetenzen in Deutsch fördern?”\n\n\nStatistik liefert das Handwerkszeug für alle drei — heute starten wir beim Beschreiben."
   },
   {
     "objectID": "slides/block1.html#statistik-als-problemlöseprozess",
@@ -424,7 +396,7 @@
     "href": "slides/block1.html#ppdac-an-einem-beispiel",
     "title": "Block 1 — Statistisches Denken & Werkzeuge",
     "section": "PPDAC an einem Beispiel",
-    "text": "PPDAC an einem Beispiel\nEine Schule führt ein Mathe-Lernförderprogramm ein. Wirkt es?\n\n\nProblem: Verbessert das Programm die Mathematikleistung?\nPlan: 8.-Klässler:innen zufällig in Förder- und Kontrollgruppe einteilen; Leistung vorher/nachher testen\nData: Testdaten, Fragebögen, Schulinformationen erheben\nAnalysis: Gruppen vergleichen — Grafiken, Mittelwerte, Streuung\nConclusion: Unterschied gefunden? Signal oder Rauschen?\n\n\n\nGenau dieses Szenario begleitet uns als Datensatz durch alle vier Blöcke."
+    "text": "PPDAC an einem Beispiel\nEine Schule führt ein Mathe-Lernförderprogramm ein. Wirkt es?\n\nProblem: Verbessert das Programm die Mathematikleistung?\nPlan: 8.-Klässler:innen zufällig in Förder- und Kontrollgruppe einteilen; Leistung vorher/nachher testen\nData: Testdaten, Fragebögen, Schulinformationen erheben\nAnalysis: Gruppen vergleichen — Grafiken, Mittelwerte, Streuung\nConclusion: Unterschied gefunden? Signal oder Rauschen?\n\n\nGenau dieses Szenario begleitet uns als Datensatz durch alle vier Blöcke."
   },
   {
     "objectID": "slides/block1.html#population-und-stichprobe",
@@ -466,7 +438,7 @@
     "href": "slides/block1.html#warum-skalenniveaus",
     "title": "Block 1 — Statistisches Denken & Werkzeuge",
     "section": "Warum Skalenniveaus?",
-    "text": "Warum Skalenniveaus?\nZahlen sind nicht gleich Zahlen:\n\n\nTrikotnummer 10 — ist Spielerin 10 „doppelt so gut” wie Spielerin 5?\nSchulnote 2 — ist der Abstand zur 1 genauso groß wie der von 4 zu 3?\nTestwert 80 Punkte — hier dürfen wir rechnen: Differenzen sind interpretierbar.\n\n\n\nDas Skalenniveau einer Variablen legt fest, welche Aussagen über die Werte bedeutsam sind — und damit, welche Statistiken wir später überhaupt berechnen dürfen."
+    "text": "Warum Skalenniveaus?\nZahlen sind nicht gleich Zahlen:\n\nTrikotnummer 10 — ist Spielerin 10 „doppelt so gut” wie Spielerin 5?\nSchulnote 2 — ist der Abstand zur 1 genauso groß wie der von 4 zu 3?\nTestwert 80 Punkte — hier dürfen wir rechnen: Differenzen sind interpretierbar.\n\n\nDas Skalenniveau einer Variablen legt fest, welche Aussagen über die Werte bedeutsam sind — und damit, welche Statistiken wir später überhaupt berechnen dürfen."
   },
   {
     "objectID": "slides/block1.html#nominalskala",
@@ -529,7 +501,7 @@
     "href": "slides/block1.html#warum-r",
     "title": "Block 1 — Statistisches Denken & Werkzeuge",
     "section": "Warum R?",
-    "text": "Warum R?\n\n\nkostenlos & Open Source — läuft auf jedem Rechner, auch nach dem Studium\nStandard in der empirischen Bildungs- und Sozialforschung\nreproduzierbar: Ein Skript dokumentiert jeden Analyseschritt — kein Klick geht verloren\nUnser Anspruch: Ihr könnt vorgegebene Skripte ausführen, lesen und anpassen — ihr müsst keine Programme von Grund auf schreiben"
+    "text": "Warum R?\n\nkostenlos & Open Source — läuft auf jedem Rechner, auch nach dem Studium\nStandard in der empirischen Bildungs- und Sozialforschung\nreproduzierbar: Ein Skript dokumentiert jeden Analyseschritt — kein Klick geht verloren\nUnser Anspruch: Ihr könnt vorgegebene Skripte ausführen, lesen und anpassen — ihr müsst keine Programme von Grund auf schreiben"
   },
   {
     "objectID": "slides/block1.html#r-und-rstudio",
@@ -579,54 +551,5 @@
     "title": "Block 1 — Statistisches Denken & Werkzeuge",
     "section": "Literatur",
     "text": "Literatur\n\nSpiegelhalter, D. (2019). The Art of Statistics: Learning from Data. — Kap. 1 (Einführung, PPDAC)\nEid, M., Gollwitzer, M. & Schmitt, M. (2017). Statistik und Forschungsmethoden (5. Aufl.). — Kap. 4.1 (Grundbegriffe), Kap. 5.1 (Skalenniveaus)\n\nBeide Texte als Auszüge auf ILIAS — zur Vertiefung, nicht als Pflichtlektüre vor dem Block."
-  },
-  {
-    "objectID": "block1.html#zeitplan",
-    "href": "block1.html#zeitplan",
-    "title": "Block 1",
-    "section": "",
-    "text": "Tag 1 · Fr 03.07. · 11:30–17:30\n\n\n\n\n\n\n\nZeit\nProgrammpunkt\n\n\n\n\n11:30\nBegrüßung & Vorstellung\n\n\n11:50\nSeminarkonzeption: Struktur, Erwartungen & Studienleistung\n\n\n12:20\nInhaltlicher Einstieg: Warum Statistik? · Ziele · PPDAC-Zyklus\n\n\n13:20\nMittagspause\n\n\n14:05\nMethodische Grundbegriffe\n\n\n15:05\nKurze Pause\n\n\n15:15\nMesstheoretische Grundlagen: Messen & Skalenniveaus\n\n\n16:45\nPuffer & Übungsaufgabe (Studienleistung)\n\n\n17:20\nSeminarevaluation\n\n\n17:30\nEnde"
-  },
-  {
-    "objectID": "slides/block1.html",
-    "href": "slides/block1.html",
-    "title": "Block 1 — Statistisches Denken & Werkzeuge",
-    "section": "",
-    "text": "Warum Statistik? — Aus Daten lernen\nZiele quantitativer Forschung\nDer PPDAC-Zyklus: unser roter Faden\nMethodische Grundbegriffe\nSkalenniveaus\nUnser Datensatz: lernfoerderung\nR & RStudio: Setup und erste Schritte"
-  },
-  {
-    "objectID": "slides/block1.html#kennenlernen-woher-kommen-sie",
-    "href": "slides/block1.html#kennenlernen-woher-kommen-sie",
-    "title": "Block 1 — Statistisches Denken & Werkzeuge",
-    "section": "Kennenlernen: Woher kommen Sie?",
-    "text": "Kennenlernen: Woher kommen Sie?\nBitte einmal kurz aufs Handy: Wort eintragen »"
-  },
-  {
-    "objectID": "slides/block1.html#kennenlernen-was-wissen-sie-bereits-zu-statistik",
-    "href": "slides/block1.html#kennenlernen-was-wissen-sie-bereits-zu-statistik",
-    "title": "Block 1 — Statistisches Denken & Werkzeuge",
-    "section": "Kennenlernen: Was wissen Sie bereits zu Statistik?",
-    "text": "Kennenlernen: Was wissen Sie bereits zu Statistik?"
-  },
-  {
-    "objectID": "slides/block1.html#kennenlernen-statistik-in-einem-wort",
-    "href": "slides/block1.html#kennenlernen-statistik-in-einem-wort",
-    "title": "Block 1 — Statistisches Denken & Werkzeuge",
-    "section": "Kennenlernen: Statistik in einem Wort",
-    "text": "Kennenlernen: Statistik in einem Wort"
-  },
-  {
-    "objectID": "block1.html#kennenlernen",
-    "href": "block1.html#kennenlernen",
-    "title": "Block 1",
-    "section": "Kennenlernen",
-    "text": "Kennenlernen\nWort eintragen »"
-  },
-  {
-    "objectID": "block1.html#erwartungen-befürchtungen-wünsche",
-    "href": "block1.html#erwartungen-befürchtungen-wünsche",
-    "title": "Block 1",
-    "section": "Erwartungen, Befürchtungen & Wünsche",
-    "text": "Erwartungen, Befürchtungen & Wünsche\nBitte diskutiert in euren Breakout-Räumen (je 3 Personen) die folgenden Fragen. Zeitrahmen: 10 Minuten.\n\nWas erwartet ihr von diesem Seminar?\nWelche Befürchtungen habt ihr?\nWelche Wünsche zur Seminargestaltung habt ihr?\n\nHaltet eure Antworten gemeinsam auf dem Etherpad fest:\nEtherpad öffnen »"
   }
 ]
