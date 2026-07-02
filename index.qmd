@@ -15,9 +15,9 @@ abstract: |
 ## Zielsetzung und thematische Schwerpunkte 
 
 - Das Seminar "Methoden der standardisierten Sozialforschung" dient der Einführung in quantitative Verfahren und Forschungsmethoden. 
-- Als Einführungskurs  in die Statistik werden methodische Grundlagen vermittelt (z.B. methodische Grundbegriffe und messtheoretische Grundlagen) und Verfahren der deskriptiven  Statistik vorgestellt. 
-- Neben inhaltlichen Inputs wird die kostenlose  Statistiksoftware R und RStudio eingeführt. Die Studierenden lernen grundlegende Funktionen von R und wenden die gelernten Inhalte in Übungsaufgaben an.
-- Ziel des Seminars ist es, dass die Studierenden zum einen grundlegende Statistikenntnisse erwerben und methodische Grundlagen sowie Verfahren der deskriptiven Statisitk kennen, und zum anderen Grundlagen in der Anwendung von R in diesen Themengebieten erlernen.
+- Als Einführungskurs in die Statistik werden methodische Grundlagen vermittelt (z.B. methodische Grundbegriffe und messtheoretische Grundlagen) und Verfahren der deskriptiven Statistik vorgestellt.
+- Neben inhaltlichen Inputs wird die kostenlose Statistiksoftware R und RStudio eingeführt. Die Studierenden lernen grundlegende Funktionen von R und wenden die gelernten Inhalte in Übungsaufgaben an.
+- Ziel des Seminars ist es, dass die Studierenden zum einen grundlegende Statistikkenntnisse erwerben und methodische Grundlagen sowie Verfahren der deskriptiven Statistik kennen, und zum anderen Grundlagen in der Anwendung von R in diesen Themengebieten erlernen.
 
 
 ## Termine

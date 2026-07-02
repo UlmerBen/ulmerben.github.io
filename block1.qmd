@@ -1,6 +1,6 @@
 ---
 title: "Block 1"
-abstract: In dem ersten Block lernen Sie Ziele quantativer Forschungsmethoden kennen und erwerben grundlegende Kenntnisse methodischer Grundbegriffe und messtheoretischer Ideen
+abstract: In dem ersten Block lernen Sie Ziele quantitativer Forschungsmethoden kennen und erwerben grundlegende Kenntnisse methodischer Grundbegriffe und messtheoretischer Ideen
 ---
 
 ## Zeitplan
