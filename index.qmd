@@ -44,7 +44,7 @@ Die Studienleistung bilden die Übungsaufgaben, die für jeden Block konzipiert 
 Die Übungsaufgaben bilden eine Mischung aus Single-Choice und offenen Aufgaben und beziehen sich zum einen auf die Inhalte (Methodische Grundlagen und Deskriptive Statistik) als auch auf Kenntnisse in R (Anwendungsaufgaben).
 Die Bestehensquote liegt bei 50%.
 
-Die Bearbeitung und Abgabe der *für die Studienleistung relevanten Übungsaufgaben* erfolgt über **ILIAS**.
+Die Bearbeitung und Abgabe der *für die Studienleistung relevanten Übungsaufgaben* erfolgt über **ILIAS**. Die Anzahl von Testdurchläufen ist unbegrenzt.
 
 Abgabefrist ist der **31.07.2026**
 
