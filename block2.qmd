@@ -3,3 +3,29 @@ title: "Block 2"
 abstract: In dem zweiten Block lernen Sie die erste deskriptive Statistik kennen und erwerben grundlegende Kenntnisse methodischer Grundbegriffe und messtheoretischer Ideen
 ---
 
+## Zeitplan
+
+Tag 2 · Sa 04.07. · 10:00–16:00
+
+| Zeit  | Programmpunkt                                                              |
+|-------|---------------------------------------------------------------------------|
+| 10:00 | Rückblick Tag 1 & Agenda Tag 2                                                    |
+| 10:30 | Deskriptive Statistik Teil I: Häufigkeitsverteilungen, Maße der zentralen Tendenz, Verteilungsformen                |
+| 12:00 | *Kurze Pause*             |
+| 12:15 | Einführung in R & RStudio                                                            |
+| 13:15 | *Mittagspause*                       |
+| 14:00 | Übungszeit R (Übungsaufgaben 1–4)                                                             |                           |
+| 15:45 | Seminarevaluation                                                         |
+| 16:00 | *Ende*                                                                    |
+
+## Folien
+
+[Folien im Vollbild öffnen](slides/folien-viewer.html?file=Folien_Block2.pdf){target="_blank"}
+
+```{=html}
+<iframe class="responsive-iframe"
+        src="slides/folien-viewer.html?file=Folien_Block2.pdf"
+        title="Folien Block 2"
+        style="width:100%; aspect-ratio:16/9; min-height:520px; border:1px solid #e3e3e3; border-radius:10px;">
+</iframe>
+```

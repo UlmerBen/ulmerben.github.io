@@ -235,7 +235,7 @@
     "href": "index.html#studienleistung",
     "title": "Methoden der standardisierten Sozialforschung",
     "section": "Studienleistung",
-    "text": "Studienleistung\nDie Studienleistung bilden die Übungsaufgaben, die für jeden Block konzipiert wurden. Die Übungsaufgaben bilden eine Mischung aus Single-Choice und offenen Aufgaben und beziehen sich zum einen auf die Inhalte (Methodische Grundlagen und Deskriptive Statistik) als auch auf Kenntnisse in R (Anwendungsaufgaben). Die Bestehensquote liegt bei 50%.\nDie Bearbeitung und Abgabe der für die Studienleistung relevanten Übungsaufgaben erfolgt über ILIAS. Die Anzahl von Testdurchläufen ist unbegrenzt.\nAbgabefrist ist der 31.07.2026\n\n\n\n\n\n\nTippHinweis\n\n\n\nEmpfehlenswert ist eine zeitige Bearbeitung der Übungsaufgaben nach der Sitzung."
+    "text": "Studienleistung\nDie Studienleistung bilden die Übungsaufgaben, die für jeden Block konzipiert wurden. Die Übungsaufgaben bilden eine Mischung aus Single-Choice und offenen Aufgaben und beziehen sich zum einen auf die Inhalte (Methodische Grundlagen und Deskriptive Statistik) als auch auf Kenntnisse in R (Anwendungsaufgaben). Die Bestehensquote liegt bei 50%.\nDie Bearbeitung und Abgabe der für die Studienleistung relevanten Übungsaufgaben erfolgt über ILIAS.\nAbgabefrist ist der 31.07.2026\n\n\n\n\n\n\nTippHinweis\n\n\n\nEmpfehlenswert ist eine zeitige Bearbeitung der Übungsaufgaben nach der Sitzung."
   },
   {
     "objectID": "index.html#seminarliteratur",
@@ -278,5 +278,26 @@
     "title": "Block 1",
     "section": "Erwartungen, Befürchtungen & Wünsche",
     "text": "Erwartungen, Befürchtungen & Wünsche\nBitte diskutiert in euren Breakout-Räumen (je 3 Personen) die folgenden Fragen. Zeitrahmen: 10 Minuten.\n\nWas erwartet ihr von diesem Seminar?\nWelche Befürchtungen habt ihr?\nWelche Wünsche zur Seminargestaltung habt ihr?\n\nHaltet eure Antworten gemeinsam auf dem Etherpad fest:\nEtherpad öffnen »"
+  },
+  {
+    "objectID": "block2.html",
+    "href": "block2.html",
+    "title": "Block 2",
+    "section": "",
+    "text": "Tag 2 · Sa 04.07. · 10:00–16:00\n\n\n\n\n\n\n\nZeit\nProgrammpunkt\n\n\n\n\n10:00\nRückblick Tag 1 & Agenda Tag 2\n\n\n10:30\nDeskriptive Statistik Teil I: Häufigkeitsverteilungen, Maße der zentralen Tendenz, Verteilungsformen\n\n\n12:00\nKurze Pause\n\n\n12:15\nEinführung in R & RStudio\n\n\n13:15\nMittagspause\n\n\n14:00\nÜbungszeit R (Übungsaufgaben 1–4)\n\n\n15:45\nSeminarevaluation\n\n\n16:00\nEnde"
+  },
+  {
+    "objectID": "block2.html#zeitplan",
+    "href": "block2.html#zeitplan",
+    "title": "Block 2",
+    "section": "",
+    "text": "Tag 2 · Sa 04.07. · 10:00–16:00\n\n\n\n\n\n\n\nZeit\nProgrammpunkt\n\n\n\n\n10:00\nRückblick Tag 1 & Agenda Tag 2\n\n\n10:30\nDeskriptive Statistik Teil I: Häufigkeitsverteilungen, Maße der zentralen Tendenz, Verteilungsformen\n\n\n12:00\nKurze Pause\n\n\n12:15\nEinführung in R & RStudio\n\n\n13:15\nMittagspause\n\n\n14:00\nÜbungszeit R (Übungsaufgaben 1–4)\n\n\n15:45\nSeminarevaluation\n\n\n16:00\nEnde"
+  },
+  {
+    "objectID": "block2.html#folien",
+    "href": "block2.html#folien",
+    "title": "Block 2",
+    "section": "Folien",
+    "text": "Folien\nFolien im Vollbild öffnen"
   }
 ]

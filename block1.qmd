@@ -19,6 +19,8 @@ Tag 1 · Fr 03.07. · 11:30–17:30
 | 17:15 | Seminarevaluation                                                         |
 | 17:30 | *Ende*                                                                    |
 
+
+
 ## Folien
 
 [Folien im Vollbild öffnen](slides/folien-viewer.html?file=Folien_Block1.pdf){target="_blank"}
