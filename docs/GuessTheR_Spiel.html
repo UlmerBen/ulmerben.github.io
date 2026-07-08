@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <title>Guess the r — Korrelationen schätzen</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    * { -webkit-tap-highlight-color: transparent; }
+
+    :root {
+      --brand:      #07529A;   /* Uni-Bonn-Blau */
+      --brand-dark: #053D73;
+      --gold:       #C8941A;
+      --ink:        #1d2733;
+      --muted:      #5b6b7d;
+      --line:       #dbe1e9;
+      --panel:      #ffffff;
+      --bg:         #eef1f5;
+
+      /* Cohen-Zonen (Stärke des Zusammenhangs) */
+      --z-null:    #8696a6;   /* sehr schwach / kein Zusammenhang */
+      --z-schwach: #1F6FB2;   /* schwach   (|r| ≥ .1) */
+      --z-mittel:  #C28A1E;   /* mittel    (|r| ≥ .3) */
+      --z-stark:   #3F7D6A;   /* stark     (|r| ≥ .5) */
+
+      --coral:     #C0392B;   /* Ausreißer / Warnung */
+      --point:     #185FA5;   /* Punktfarbe im Streudiagramm */
+    }
+
+    body {
+      font-family: 'Calibri', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      background: var(--bg); color: var(--ink);
+      min-height: 100vh; min-height: 100dvh;
+      display: flex; justify-content: center; align-items: flex-start;
+      padding: 30px 16px max(56px, calc(env(safe-area-inset-bottom) + 28px));
+      padding-left: max(16px, env(safe-area-inset-left));
+      padding-right: max(16px, env(safe-area-inset-right));
+      overflow-x: hidden; overscroll-behavior: none;
+    }
+    .screen { width: 100%; max-width: 860px; }
+
+    .panel {
+      background: var(--panel); border: 1px solid var(--line);
+      border-top: 4px solid var(--brand);
+      border-radius: 12px; padding: 34px;
+      box-shadow: 0 10px 30px rgba(5,40,90,0.08);
+    }
+
+    /* ── START ─────────────────────────────────────────────── */
+    .start-header { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 6px; }
+    .start-title { font-size: 1.85rem; font-weight: 800; color: var(--brand-dark); letter-spacing: .005em; }
+    .start-tag { font-size: 0.72rem; color: var(--muted); font-weight: 700;
+                 border: 1px solid var(--line); padding: 3px 9px; border-radius: 5px; white-space: nowrap; }
+    .start-sub { font-size: 0.95rem; color: var(--muted); margin-bottom: 22px; line-height: 1.55; }
+
+    .recap { list-style: none; display: flex; flex-direction: column; gap: 10px;
+             border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+             padding: 18px 0; margin-bottom: 20px; }
+    .recap li { font-size: 0.9rem; color: var(--ink); display: flex; align-items: baseline; gap: 10px; line-height: 1.4; }
+    .recap .chip { width: 13px; height: 13px; border-radius: 3px; flex-shrink: 0; position: relative; top: 1px; }
+    .recap .chip.z-null{background:var(--z-null);} .recap .chip.z-schwach{background:var(--z-schwach);}
+    .recap .chip.z-mittel{background:var(--z-mittel);} .recap .chip.z-stark{background:var(--z-stark);}
+    .recap b { color: var(--brand-dark); }
+    .recap i { color: var(--muted); font-style: italic; }
+
+    .howto { display: flex; flex-direction: column; gap: 7px; margin-bottom: 20px; }
+    .howto-step { font-size: 0.85rem; color: #3b4a5a; line-height: 1.45; }
+    .howto-step b { color: var(--brand); }
+
+    .highscore-line { font-size: 0.82rem; color: var(--muted); margin-bottom: 22px;
+                      display: flex; align-items: center; gap: 7px; }
+    .highscore-line b { color: var(--brand-dark); }
+
+    .btn-primary {
+      display: block; width: 100%; padding: 14px;
+      background: var(--brand); color: #fff; border: none; border-radius: 8px;
+      font-size: 1rem; font-weight: 800; cursor: pointer; letter-spacing: 0.03em;
+      transition: background 0.15s; touch-action: manipulation;
+    }
+    .btn-primary:hover { background: var(--brand-dark); }
+    .btn-primary:active { transform: translateY(1px); }
+    .btn-primary:disabled { background: #aeb8c4; cursor: default; }
+
+    /* ── GAME ──────────────────────────────────────────────── */
+    #screen-game { display: flex; flex-direction: column; }
+    .game-wrapper { border: 1px solid var(--brand-dark); border-radius: 12px; overflow: hidden;
+                    box-shadow: 0 10px 30px rgba(5,40,90,0.18); background: var(--panel); }
+
+    .hud { background: var(--brand-dark); padding: 10px 16px; display: flex; align-items: center; }
+    .hud-item { display: flex; flex-direction: column; align-items: center; padding: 0 14px;
+                border-right: 1px solid rgba(255,255,255,0.14); }
+    .hud-item:first-child { padding-left: 0; }
+    .hud-label { font-size: 0.58rem; font-weight: 700; color: rgba(255,255,255,0.7);
+                 text-transform: uppercase; letter-spacing: 0.09em; }
+    .hud-value { font-size: 1.4rem; font-weight: 800; color: #fff; line-height: 1.05; font-variant-numeric: tabular-nums; }
+    .hud-spacer { flex: 1; }
+    .hud-timer { display: flex; flex-direction: column; align-items: flex-end; }
+    .hud-timer .hud-value.warn { color: #ffd36b; }
+    .hud-timer .hud-value.danger { color: #ff9a8f; }
+
+    .timebar-track { height: 6px; background: rgba(255,255,255,0.14); }
+    .timebar { height: 100%; width: 100%; background: var(--z-stark);
+               transition: width 0.1s linear, background-color 0.4s ease; }
+
+    .plot-area { position: relative; padding: 18px 20px 10px; background:
+                 linear-gradient(180deg, #f4f7fb 0%, #ffffff 55%); }
+    .plot-svg { width: 100%; height: auto; display: block; }
+
+    .guess-area { padding: 4px 22px 22px; }
+    .guess-prompt { font-size: 0.9rem; color: var(--muted); text-align: center; margin-bottom: 4px; }
+    .guess-value { font-size: 2.6rem; font-weight: 800; color: var(--brand-dark); text-align: center;
+                   line-height: 1; margin-bottom: 12px; font-variant-numeric: tabular-nums; }
+
+    /* r-Skala von -1 bis +1 mit Cohen-Zonen */
+    .rscale-wrap { position: relative; margin: 0 4px 6px; }
+    .rscale { display: flex; height: 16px; border-radius: 5px; overflow: hidden; border: 1px solid var(--line); }
+    .rscale > div { height: 100%; }
+    .seg-stark  { background: var(--z-stark);  opacity: .85; }
+    .seg-mittel { background: var(--z-mittel); opacity: .85; }
+    .seg-schwach{ background: var(--z-schwach); opacity: .85; }
+    .seg-null   { background: var(--z-null);   opacity: .55; }
+    .rscale-ticks { display: flex; justify-content: space-between; font-size: 0.62rem;
+                    color: var(--muted); margin-top: 3px; font-variant-numeric: tabular-nums; }
+
+    input[type=range].slider {
+      -webkit-appearance: none; appearance: none; width: 100%; height: 8px;
+      background: linear-gradient(90deg,#d7dfe9,#c6d2e0); border-radius: 6px; outline: none;
+      margin: 14px 0 6px; cursor: pointer;
+    }
+    input[type=range].slider::-webkit-slider-thumb {
+      -webkit-appearance: none; appearance: none; width: 30px; height: 30px; border-radius: 50%;
+      background: var(--brand); border: 3px solid #fff; box-shadow: 0 2px 8px rgba(5,40,90,0.4); cursor: grab;
+    }
+    input[type=range].slider::-moz-range-thumb {
+      width: 30px; height: 30px; border-radius: 50%; background: var(--brand);
+      border: 3px solid #fff; box-shadow: 0 2px 8px rgba(5,40,90,0.4); cursor: grab;
+    }
+    input[type=range].slider:disabled::-webkit-slider-thumb { background: #9fb0c2; }
+    input[type=range].slider:disabled { opacity: .7; }
+
+    .btn-guess { margin-top: 12px; }
+
+    /* ── REVEAL (Auflösung) ────────────────────────────────── */
+    .reveal { border-top: 1px solid var(--line); margin-top: 4px; padding: 18px 22px 22px; }
+    .reveal-cmp { display: flex; gap: 12px; margin-bottom: 14px; }
+    .cmp-box { flex: 1; text-align: center; border: 1px solid var(--line); border-radius: 10px;
+               padding: 10px 8px; background: #f6f9fc; }
+    .cmp-box.actual { border-color: var(--brand); background: #eef4fb; }
+    .cmp-label { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.06em;
+                 color: var(--muted); font-weight: 700; }
+    .cmp-r { font-size: 1.9rem; font-weight: 800; line-height: 1.1; font-variant-numeric: tabular-nums; }
+    .cmp-box.guess .cmp-r { color: var(--muted); }
+    .cmp-box.actual .cmp-r { color: var(--brand-dark); }
+
+    /* Marker über der r-Skala in der Auflösung (zwei Zeilen → nie überlappend) */
+    .rscale-markers { position: relative; height: 42px; margin: 3px 4px 0; }
+    .marker { position: absolute; transform: translateX(-50%); font-size: 0.62rem; font-weight: 800;
+              white-space: nowrap; text-align: center; }
+    .marker .tri { display: block; width: 0; height: 0; margin: 0 auto 1px;
+                   border-left: 5px solid transparent; border-right: 5px solid transparent; }
+    .marker.guess { top: 0; color: var(--muted); }
+    .marker.guess .tri { border-bottom: 7px solid var(--muted); }
+    .marker.actual { top: 21px; color: var(--brand-dark); }
+    .marker.actual .tri { border-bottom: 7px solid var(--brand-dark); }
+
+    .cohen-badge { display: inline-block; padding: 5px 13px; border-radius: 100px; color: #fff;
+                   font-size: 0.82rem; font-weight: 800; margin: 6px 0 10px; }
+    .cohen-badge.z-null{background:var(--z-null);} .cohen-badge.z-schwach{background:var(--z-schwach);}
+    .cohen-badge.z-mittel{background:var(--z-mittel);} .cohen-badge.z-stark{background:var(--z-stark);}
+
+    .reveal-stars { font-size: 1.4rem; letter-spacing: 2px; color: var(--gold); margin-bottom: 8px; }
+    .reveal-stars .empty { color: var(--line); }
+    .reveal-points { font-size: 0.88rem; color: #3b4a5a; margin-bottom: 10px; }
+    .reveal-points b { color: var(--brand); font-size: 1.05rem; }
+    .reveal-note { background: #f6f9fc; border: 1px solid var(--line); border-left: 4px solid var(--gold);
+                   border-radius: 9px; padding: 11px 14px; font-size: 0.84rem; color: #3b4a5a;
+                   line-height: 1.5; margin-bottom: 14px; }
+    .reveal-note.outlier { border-left-color: var(--coral); background: #fbf1ef; }
+    .reveal-note b { color: var(--brand-dark); }
+    .reveal-note.outlier b { color: var(--coral); }
+
+    /* ── ERGEBNIS ──────────────────────────────────────────── */
+    .result-heading { font-size: 1.5rem; font-weight: 800; color: var(--brand-dark); margin-bottom: 4px; }
+    .total-score-big { font-size: 4.2rem; font-weight: 800; text-align: center; margin: 10px 0 2px;
+                       line-height: 1; color: var(--brand-dark); font-variant-numeric: tabular-nums; }
+    .total-score-label { text-align: center; color: var(--muted); font-size: 0.88rem; margin-bottom: 14px; }
+    .stat-row { display: flex; justify-content: center; gap: 26px; margin-bottom: 16px; }
+    .stat-item { text-align: center; }
+    .stat-item .v { font-size: 1.4rem; font-weight: 800; color: var(--brand); font-variant-numeric: tabular-nums; }
+    .stat-item .l { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); }
+
+    .summary-table { width: 100%; border-collapse: collapse; margin-bottom: 22px; font-size: 0.82rem; }
+    .summary-table th { text-align: left; padding: 9px 12px; background: var(--brand); color: #fff;
+                        font-size: 0.62rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; }
+    .summary-table th:first-child { border-radius: 6px 0 0 6px; }
+    .summary-table th:last-child { border-radius: 0 6px 6px 0; text-align: center; }
+    .summary-table td { padding: 8px 12px; border-bottom: 1px solid var(--line); vertical-align: middle; color: #3b4a5a;
+                        font-variant-numeric: tabular-nums; }
+    .summary-table td.stars { text-align: center; color: var(--gold); white-space: nowrap; }
+    .summary-table tr:last-child td { border-bottom: none; }
+    .summary-table .rtag { font-weight: 800; }
+    .summary-table .olmark { color: var(--coral); font-weight: 800; margin-left: 4px; }
+
+    .highscore-banner { background: #eef6ef; border: 1px solid #cfe3d4; border-left: 4px solid var(--z-stark);
+                        border-radius: 10px; padding: 11px 16px; margin-bottom: 18px; text-align: center;
+                        font-size: 0.88rem; font-weight: 700; color: #2f7d52; }
+    .encouragement { background: #f6f9fc; border: 1px solid var(--line); border-left: 4px solid var(--gold);
+                     border-radius: 10px; padding: 15px 18px; margin-bottom: 24px;
+                     font-size: 0.9rem; color: #3b4a5a; line-height: 1.55; }
+
+    /* ── REKORDLISTE ──────────────────────────────────────── */
+    .lb-section { border-top: 1px solid var(--line); padding-top: 20px; margin-bottom: 24px; }
+    .lb-entry { display: flex; gap: 8px; margin-bottom: 8px; }
+    .lb-entry input { flex: 1; min-width: 0; padding: 11px 13px; border: 1px solid var(--line);
+                      border-radius: 8px; font-size: 0.92rem; font-family: inherit; color: var(--ink); background: #fff; }
+    .lb-entry input:focus { outline: none; border-color: var(--brand); }
+    .btn-save { padding: 11px 18px; background: var(--brand); color: #fff; border: none; border-radius: 8px;
+                font-size: 0.9rem; font-weight: 800; cursor: pointer; white-space: nowrap; touch-action: manipulation; }
+    .btn-save:hover { background: var(--brand-dark); }
+    .btn-save:disabled { background: #aeb8c4; cursor: default; }
+    .lb-status { font-size: 0.8rem; color: var(--muted); min-height: 18px; margin-bottom: 14px; }
+    .lb-title { font-size: 0.95rem; font-weight: 800; color: var(--brand-dark); margin-bottom: 10px; }
+    .lb-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+    .lb-list li { display: flex; align-items: center; gap: 12px; padding: 9px 13px;
+                  background: #f6f9fc; border: 1px solid var(--line); border-radius: 8px; font-size: 0.88rem; }
+    .lb-list li.me { background: #eef6ef; border-color: #cfe3d4; }
+    .lb-rank { font-weight: 800; color: var(--brand); width: 1.6em; flex-shrink: 0; text-align: center; }
+    .lb-who { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ink); font-weight: 700; }
+    .lb-score { color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .lb-empty { font-size: 0.84rem; color: var(--muted); padding: 6px 2px; }
+
+    @media (max-width: 520px) {
+      body { padding: 12px 10px 36px; }
+      .panel { padding: 22px 16px; }
+      .start-title { font-size: 1.4rem; }
+      .start-sub { font-size: 0.83rem; }
+      .recap li { font-size: 0.82rem; } .recap i { display: none; }
+      .howto-step { font-size: 0.78rem; }
+      .hud { padding: 8px 9px; } .hud-item { padding: 0 8px; }
+      .hud-label { font-size: 0.5rem; } .hud-value { font-size: 1rem; }
+      .plot-area { padding: 12px 10px 6px; }
+      .guess-area { padding: 4px 12px 18px; }
+      .guess-value { font-size: 2.1rem; }
+      .reveal, .reveal { padding: 14px 12px 18px; }
+      .cmp-r { font-size: 1.5rem; }
+      .total-score-big { font-size: 3.2rem; }
+      .summary-table { font-size: 0.72rem; }
+      .summary-table th, .summary-table td { padding: 7px 6px; }
+      .stat-row { gap: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════ START ════════ -->
+<div id="screen-start" class="screen">
+  <div class="panel">
+    <div class="start-header">
+      <h1 class="start-title">Guess the r</h1>
+      <span class="start-tag">Block 3 · Korrelation</span>
+    </div>
+    <p class="start-sub">Wie gut kannst du eine Korrelation <em>mit bloßem Auge</em> einschätzen? Du siehst ein zufälliges Streudiagramm und schätzt den Korrelationskoeffizienten <b>r</b> per Regler. Danach kommt die Auflösung – samt Einordnung nach Cohen.</p>
+
+    <ul class="recap">
+      <li><span class="chip z-null"></span><span><b>|r| &lt; 0,1</b> — kein bzw. sehr schwacher Zusammenhang <i>(Punktwolke ohne Richtung)</i></span></li>
+      <li><span class="chip z-schwach"></span><span><b>|r| ≈ 0,1</b> — schwacher Zusammenhang <i>(Cohen 1988)</i></span></li>
+      <li><span class="chip z-mittel"></span><span><b>|r| ≈ 0,3</b> — mittlerer Zusammenhang <i>(Cohen 1988)</i></span></li>
+      <li><span class="chip z-stark"></span><span><b>|r| ≈ 0,5</b> — starker Zusammenhang <i>(Cohen 1988)</i></span></li>
+    </ul>
+
+    <div class="howto">
+      <span class="howto-step">▸ Schätze <b>r</b> zwischen <b>−1 und +1</b> mit dem Regler (positiv = steigend, negativ = fallend).</span>
+      <span class="howto-step">▸ <b>Genauigkeit zählt</b>: Je näher dein Tipp am echten r liegt, desto mehr Punkte (bis 100).</span>
+      <span class="howto-step">▸ <b>Zeitdruck</b>: Wer schneller antwortet, sichert sich bis zu 25 Bonuspunkte pro Runde.</span>
+      <span class="howto-step">▸ <b>8 Runden</b> mit steigender Schwierigkeit – zufällig generiert, <b>jeder Durchlauf ist anders</b>.</span>
+      <span class="howto-step">▸ <b>Vorsicht:</b> Einzelne <span style="color:var(--coral);font-weight:800">Ausreißer</span> können r kräftig verzerren!</span>
+    </div>
+
+    <div class="highscore-line" id="highscore-line" style="display:none">
+      🏆 Bestleistung: <b><span id="highscore-val">0</span> / 1000 Punkten</b>
+    </div>
+
+    <button class="btn-primary" onclick="startGame()">Spiel starten</button>
+  </div>
+</div>
+
+<!-- ════════ GAME ════════ -->
+<div id="screen-game" class="screen" style="display:none">
+  <div class="game-wrapper">
+    <div class="hud">
+      <div class="hud-item"><span class="hud-label">Runde</span><span class="hud-value"><span id="hud-round">1</span>/8</span></div>
+      <div class="hud-item"><span class="hud-label">Punkte</span><span class="hud-value" id="hud-score">0</span></div>
+      <div class="hud-spacer"></div>
+      <div class="hud-timer"><span class="hud-label">Zeit</span><span class="hud-value" id="hud-time">–</span></div>
+    </div>
+    <div class="timebar-track"><div class="timebar" id="timebar"></div></div>
+
+    <div class="plot-area" id="plot-area"><!-- SVG wird hier eingesetzt --></div>
+
+    <div class="guess-area" id="guess-area">
+      <div class="guess-prompt">Dein Tipp für <b>r</b>:</div>
+      <div class="guess-value" id="guess-value">0,00</div>
+      <div class="rscale-wrap">
+        <div class="rscale">
+          <div class="seg-stark"   style="width:25%"></div>
+          <div class="seg-mittel"  style="width:10%"></div>
+          <div class="seg-schwach" style="width:10%"></div>
+          <div class="seg-null"    style="width:10%"></div>
+          <div class="seg-schwach" style="width:10%"></div>
+          <div class="seg-mittel"  style="width:10%"></div>
+          <div class="seg-stark"   style="width:25%"></div>
+        </div>
+        <div class="rscale-ticks"><span>−1</span><span>−0,5</span><span>0</span><span>+0,5</span><span>+1</span></div>
+      </div>
+      <input type="range" class="slider" id="slider" min="-1" max="1" step="0.01" value="0"
+             oninput="onSlide(this.value)">
+      <button class="btn-primary btn-guess" id="btn-guess" onclick="submitGuess()">Auflösen</button>
+    </div>
+
+    <!-- Auflösung -->
+    <div class="reveal" id="reveal" style="display:none">
+      <div class="reveal-cmp">
+        <div class="cmp-box guess"><div class="cmp-label">Dein Tipp</div><div class="cmp-r" id="rev-guess">–</div></div>
+        <div class="cmp-box actual"><div class="cmp-label">Tatsächlich</div><div class="cmp-r" id="rev-actual">–</div></div>
+      </div>
+      <div class="rscale-wrap">
+        <div class="rscale">
+          <div class="seg-stark"   style="width:25%"></div>
+          <div class="seg-mittel"  style="width:10%"></div>
+          <div class="seg-schwach" style="width:10%"></div>
+          <div class="seg-null"    style="width:10%"></div>
+          <div class="seg-schwach" style="width:10%"></div>
+          <div class="seg-mittel"  style="width:10%"></div>
+          <div class="seg-stark"   style="width:25%"></div>
+        </div>
+        <div class="rscale-markers" id="rev-markers"></div>
+      </div>
+      <div style="text-align:center"><span class="cohen-badge" id="rev-badge">–</span></div>
+      <div class="reveal-stars" id="rev-stars"></div>
+      <div class="reveal-points" id="rev-points"></div>
+      <div class="reveal-note" id="rev-note" style="display:none"></div>
+      <button class="btn-primary" id="btn-next" onclick="nextRound()">Weiter</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════ FINALE ════════ -->
+<div id="screen-final" class="screen" style="display:none">
+  <div class="panel">
+    <h2 class="result-heading">Geschafft! Spiel beendet</h2>
+    <div class="total-score-big" id="final-score-big">—</div>
+    <div class="total-score-label">von 1000 möglichen Punkten</div>
+    <div class="stat-row">
+      <div class="stat-item"><div class="v" id="stat-avgerr">–</div><div class="l">Ø Abweichung</div></div>
+      <div class="stat-item"><div class="v" id="stat-stars">–</div><div class="l">Sterne gesamt</div></div>
+      <div class="stat-item"><div class="v" id="stat-time">–</div><div class="l">Zeit</div></div>
+    </div>
+    <div class="highscore-banner" id="highscore-banner" style="display:none">🎉 Neue persönliche Bestleistung!</div>
+    <div class="encouragement" id="final-encouragement"></div>
+
+    <table class="summary-table">
+      <thead><tr><th>Runde</th><th>Dein Tipp</th><th>Echtes r</th><th>Abw.</th><th>Punkte</th><th>Sterne</th></tr></thead>
+      <tbody id="final-summary-body"></tbody>
+    </table>
+
+    <div class="lb-section">
+      <div class="lb-entry" id="lb-entry">
+        <input id="name-input" type="text" maxlength="18" placeholder="Dein Name (für die Rekordliste)" autocomplete="off">
+        <button class="btn-save" id="btn-save" onclick="commitScore()">Eintragen</button>
+      </div>
+      <div class="lb-status" id="lb-status"></div>
+      <h3 class="lb-title">🏆 Rekordliste — Top 3</h3>
+      <ol class="lb-list" id="lb-list"></ol>
+    </div>
+
+    <button class="btn-primary" onclick="showStartScreen()">Neu starten</button>
+  </div>
+</div>
+
+<script>
+// ================================================================
+//  GUESS THE r — Korrelationen im Streudiagramm schätzen
+//  Block 3 · Kovarianz & Korrelation (Cohen 1988: .1 / .3 / .5)
+//
+//  Ablauf: 8 Runden, je ein zufällig generiertes Streudiagramm.
+//  Spielende schätzen r per Regler (−1…+1). Punkte = Genauigkeit
+//  (bis 100) + Zeitbonus (bis 25). Manche Runden enthalten
+//  Ausreißer, die r sichtbar verzerren – als Lerneffekt.
+// ================================================================
+
+// Runden-Spezifikation: Zielbereich für |r|, n, Ausreißer-Typ, Zeit (s)
+const ROUND_SPECS = [
+  { rMin:0.68, rMax:0.94, n:42, outlier:null,      time:22 }, // 1  stark & klar (Aufwärmen)
+  { rMin:0.45, rMax:0.80, n:40, outlier:null,      time:20 }, // 2  stark
+  { rMin:0.28, rMax:0.58, n:38, outlier:null,      time:19 }, // 3  mittel
+  { rMin:0.10, rMax:0.42, n:36, outlier:null,      time:17 }, // 4  schwach–mittel
+  { rMin:0.00, rMax:0.20, n:34, outlier:null,      time:16 }, // 5  nahe null (Falle)
+  { rMin:0.00, rMax:0.14, n:30, outlier:'inflate', time:15 }, // 6  Ausreißer täuscht Zusammenhang vor
+  { rMin:0.62, rMax:0.90, n:30, outlier:'deflate', time:14 }, // 7  Ausreißer verdeckt Zusammenhang
+  { rMin:0.15, rMax:0.90, n:34, outlier:'random',  time:12 }, // 8  alles möglich, wenig Zeit
+];
+const TOTAL_ROUNDS = ROUND_SPECS.length;
+const MAX_ACC = 100, MAX_TIME_BONUS = 25;
+const MAX_TOTAL = TOTAL_ROUNDS * (MAX_ACC + MAX_TIME_BONUS); // 1000
+const HS_KEY = 'guessr_highscore';
+
+// ── Zufalls-Helfer ──
+function randn(){ let u=0,v=0; while(u===0)u=Math.random(); while(v===0)v=Math.random();
+  return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v); }
+function pearson(xs,ys){
+  const n=xs.length; if(n<2) return 0; let mx=0,my=0;
+  for(let i=0;i<n;i++){mx+=xs[i];my+=ys[i];} mx/=n;my/=n;
+  let sxy=0,sxx=0,syy=0;
+  for(let i=0;i<n;i++){const dx=xs[i]-mx,dy=ys[i]-my;sxy+=dx*dy;sxx+=dx*dx;syy+=dy*dy;}
+  const d=Math.sqrt(sxx*syy); return d===0?0:Math.max(-1,Math.min(1,sxy/d));
+}
+function genCorr(r,n){
+  const xs=[],ys=[]; const b=Math.sqrt(Math.max(0,1-r*r));
+  for(let i=0;i<n;i++){const x=randn(),e=randn();xs.push(x);ys.push(r*x+b*e);}
+  return {xs,ys};
+}
+
+// ── Runde erzeugen ──
+function makeRound(spec){
+  const sign = Math.random()<0.5 ? -1 : 1;
+  const targetR = sign*(spec.rMin + Math.random()*(spec.rMax-spec.rMin));
+  let {xs,ys} = genCorr(targetR, spec.n);
+  let outlierIdx = [], rWithout = null, otype = null;
+
+  if(spec.outlier){
+    otype = spec.outlier==='random' ? (Math.random()<0.5?'inflate':'deflate') : spec.outlier;
+    if(otype==='inflate'){
+      // Basis ist ~0 → ein/zwei extreme Punkte erzeugen scheinbaren Zusammenhang in Richtung sign
+      const k = Math.random()<0.5?1:2;
+      for(let j=0;j<k;j++){
+        xs.push(2.5+Math.random()*1.3);
+        ys.push(sign*(2.5+Math.random()*1.3));
+        outlierIdx.push(xs.length-1);
+      }
+    } else { // deflate: starke Basis, ein Ausreißer in der Gegenecke schwächt r ab
+      xs.push(2.4+Math.random()*1.1);
+      ys.push(-Math.sign(targetR)*(2.3+Math.random()*1.1));
+      outlierIdx.push(xs.length-1);
+    }
+    const set=new Set(outlierIdx);
+    const xf=xs.filter((_,i)=>!set.has(i)), yf=ys.filter((_,i)=>!set.has(i));
+    rWithout = pearson(xf,yf);
+  }
+
+  const rActual = pearson(xs,ys);
+  return { xs, ys, rActual, rWithout, outlierIdx, otype };
+}
+
+// ── Cohen-Einordnung ──
+function cohen(r){
+  const a=Math.abs(r);
+  const dir = r>=0 ? 'positiver' : 'negativer';
+  if(a<0.1)  return { key:'z-null',    label:'kein bzw. sehr schwacher Zusammenhang' };
+  if(a<0.3)  return { key:'z-schwach', label:`schwacher ${dir} Zusammenhang` };
+  if(a<0.5)  return { key:'z-mittel',  label:`mittlerer ${dir} Zusammenhang` };
+  return             { key:'z-stark',  label:`starker ${dir} Zusammenhang` };
+}
+
+// ── Zahl-Formatierung (deutsches Komma) ──
+function fmtR(r){ const s=r.toFixed(2).replace('.',','); return (r>0?'+':'')+s; }
+function fmtErr(e){ return e.toFixed(2).replace('.',','); }
+function fmtTime(sec){ const m=Math.floor(sec/60), s=sec%60; return m+':'+String(s).padStart(2,'0'); }
+
+// ── Streudiagramm als SVG ──
+function renderScatter(round, reveal){
+  const W=760, H=340, padL=42, padR=18, padT=16, padB=34;
+  const xs=round.xs, ys=round.ys;
+  let xmin=Math.min(...xs), xmax=Math.max(...xs), ymin=Math.min(...ys), ymax=Math.max(...ys);
+  const xpad=(xmax-xmin)*0.08||1, ypad=(ymax-ymin)*0.08||1;
+  xmin-=xpad; xmax+=xpad; ymin-=ypad; ymax+=ypad;
+  const sx=x=> padL + (x-xmin)/(xmax-xmin)*(W-padL-padR);
+  const sy=y=> H-padB - (y-ymin)/(ymax-ymin)*(H-padT-padB);
+  const olset=new Set(round.outlierIdx);
+
+  let pts='';
+  for(let i=0;i<xs.length;i++){
+    const isOl = reveal && olset.has(i);
+    const col = isOl ? 'var(--coral)' : 'var(--point)';
+    const rad = isOl ? 6 : 4.3;
+    const op  = isOl ? 0.95 : 0.72;
+    pts += `<circle cx="${sx(xs[i]).toFixed(1)}" cy="${sy(ys[i]).toFixed(1)}" r="${rad}" fill="${col}" fill-opacity="${op}"${isOl?' stroke="#fff" stroke-width="1.5"':''}/>`;
+  }
+
+  return `<svg class="plot-svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet" aria-label="Streudiagramm">
+    <rect x="${padL}" y="${padT}" width="${W-padL-padR}" height="${H-padT-padB}" fill="#ffffff" stroke="#eef1f5"/>
+    <line x1="${padL}" y1="${padT}" x2="${padL}" y2="${H-padB}" stroke="#9aa7b5" stroke-width="1.4"/>
+    <line x1="${padL}" y1="${H-padB}" x2="${W-padR}" y2="${H-padB}" stroke="#9aa7b5" stroke-width="1.4"/>
+    <text x="${padL+(W-padL-padR)/2}" y="${H-6}" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" fill="#5b6b7d">Merkmal&#160;X</text>
+    <text x="14" y="${padT+(H-padT-padB)/2}" text-anchor="middle" font-family="Calibri,sans-serif" font-size="14" fill="#5b6b7d" transform="rotate(-90 14 ${padT+(H-padT-padB)/2})">Merkmal&#160;Y</text>
+    ${pts}
+  </svg>`;
+}
+
+// ── Highscore ──
+function getHighScore(){ return parseInt(localStorage.getItem(HS_KEY)||'0',10); }
+function saveHighScore(s){ if(s>getHighScore()){ localStorage.setItem(HS_KEY,String(s)); return true; } return false; }
+function refreshHighscoreLine(){
+  const hs=getHighScore(), line=document.getElementById('highscore-line');
+  if(hs>0){ document.getElementById('highscore-val').textContent=hs; line.style.display='flex'; }
+  else line.style.display='none';
+}
+
+// ── Zustand ──
+let state = {
+  round:0, rounds:[], score:0, results:[], starsTotal:0, errSum:0,
+  guess:0, answered:false, timer:null, timeLeft:0, timeLimit:0, gameStartMs:0, totalSeconds:0,
+};
+
+function showScreen(id){
+  ['screen-start','screen-game','screen-final'].forEach(s=>{
+    document.getElementById(s).style.display=(s===id)?'':'none';
+  });
+}
+
+function startGame(){
+  state.round=0; state.score=0; state.results=[]; state.starsTotal=0; state.errSum=0;
+  state.gameStartMs=Date.now();
+  showScreen('screen-game');
+  loadRound();
+}
+
+function loadRound(){
+  const spec=ROUND_SPECS[state.round];
+  const round=makeRound(spec);
+  state.rounds[state.round]=round;
+  state.answered=false; state.guess=0;
+
+  // UI zurücksetzen
+  document.getElementById('reveal').style.display='none';
+  document.getElementById('guess-area').style.display='';
+  const slider=document.getElementById('slider');
+  slider.disabled=false; slider.value=0;
+  document.getElementById('guess-value').textContent='0,00';
+  document.getElementById('btn-guess').disabled=false;
+  document.getElementById('plot-area').innerHTML=renderScatter(round,false);
+
+  document.getElementById('hud-round').textContent=state.round+1;
+  document.getElementById('hud-score').textContent=state.score;
+
+  // Timer starten
+  state.timeLimit=spec.time; state.timeLeft=spec.time;
+  updateTimerUI();
+  if(state.timer) clearInterval(state.timer);
+  state.timer=setInterval(()=>{
+    state.timeLeft-=0.1;
+    if(state.timeLeft<=0){ state.timeLeft=0; updateTimerUI(); clearInterval(state.timer); submitGuess(true); }
+    else updateTimerUI();
+  },100);
+}
+
+function updateTimerUI(){
+  const t=Math.max(0,state.timeLeft), frac=state.timeLimit?t/state.timeLimit:0;
+  const bar=document.getElementById('timebar');
+  bar.style.width=(frac*100)+'%';
+  bar.style.background = frac>0.5?'var(--z-stark)': frac>0.25?'var(--gold)':'var(--coral)';
+  const tv=document.getElementById('hud-time');
+  tv.textContent=Math.ceil(t);
+  tv.className='hud-value'+(frac<=0.25?' danger':frac<=0.5?' warn':'');
+}
+
+function onSlide(v){
+  state.guess=parseFloat(v);
+  document.getElementById('guess-value').textContent=state.guess.toFixed(2).replace('.',',');
+}
+
+function submitGuess(timedOut){
+  if(state.answered) return;
+  state.answered=true;
+  if(state.timer){ clearInterval(state.timer); state.timer=null; }
+
+  const round=state.rounds[state.round];
+  const guess=state.guess, actual=round.rActual;
+  const err=Math.abs(guess-actual);
+
+  // Punkte: Genauigkeit (bis 100) + Zeitbonus (bis 25, nur wenn nicht abgelaufen)
+  const acc = Math.round(MAX_ACC * Math.max(0, 1 - err/0.4));
+  const timeFrac = timedOut ? 0 : Math.max(0, state.timeLeft)/state.timeLimit;
+  const timeBonus = timedOut ? 0 : Math.round(MAX_TIME_BONUS * timeFrac);
+  const pts = acc + timeBonus;
+  const stars = err<=0.06 ? 3 : err<=0.12 ? 2 : err<=0.22 ? 1 : 0;
+
+  state.score += pts; state.starsTotal += stars; state.errSum += err;
+  state.results.push({ round:state.round+1, guess, actual, err, pts, acc, timeBonus, stars,
+                       otype:round.otype, rWithout:round.rWithout, timedOut:!!timedOut });
+
+  document.getElementById('hud-score').textContent=state.score;
+  showReveal(round, guess, actual, err, {acc,timeBonus,pts,stars,timedOut});
+}
+
+function markerHTML(r, cls, txt){
+  const pct=Math.max(0,Math.min(100,((r+1)/2)*100));
+  return `<div class="marker ${cls}" style="left:${pct}%"><span class="tri"></span>${txt}</div>`;
+}
+
+function showReveal(round, guess, actual, err, sc){
+  document.getElementById('slider').disabled=true;
+  document.getElementById('btn-guess').disabled=true;
+  document.getElementById('guess-area').style.display='none';
+
+  // Ausreißer im Diagramm einfärben
+  document.getElementById('plot-area').innerHTML=renderScatter(round,true);
+
+  document.getElementById('rev-guess').textContent=fmtR(guess);
+  document.getElementById('rev-actual').textContent=fmtR(actual);
+
+  document.getElementById('rev-markers').innerHTML =
+    markerHTML(guess,'guess','Tipp') + markerHTML(actual,'actual','Echt');
+
+  const c=cohen(actual);
+  const badge=document.getElementById('rev-badge');
+  badge.className='cohen-badge '+c.key;
+  badge.textContent=c.label;
+
+  const stars=sc.stars;
+  document.getElementById('rev-stars').innerHTML =
+    '★'.repeat(stars)+`<span class="empty">${'★'.repeat(3-stars)}</span>`;
+
+  let pdet=`Genauigkeit: <b>${sc.acc}</b>`;
+  if(sc.timedOut) pdet+=` &nbsp;·&nbsp; ⏱ Zeit abgelaufen (kein Bonus)`;
+  else pdet+=` &nbsp;+&nbsp; Zeitbonus: <b>${sc.timeBonus}</b>`;
+  pdet+=` &nbsp;=&nbsp; <b>${sc.pts} Punkte</b> · Abweichung ${fmtErr(err)}`;
+  document.getElementById('rev-points').innerHTML=pdet;
+
+  // Hinweis: Ausreißer-Runden erklären, sonst kurzes Genauigkeits-Feedback
+  const note=document.getElementById('rev-note');
+  if(round.otype){
+    note.className='reveal-note outlier';
+    if(round.otype==='inflate'){
+      note.innerHTML=`<b>Ausreißer-Falle!</b> Die rot markierten Punkte täuschen einen Zusammenhang vor. `+
+        `Ohne sie läge die Korrelation bei nur <b>r ≈ ${fmtR(round.rWithout)}</b>. `+
+        `Ein einzelner extremer Punkt kann r stark nach oben ziehen.`;
+    } else {
+      note.innerHTML=`<b>Ausreißer-Falle!</b> Ohne den rot markierten Punkt wäre der Zusammenhang mit `+
+        `<b>r ≈ ${fmtR(round.rWithout)}</b> deutlich stärker. Ein einzelner Ausreißer kann eine echte `+
+        `Korrelation verdecken.`;
+    }
+    note.style.display='';
+  } else if(err<=0.06){
+    note.className='reveal-note';
+    note.innerHTML=`<b>Volltreffer!</b> Deine Schätzung liegt fast perfekt auf dem echten r.`;
+    note.style.display='';
+  } else if(Math.sign(guess)!==Math.sign(actual) && Math.abs(actual)>0.15){
+    note.className='reveal-note outlier';
+    note.innerHTML=`<b>Achtung Richtung:</b> Der Zusammenhang ist <b>${actual>0?'positiv (steigend)':'negativ (fallend)'}</b> – dein Tipp hatte das falsche Vorzeichen.`;
+    note.style.display='';
+  } else {
+    note.style.display='none';
+  }
+
+  document.getElementById('btn-next').textContent =
+    state.round < TOTAL_ROUNDS-1 ? 'Weiter' : 'Gesamtergebnis anzeigen';
+
+  document.getElementById('reveal').style.display='';
+}
+
+function nextRound(){
+  if(state.round < TOTAL_ROUNDS-1){ state.round++; loadRound(); }
+  else showFinal();
+}
+
+function showFinal(){
+  state.totalSeconds=Math.max(0,Math.round((Date.now()-state.gameStartMs)/1000));
+  document.getElementById('final-score-big').textContent=state.score;
+  document.getElementById('stat-avgerr').textContent=fmtErr(state.errSum/TOTAL_ROUNDS);
+  document.getElementById('stat-stars').textContent=state.starsTotal+'/'+(TOTAL_ROUNDS*3);
+  document.getElementById('stat-time').textContent=fmtTime(state.totalSeconds);
+
+  const tbody=document.getElementById('final-summary-body'); tbody.innerHTML='';
+  state.results.forEach(r=>{
+    const c=cohen(r.actual);
+    const zoneColor={'z-null':'var(--z-null)','z-schwach':'var(--z-schwach)','z-mittel':'var(--z-mittel)','z-stark':'var(--z-stark)'}[c.key];
+    const ol=r.otype?`<span class="olmark" title="Ausreißer-Runde">▲</span>`:'';
+    const starsTxt='★'.repeat(r.stars)+'<span style="color:var(--line)">'+'★'.repeat(3-r.stars)+'</span>';
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${r.round}${ol}</td>`+
+      `<td>${fmtR(r.guess)}</td>`+
+      `<td class="rtag" style="color:${zoneColor}">${fmtR(r.actual)}</td>`+
+      `<td>${fmtErr(r.err)}</td>`+
+      `<td><b>${r.pts}</b></td>`+
+      `<td class="stars">${starsTxt}</td>`;
+    tbody.appendChild(tr);
+  });
+
+  const isNew=saveHighScore(state.score);
+  document.getElementById('highscore-banner').style.display=isNew?'block':'none';
+
+  let msg;
+  if(state.score>=850) msg='🎓 Herausragend! Du hast ein exzellentes Auge für Korrelationen – selbst bei knapper Zeit und Ausreißern. Genau dieses Gefühl hilft dir, r-Werte in Studien kritisch einzuordnen.';
+  else if(state.score>=650) msg='👍 Starke Leistung! Deine Schätzungen sitzen. Achte bei den Ausreißer-Runden weiter darauf, wie sehr einzelne Punkte r verzerren können.';
+  else if(state.score>=400) msg='🙂 Solide! Merke dir die Cohen-Faustregeln (0,1 / 0,3 / 0,5) und dass eine dichte, schmale Punktwolke für ein hohes |r| spricht. Noch ein Durchlauf?';
+  else msg='📖 Korrelationen mit dem Auge zu schätzen ist Übungssache! Faustregel: je enger die Punkte um eine Linie liegen, desto größer |r|. Starte gleich nochmal.';
+  document.getElementById('final-encouragement').textContent=msg;
+
+  // Rekordliste vorbereiten
+  const saveBtn=document.getElementById('btn-save'), nameInput=document.getElementById('name-input');
+  document.getElementById('lb-entry').style.display='flex';
+  saveBtn.disabled=false; saveBtn.textContent='Eintragen';
+  nameInput.value=''; document.getElementById('lb-status').textContent='';
+  renderLeaderboard(null);
+
+  showScreen('screen-final');
+}
+
+function showStartScreen(){ refreshHighscoreLine(); showScreen('screen-start'); }
+
+// ================================================================
+//  REKORDLISTE
+//  Standard: LOKAL pro Gerät (localStorage) – funktioniert sofort,
+//  ganz ohne Server. Der persönliche Highscore (Startbildschirm)
+//  bleibt davon unberührt erhalten.
+//
+//  GETEILTE Rekordliste (geräteübergreifend, wie beim Memory-/
+//  Skalenniveau-Spiel) optional aktivierbar: Trage unten in
+//  LEADERBOARD_URL die Web-App-URL ein, deren Backend den Spielnamen
+//  "guessr" kennt (eigene Tabelle/Tab, Feld `score`). Wichtig: Die
+//  bisherige Apps-Script-Web-App der anderen Spiele liefert für
+//  unbekannte Spielnamen die MEMORY-Daten zurück – daher hier bewusst
+//  leer gelassen, um die Memory-Bestenliste nicht zu verfälschen.
+//  Der Filter unten verwirft zur Sicherheit fremd geformte Einträge.
+// ================================================================
+const LEADERBOARD_URL = "";   // z. B. "https://script.google.com/macros/s/…/exec" mit game=guessr-Unterstützung
+const LB_GAME = "guessr";
+const LB_KEY  = "guessr-leaderboard";
+
+function lbLocalGet(){ try { return JSON.parse(localStorage.getItem(LB_KEY)) || []; } catch(e){ return []; } }
+function lbLocalSet(list){ try { localStorage.setItem(LB_KEY, JSON.stringify(list)); } catch(e){} }
+// Nur gültige Einträge (mit numerischem score) zulassen; mehr Punkte zuerst,
+// bei Gleichstand schnellere Zeit.
+function lbSort(list){
+  return list.filter(e=>e && typeof e.score==='number' && isFinite(e.score))
+             .sort((a,b)=> (b.score-a.score) || ((a.time||0)-(b.time||0))).slice(0,10);
+}
+
+async function lbFetch(){
+  if(LEADERBOARD_URL){
+    try {
+      const r=await fetch(LEADERBOARD_URL + "?game=" + LB_GAME, { method:"GET" });
+      const data=await r.json();
+      return lbSort(Array.isArray(data)?data:(data.entries||[]));
+    } catch(e){ /* Server nicht erreichbar → lokaler Fallback */ }
+  }
+  return lbSort(lbLocalGet());
+}
+async function lbPush(entry){
+  if(LEADERBOARD_URL){
+    try {
+      await fetch(LEADERBOARD_URL, {
+        method:"POST",
+        headers:{ "Content-Type":"text/plain;charset=utf-8" },
+        body: JSON.stringify(Object.assign({ game:LB_GAME }, entry))
+      });
+      return;
+    } catch(e){ /* Fallback lokal */ }
+  }
+  const list=lbLocalGet(); list.push(entry); lbLocalSet(lbSort(list));
+}
+
+const RANK_MEDAL=['🥇','🥈','🥉'];
+async function renderLeaderboard(highlight){
+  const listEl=document.getElementById('lb-list');
+  listEl.innerHTML='<li class="lb-empty">Lädt …</li>';
+  const list=(await lbFetch()).slice(0,3);
+  listEl.innerHTML='';
+  if(!list.length){ listEl.innerHTML='<li class="lb-empty">Noch keine Einträge – sei die/der Erste!</li>'; return; }
+  list.forEach((e,i)=>{
+    const li=document.createElement('li');
+    if(highlight && e.name===highlight.name && e.score===highlight.score && e.time===highlight.time) li.className='me';
+    li.innerHTML=`<span class="lb-rank">${RANK_MEDAL[i]}</span><span class="lb-who"></span>`+
+      `<span class="lb-score">${e.score}/1000 · ${fmtTime(e.time)}</span>`;
+    li.querySelector('.lb-who').textContent=e.name;
+    listEl.appendChild(li);
+  });
+}
+async function commitScore(){
+  const nameInput=document.getElementById('name-input');
+  const saveBtn=document.getElementById('btn-save');
+  const status=document.getElementById('lb-status');
+  const name=(nameInput.value.trim().slice(0,18))||'Anonym';
+  const entry={ name:name, score:state.score, time:state.totalSeconds };
+  saveBtn.disabled=true; saveBtn.textContent='Gespeichert';
+  document.getElementById('lb-entry').style.display='none';
+  status.textContent='Speichere …';
+  await lbPush(entry);
+  status.textContent='Dein Ergebnis wurde eingetragen.';
+  await renderLeaderboard(entry);
+}
+
+// ── Tastatur: Pfeile feinjustieren, Enter = Auflösen/Weiter ──
+document.addEventListener('keydown',e=>{
+  if(document.getElementById('screen-game').style.display==='none') return;
+  if(e.key==='Enter'){
+    e.preventDefault();
+    if(state.answered) nextRound(); else submitGuess(false);
+    return;
+  }
+  if(state.answered) return;
+  const slider=document.getElementById('slider');
+  if(e.key==='ArrowLeft'){ e.preventDefault(); slider.value=(parseFloat(slider.value)-0.01).toFixed(2); onSlide(slider.value); }
+  if(e.key==='ArrowRight'){ e.preventDefault(); slider.value=(parseFloat(slider.value)+0.01).toFixed(2); onSlide(slider.value); }
+});
+document.getElementById('name-input').addEventListener('keydown', e=>{ if(e.key==='Enter'){ e.preventDefault(); commitScore(); } });
+
+// Init
+refreshHighscoreLine();
+</script>
+</body>
+</html>

@@ -8,6 +8,7 @@ project:
     - slides/folien-viewer.html
     - slides/*.pdf
     - slides/wordcloud/*.html
+    - GuessTheR_Spiel.html
 
 website:
   title: "Methoden der standardisierten Sozialforschung"
