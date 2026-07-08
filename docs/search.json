@@ -299,5 +299,19 @@
     "title": "Block 2",
     "section": "Folien",
     "text": "Folien\nFolien im Vollbild öffnen"
+  },
+  {
+    "objectID": "block3.html",
+    "href": "block3.html",
+    "title": "Block 3",
+    "section": "",
+    "text": "Tag 3 · Fr 10.07. · 11:30–16:00\n\n\n\n\n\n\n\nZeit\nProgrammpunkt\n\n\n\n\n11:30\nBegrüßung & offene Fragen zu Block 1 & 2\n\n\n11:45\nBesprechung Übungsaufgaben R (Block 2: Vektoren, NA-Handling, Data Frames, Subsetting/Faktorcodierung, zentrale Tendenz)\n\n\n12:10\nRecap & Agenda\n\n\n12:20\nInput: Dispersionsmaße & z-Transformation\n\n\n13:10\nÜbung & Besprechung: Streuungsmaße & z-Transformation (Aufgabe 1 & 2)\n\n\n14:00\nInput: Kovarianz & Korrelation\n\n\n14:45\nÜbung & Besprechung: Kovarianz & Korrelation (Aufgabe 3) — Folie fehlt noch, s.u.\n\n\n15:35\nSeminarevaluation\n\n\n15:50\nAusblick auf Block 4\n\n\n16:00\nEnde"
+  },
+  {
+    "objectID": "block3.html#zeitplan",
+    "href": "block3.html#zeitplan",
+    "title": "Block 3",
+    "section": "",
+    "text": "Tag 3 · Fr 10.07. · 11:30–16:00\n\n\n\n\n\n\n\nZeit\nProgrammpunkt\n\n\n\n\n11:30\nBegrüßung & offene Fragen zu Block 1 & 2\n\n\n11:45\nBesprechung Übungsaufgaben R (Block 2: Vektoren, NA-Handling, Data Frames, Subsetting/Faktorcodierung, zentrale Tendenz)\n\n\n12:10\nRecap & Agenda\n\n\n12:20\nInput: Dispersionsmaße & z-Transformation\n\n\n13:10\nÜbung & Besprechung: Streuungsmaße & z-Transformation (Aufgabe 1 & 2)\n\n\n14:00\nInput: Kovarianz & Korrelation\n\n\n14:45\nÜbung & Besprechung: Kovarianz & Korrelation (Aufgabe 3) — Folie fehlt noch, s.u.\n\n\n15:35\nSeminarevaluation\n\n\n15:50\nAusblick auf Block 4\n\n\n16:00\nEnde"
   }
 ]
