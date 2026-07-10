@@ -2,22 +2,34 @@
 title: "Block 3"
 ---
 
+
+
 ## Zeitplan
 
-Tag 3 · Fr 10.07. · 11:30–16:00
+Tag 3 · Fr 10.07. · 11:30–17:30
 
 | Zeit  | Programmpunkt |
 |-------|---------------|
-| 11:30 | Begrüßung & offene Fragen zu Block 1 & 2 |
-| 11:45 | Besprechung Übungsaufgaben R (Block 2: Vektoren, NA-Handling, Data Frames, Subsetting/Faktorcodierung, zentrale Tendenz) |
-| 12:10 | Recap & Agenda |
-| 12:20 | Input: Dispersionsmaße & z-Transformation |
-| 13:10 | Übung & Besprechung: Streuungsmaße & z-Transformation (Aufgabe 1 & 2) |
-| 14:00 | Input: Kovarianz & Korrelation |
-| 14:45 | Übung & Besprechung: Kovarianz & Korrelation (Aufgabe 3) — Folie fehlt noch, s.u. |
-| 15:35 | Seminarevaluation |
-| 15:50 | Ausblick auf Block 4 |
-| 16:00 | Ende |
+| 11:30 | Fragen zu Block 1 + 2 & Agenda |
+| 11:50 | Besprechung Übungsaufgaben R |
+| 12:30 | Dispersionsmaße & z-Transformation |
+| 14:00 | *Mittagspause*    
+| 14:45 | Kovarianz & Korrelation |
+| 15:50 | *Kurze Pause* |
+| 16:00 | Puffer |
+| 17:30 | Ende |
+
+## Folien
+
+[Folien im Vollbild öffnen](slides/folien-viewer.html?file=Folien_Block3.pdf){target="_blank"}
+
+```{=html}
+<iframe class="responsive-iframe"
+        src="slides/folien-viewer.html?file=Folien_Block3.pdf"
+        title="Folien Block 3"
+        style="width:100%; aspect-ratio:16/9; min-height:520px; border:1px solid #e3e3e3; border-radius:10px;">
+</iframe>
+```
 
 # Guess the r – Korrelationen schätzen
 
