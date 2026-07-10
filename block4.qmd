@@ -1,3 +1,15 @@
 ---
 title: "Block 4"
 ---
+
+## Folien
+
+[Folien im Vollbild öffnen](slides/folien-viewer.html?file=Folien_Block4.pdf){target="_blank"}
+
+```{=html}
+<iframe class="responsive-iframe"
+        src="slides/folien-viewer.html?file=Folien_Block4.pdf"
+        title="Folien Block 4"
+        style="width:100%; aspect-ratio:16/9; min-height:520px; border:1px solid #e3e3e3; border-radius:10px;">
+</iframe>
+```
